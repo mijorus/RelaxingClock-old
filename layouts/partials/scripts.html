@@ -1,0 +1,33 @@
+<!-- ASSETS -->
+{{ $compatibilityDetector := resources.Get "js/compatibilityDetector.js" }}
+{{ $init := resources.Get "js/init.js" }}
+{{ $utils := resources.Get "utils/js/utils.js" }}
+{{ $fullScreenUtils := resources.Get "utils/js/fullScreenUtils.js"}}
+{{ $generateSpotifyUrl := resources.Get "utils/js/generateSpotifyUrl.js" | resources.ExecuteAsTemplate "generatedSpotifyUrl.js" .}}
+{{ $screenSaver := resources.Get "js/screenSaver.js" }}
+{{ $getSettings := resources.Get "js/getSettings.js" }}
+{{ $internationalClock := resources.Get "utils/js/internationalClock.js" }}
+{{ $spotifyRequests := resources.Get "js/spotifyRequests.js" }}
+{{ $clockStyles := resources.Get "js/clockStyles.js" }}
+{{ $clocks := resources.Get "js/clocks.js" }}
+{{ $alarm := resources.Get "js/alarm.js" }}
+{{ $playerUtils := resources.Get "utils/js/playerUtils.js" }}
+{{ $clockListeners := resources.Get "js/clockListeners.js" }}
+{{ $spotifyPlayer := resources.Get "js/spotifyPlayer.js" }}
+{{ $spotifyAuth := resources.Get "js/spotifyAuth.js" }}
+{{ $settingsPage := resources.Get "js/settingsPage.js" }}
+
+{{ $assets := slice $compatibilityDetector $init $utils $fullScreenUtils $generateSpotifyUrl $screenSaver $getSettings $internationalClock $spotifyRequests $clockStyles $clocks $alarm $playerUtils $clockListeners $spotifyPlayer $spotifyAuth $settingsPage}}
+
+<!-- This is the concat of every custom js file -->
+{{ $assetsConcat := $assets | resources.Concat "js/assets.js" }}
+
+{{ if .Site.IsServer }}
+{{ $jsBundleOpt := dict "targetPath" "js/assets.js" "minify" true }}
+{{ $assetsBundle := $assetsConcat | fingerprint }}
+{{ else }}
+{{ $jsBundleOpt := dict "targetPath" "js/assets.js" "minify" false }}
+{{ $assetsBundle := $assetsConcat | fingerprint }}
+
+<script src="{{ $assetsBundle.RelPermalink }}"></script>
+{{ end }}

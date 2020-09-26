@@ -1,0 +1,14 @@
+<!-- VENDORS -->
+{{ $jquery := resources.Get "vendors/jquery/jquery-3.5.1.min.js" }}
+{{ $loader := resources.Get "vendors/loaders/loaders.css.js" }}
+{{ $randomColor := resources.Get "vendors/randomColor/randomColor.min.js" }}
+{{ $anime := resources.Get "vendors/anime/anime.min.js" }}
+{{ $moment := resources.Get "vendors/moment/moment.min.js" }}
+{{ $momentTimezone := resources.Get "vendors/moment/moment-timezone-with-data-10-year-range.min.js" }}
+{{ $suncalc := resources.Get "vendors/suncalc/suncalc.js" }}
+{{ $mobileDetect := resources.Get "vendors/mobile-detect/mobile-detect.min.js" }}
+
+<!-- This is the concat of every vendor js file -->
+{{ $vendorsBundle := slice $jquery $loader $randomColor $anime $moment $momentTimezone $suncalc $mobileDetect | resources.Concat "js/vendors.js" | minify | fingerprint}}
+
+<script src="{{ $vendorsBundle.RelPermalink }}"></script>

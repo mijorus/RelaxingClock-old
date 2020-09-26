@@ -1,0 +1,301 @@
+#settings-section {
+    width: 50%;
+    margin: {
+        top: 50px;
+        left: auto;
+        right: auto;
+    }
+    color: $color-white;
+    overflow: visible;
+
+    .setting-box {
+        position: relative;
+        margin-top: 50px;
+    }
+
+    .setting-box:first-child {
+        margin-top: 0;
+    }
+
+    dl {
+
+        &:last-child {
+            margin-bottom: 5vw;
+        }
+
+        dt {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-content: center;
+            align-items: baseline;
+            position: relative;
+
+
+            span {
+                font-size: $settings-title-font-size;
+                font-weight: 600;
+                white-space: nowrap;
+                margin-left: $dd-margin-left;
+
+                @include phones {
+                    margin-left: 20px;
+                    font-size: $settings-title-font-size-phone;
+                }
+            }
+    
+            i {
+                font-size: $settings-icon-font-size;
+                position: absolute;
+                bottom: 100%;
+                left: 0;
+                transform: translate(-50%, $settings-title-font-size);
+
+                span {
+                    margin-left: 0 !important;
+                    font-size: inherit;
+                }
+
+                @media (max-width: $phone) {
+                    transform: translate(-50%, $settings-title-font-size-phone);
+                    font-size: $fs-icon-phone;
+                }
+            }
+        }
+    
+        dd {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-items: center;
+            justify-content: space-between;
+            position: relative;
+            padding: 1.9vh;
+            margin-top: 3vh;
+            border-radius: 1.8vh;
+            background-color: $color-bg-settings;
+            font-size: $settings-font-size;
+            opacity: 1;
+            margin-left: $dd-margin-left;
+            transition: opacity .2s linear;
+
+            @media (max-width: $phone) {
+                font-size: $settings-font-size-phone;
+                margin-left: 0;
+            }
+
+            @include md-screen {
+                font-size: $settings-title-font-size-md;
+            }
+
+            .settings-btn-container {
+                white-space: nowrap;
+            }
+
+            &.nested {
+                margin-left: 15%;
+                border-left: .3vw solid $color-white;
+                color: $color-white;
+
+                @media (max-width: $phone) {
+                    margin-left: 0;
+                }
+            }
+    
+            button {
+                cursor: pointer;
+            }
+    
+            span {
+                position: relative;
+
+                @media (max-width: $phone) {
+                    white-space: normal;
+                }
+            }
+    
+            .settings-btn {
+                font-size: 1.2vw;
+                border: 2px solid $color-white;
+                border-radius: .8vw;
+                color: $color-white;
+                font-weight: 500;
+                text-align: center;
+                background-color: transparent;
+                transition: all .1s linear;
+                padding: {
+                    top: .4vh;
+                    bottom: .4vh;
+                    left: .4vw;
+                    right: .4vw;
+                }
+    
+                &.activated {
+                    font-weight: 600;
+                    color: $color-bg-settings;
+                    background-color: $color-white;
+                    transition: all .1s linear;
+                }
+
+                @media (max-width: $phone) {
+                    font-size: $settings-font-size-phone;
+                    border-width: 1px;
+                    border-radius: 7px;
+
+                    padding: {
+                        top: 3px;
+                        bottom: 3px;
+                        left: 4px;
+                        right: 4px;
+                    }
+                }
+
+                @include md-screen {
+                    font-size: 1.5vw;
+                }
+            }
+        }
+    
+        #spotify-logout-box {
+            
+            dt {
+
+                .spotify-icon {
+                    font-size: 4vw;
+
+                    @media (max-width: $phone) {
+                        font-size: $fs-icon-phone + 10px;
+                    }
+                }
+            }
+        }
+
+        #presentation-box{
+            dt i{
+                font-weight: 700;
+                color: #fcf4ac;
+            }
+        }
+
+        #beta-features-box {
+            .icon-lab1 {
+                color: #8fffb6;
+            }
+        }
+
+        #alarm-box {
+
+            #set-alarm-btn {
+
+                &.activated::before {
+                    content: "Set";
+                }
+                
+                &.btn-dismiss {
+                    color: $color-white !important;
+                    background-color: #b10505 !important;
+                    border-color: #b10505 !important;
+                }
+                
+                &.btn-dismiss::before {
+                    content: "Dismiss" !important;
+                }
+            }
+        }
+
+        .unavailable {
+                opacity: .5;
+                pointer-events: none !important;
+        }
+    }
+
+    @media (max-width: $phone) {
+        width: 85%;
+    }
+
+    @include md-screen {
+        width: 70%;
+    }
+}
+
+#follow-me {
+    color: $color-white;
+    width: 50%;
+    margin: {
+        top: 50px;
+        left: auto;
+        right: auto;
+    }
+    text-align: center;
+    padding-bottom: 5vh;
+
+    h1 {
+        font-size: $settings-title-font-size;
+        font-weight: 600;
+        white-space: nowrap;
+
+        @media (max-width: $phone) {
+            font-size: $settings-title-font-size-phone;
+        }
+    }
+
+    #made-with-love {
+        font-size: $settings-font-size - .1vw;
+        margin-bottom: 10vh;
+
+        .fa-heart {
+            color: #ff0000;
+        }
+
+        @include md-screen {
+                font-size: $settings-title-font-size-md;
+            }
+
+         @media (max-width: $phone) {
+             margin-bottom: 5vh;
+                font-size: $settings-font-size-phone;
+         }
+    }
+
+    #follow-me-separator {
+
+        @include md-screen {
+                font-size: $settings-title-font-size-md;
+            }
+
+        @media (max-width: $phone) {
+            font-size: $settings-font-size-phone;
+         }
+    }
+
+    #social-icons-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        padding: {
+            top: 5%;
+            left: 30%;
+            right: 30%;
+        }
+
+        margin-bottom: 5vh;
+
+        a {
+            color: $color-white;
+            
+            &:visited{
+                color: $color-white;
+            }
+        }
+
+        i {
+            font-size: 2.5vw;
+            font-weight: 500;
+            white-space: nowrap;
+            @media (max-width: $phone) {
+                font-size: 4.5vw;
+            }
+        }
+    }
+}

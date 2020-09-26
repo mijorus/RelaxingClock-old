@@ -1,0 +1,51 @@
+$color-white: rgb(245, 245, 245);
+$color-white-ss: rgba(245, 245, 245, 0.45);
+$color-bg: rgb(29, 29, 29);
+$color-bg-settings: rgb(63, 63, 63);
+
+$cc-margin-bottom: 10vh;
+$sky-icon-size: 5vw;
+$sky-icon-size-phones: 7vw;
+$cb-default: cubic-bezier(0.37, 0, 0.63, 1);
+
+$alarm-arrow-phone: 24px;
+
+$settings-title-font-size: 2.5vw;   
+$settings-title-font-size-phone: 16px;
+$settings-title-font-size-md: 1.5vw;
+$settings-icon-font-size: 2.5vw;
+$dd-margin-left: 2.1vw;
+$settings-font-size: 1.2vw;
+$settings-font-size-phone: 10px;
+$alarm-set-size: 2vw;
+$alarm-set-size-phone: 2vw;
+$alarm-font-size: 4vw;
+$alarm-font-size-phone: 0vw;
+
+$xs-phone: 576px;
+$phone: 768px;
+$md-screen: 992px;
+$fs-icon-phone: 24px;
+
+$sp-btn-fs: 1.1vw;
+$sp-plh-fs: 1vw;
+$sp-art-fs: .7vw;
+$sp-icon-fs: 2.2vw;
+
+@mixin phones {
+    @media all and (max-width: $phone) {
+        @content
+    }
+};
+
+@mixin md-screen {
+    @media all and (max-width: $md-screen) {
+        @content
+    }
+};
+
+@mixin xs-phone {
+    @media all and (max-width: $xs-phone) {
+        @content
+    }
+};

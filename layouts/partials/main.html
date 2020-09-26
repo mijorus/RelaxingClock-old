@@ -1,0 +1,78 @@
+<main class="full-viewport">
+    <div id="full-screen-arrows">
+        <span class="lnr lnr-frame-expand expand-icon"></span>
+    </div>
+    <div id="main-container" class="toscreensave">
+        <div class="center-container toscreensave">
+            <div id="clock-container" class="flex-center toscreensave">
+                <div id="clock-inner-container">
+                    <div class="big-clock-container">
+                        <h1 id="big-clock" class="big-clock intro"></h1>
+                        <p id="ampm" class="ampm disp-none"></p>
+                        <div id="city-icon"></div>
+                        <p class="city-name"></p>
+                    </div>
+                    <!-- DRAWINGs -->
+                    <div id="circle-container" class="toscreensave">
+                        <div id="circle">
+                            <span id="little-dot"></span>
+                            <span id="hand-hours" class="hand smooth-move"></span>
+                            <span id="hand-min" class="hand smooth-move"></span>
+                            <span id="hand-seconds" class="hand"></span>
+                        </div>
+                    </div>
+                    <svg id="half-circle" class="toscreensave">
+                        <path id="half-circle-path" stroke-width="1" stroke-linejoin="round" fill="none" d="" />
+                        <path id="half-circle-dashed" stroke-width="4" stroke-linejoin="round" fill="none" d="" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="selection-box toscreensave">
+                <h3 class="user-style-selection">Select your clock style</h3>
+                <div id="clock-style-selector" class="style-selector flex-center option-selector-box">
+                    <div id="style-selectors-container" class="flex-center">
+                        <button id="style-selector-l" class="left-arrow"><i class="fas fa-caret-left"></i></button>
+                        <button id="style-selector-r" class="right-arrow"><i class="fas fa-caret-right"></i></button>
+                    </div>
+                    <span class="option-name" data-selection="0">Classic</span>
+                    <span class="option-name" data-selection="1">Focused</span>
+                    <span class="option-name" data-selection="2">Metropolis</span>
+                    <span class="option-name" data-selection="3">Analog</span>
+                    <span class="option-name" data-selection="4">Globetrotter</span>
+                </div>
+                <div id="clock-format-selector" class="flex-center">
+                    <button id="format-12">12H</button>
+                    <div class="divisor"></div>
+                    <button id="format-24">24H</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="open-settings-container">
+        <bottom id="open-settings" class="transp-btn">
+            <span id="open-settings-arrow" class="lnr lnr-arrow-down toscreensave"></span>
+        </bottom>
+    </div>
+    <div id="music-box" class="unlogged toscreensave">
+        <a id="spotify-link">
+            <i id="spotify-icon" class="fab fa-spotify spotify-icon toscreensave"></i>
+        </a>
+        <div id="spotify-text">
+            <p id="spotify-placeholder" class="spotify-inner-text">Loading...<br></p>
+            <div id="spotify-track-info" class="hide">
+                <p id="track-name" class="spotify-inner-text"></p>
+                <p id="artist-name" class="spotify-inner-text"></p>
+            </div>
+        </div>
+        <button class="like-btn transp-btn">
+            <i id="like-icon" class="far fa-heart toscreensave"></i>
+        </button>
+        <button class="play-btn transp-btn">
+            <div id="spotify-loader" class="loader-container">
+                <div class="loader line-scale"></div>
+            </div>
+            <i id="playback-icon" class="fas fa-play hide"></i>
+        </button>
+    </div>
+</main>

@@ -1,0 +1,21 @@
+@import 'variables.scss';
+
+//ASSETS
+@import 'custom-fonts';
+@import 'main.scss';
+@import 'cities';
+@import 'big-clock';
+@import 'music-box';
+@import 'selection-box';
+@import 'settings';
+@import 'alarm';
+
+//UTILS
+@import '../utils/scss/utils'; 
+
+//FONTAWESOME
+$fa-font-path: "/font/fa-webfonts";
+@import "../vendors/fontawesome/scss/fontawesome.scss";
+@import "../vendors/fontawesome/scss/brands.scss";
+@import "../vendors/fontawesome/scss/solid.scss";
+@import "../vendors/fontawesome/scss/regular.scss";

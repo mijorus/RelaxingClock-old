@@ -1,0 +1,29 @@
+
+{{ $normalize := resources.Get "vendors/normalize/normalize.css" }}
+{{ $linearincons := resources.Get "vendors/linearicons/icon-font.min.css" }}
+{{ $loadersCSS := resources.Get "vendors/loaders/loaders.min.css" }}
+
+{{ $vendorsCSS := slice $normalize $linearincons $loadersCSS | resources.Concat "css/vendors.css" | fingerprint | minify}}
+
+{{ $style := resources.Get "scss/index.scss" | resources.ExecuteAsTemplate "css/style.tmp.css" .}}
+
+{{ if .Site.IsServer }}
+{{ $scssOptions := (dict "targetPath" "css/style.css" "outputStyle" "expanded" "enableSourceMap" true) }}
+{{ $cssBundle := $style | toCSS $scssOptions | fingerprint }}
+{{ else }}
+{{ $scssOptions := (dict "targetPath" "css/style.css" "outputStyle" "compressed" "enableSourceMap" false) }}
+{{ $cssBundle := $style | toCSS $scssOptions | fingerprint | minify}}
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="static/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/icons/favicon-16x16.png">
+    <link rel="stylesheet" type="text/css" href="{{ $vendorsCSS.RelPermalink }}">
+    <link rel="stylesheet" href="{{ $cssBundle.RelPermalink }}">
+    <title>Relaxing Clock</title>
+</head>
+{{ end }}

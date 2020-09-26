@@ -1,0 +1,18 @@
+{
+    "background_color": "#1d1d1d",
+    "display": "standalone",
+    "name": "Relaxing Clock",
+    "icons": [
+      {
+        "src": "/icons/android-chrome-192x192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/icons/android-chrome-512x512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "https://vigorous-murdock-a45fe2.netlify.app/"
+  }

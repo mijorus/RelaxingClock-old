@@ -1,0 +1,86 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('/font/icomoon.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-moon-centered:before {
+  content: "\e903";
+  color: #95f;
+}
+.icon-sun-centered:before {
+  content: "\e904";
+  color: #fc0;
+}
+.icon-checkmark:before {
+  content: "\e900";
+}
+.icon-clock:before {
+  content: "\e901";
+}
+.icon-snooze:before {
+  content: "\e902";
+}
+.icon-clock-white .path1:before {
+  content: "\e902";
+  font-weight: 300;
+  font-size: inherit;
+  color: rgb(245, 245, 245);
+}
+.icon-clock-white .path2:before {
+  content: "\e905";
+  margin-left: -1em;
+  font-weight: 300;
+  font-size: inherit;
+  color: rgb(255, 102, 0);
+}
+
+//
+
+.icon-cross:before {
+  content: "\e906";
+}
+
+.icon-lab:before {
+  content: "\e9aa";
+}
+.icon-sleepy:before {
+  content: "\e9fd";
+}
+
+///
+.icon-lightbulb:before {
+  content: "\e90a";
+}
+.icon-bulb:before {
+  content: "\e909";
+}
+.icon-lab1:before {
+  font-weight: 600;
+  content: "\e907";
+}
+.icon-lab-flask:before {
+  content: "\e908";
+}
+.icon-bell-off:before {
+  content: "\e921";
+}
+.icon-lab:before {
+  content: "\e9aa";
+}

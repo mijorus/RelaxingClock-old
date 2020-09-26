@@ -1,0 +1,88 @@
+<section id="settings-section">
+    <dl>
+        <div id="spotify-logout-box" class="setting-box">
+            <dt>
+                <i class="fab fa-spotify spotify-icon"></i>
+                <span>Spotify</span>
+            </dt>
+            <dd id="spotify-status-box">
+                <span id="spotify-status-text">Collecting data... </span>
+                <button id="spotify-logout-btn" class="settings-btn activated transp-btn">
+                    Login
+                </button>
+            </dd>
+            <dd id="autoplay-box" class="nested unavailable">
+                <span>Automatically play relaxing music</span>
+                <div class="settings-btn-container">
+                    <button id="autoplay-on" class="settings-btn transp-btn" data-option="on">
+                        ON
+                    </button>
+                    <button id="autoplay-off" class="settings-btn transp-btn" data-option="off">
+                        OFF
+                    </button>
+                </div>
+            </dd>
+        </div>
+        <div id="alarm-box" class="setting-box">
+            <dt>
+                <i id="alarm-icon-settings" class="icon-clock-white bg-center"><span class="path1"></span><span
+                        class="path2"></span></i>
+                <span>Alarm</span>
+            </dt>
+            <dd>
+                <span id="alarm-lable">Set an alarm</span>
+                <div class="settings-btn-container">
+                    <button id="set-alarm-btn" class="settings-btn activated transp-btn"></button>
+                </div>
+            </dd>
+            <dd id="alarm-notif-box" class="nested unavailable">
+                <span>Send a notification when the alarm rings</span>
+                <div class="settings-btn-container">
+                    <button id="alarm-notif-on" class="settings-btn transp-btn" data-option="on">
+                        ON
+                    </button>
+                    <button id="alarm-notif-off" class="settings-btn activated transp-btn" data-option="off">
+                        OFF
+                    </button>
+                </div>
+            </dd>
+        </div>
+        <div id="presentation-box" class="setting-box">
+            <dt>
+                <i class="icon-lightbulb"></i>
+                <span>High contrast</span>
+            </dt>
+            <dd>
+                <span>Keep the colors vibrant</span>
+                <div class="settings-btn-container">
+                    <button id="presentation-on" class="settings-btn activated transp-btn" data-option="on">
+                        ON
+                    </button>
+                    <button id="presentation-off" class="settings-btn transp-btn" data-option="off">
+                        OFF
+                    </button>
+                </div>
+            </dd>
+        </div>
+        <div id="beta-features-box" class="setting-box">
+            <dt>
+                <i class="icon-lab1"></i>
+                <span>Experimental features</span>
+            </dt>
+            <dd>
+                <span>Get time from the internet </span>
+                <div class="loader-container remote-time-loader">
+                    <div class="loader line-scale disp-none"></div>
+                </div>
+                <div class="settings-btn-container">
+                    <button id="remote-time-on" class="settings-btn transp-btn" data-option="on">
+                        ON
+                    </button>
+                    <button id="remote-time-off" class="settings-btn activated transp-btn" data-option="off">
+                        OFF
+                    </button>
+                </div>
+            </dd>
+        </div>
+    </dl>
+</section>

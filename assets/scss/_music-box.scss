@@ -1,0 +1,287 @@
+/* Music box */
+#music-box {
+    width: 15vw;
+    position: absolute;
+    border-radius: 1.3vh;
+    bottom: 0;
+    left: 0;
+    margin: 1vw;
+    padding: .6vw;
+    display: flex;
+    background-color: $color-bg;
+    justify-content: flex-start;
+    z-index: 2;
+    align-items: center;
+    align-content: space-between;
+    color: white;
+    flex-wrap: nowrap;
+
+    &.unsupported {
+        display: none !important;
+    }
+    
+    &.hide {
+        opacity: 0 !important;
+        cursor: default !important;
+        pointer-events: none !important;
+    }
+
+    &.unlogged {
+        transition: all 1s linear;
+        border: none;
+        .far.fa-heart{
+            display: none;
+        }
+        
+        .fas.fa-heart {
+            display: none;
+        }
+        
+        .play-btn {
+            display: none;
+
+            .loader {
+                position: absolute;
+                display: none;
+            }
+        }
+
+        &.screen-saving {
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
+
+    &.logged {
+        border: 2px solid;
+        border-color: transparent;
+        transition: border-color 1s $cb-default, opacity 1s $cb-default;
+        
+        &.loaded {
+            border-color: $color-white;
+        }
+
+        button {
+            font-size: $sp-btn-fs;
+
+            @include md-screen {
+                font-size: $sp-btn-fs * 1.5;
+            }
+    
+            @include phones {
+                font-size: $sp-btn-fs * 1.5;
+            }
+
+            @include xs-phone {
+                font-size: $sp-btn-fs * 2.3;
+            }
+        }
+
+        .far.fa-heart{
+            color: rgba(245, 245, 245, 0.45);
+            transition: color 1s linear;
+
+            body.screen-saving-color &.screen-saving {
+                color: rgba(245, 245, 245, 0.25);
+            }
+
+            body.high-contrast &.screen-saving {
+                color: rgba(245, 245, 245, 0.45);;
+            }
+        }
+        
+        .fas.fa-heart {
+            color: rgb(29, 185, 84);
+
+            body.screen-saving-color &.screen-saving {
+                color: rgba(29, 185, 84, 0.443);
+            }
+
+            body.high-contrast &.screen-saving {
+                color: rgb(29, 185, 84);
+            }
+        }
+        
+        .play-btn {
+            cursor: pointer;
+            color: inherit;
+            margin-left: 5px;
+            position: relative;
+
+            .loader-container {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                left: 0;
+                top: 0;
+                opacity: inherit;
+
+                .loader {
+                    overflow: hidden;
+                    white-space: nowrap;
+                    position: relative;
+                    z-index: 2;
+                    pointer-events: none;
+                    cursor: default;
+                }
+            }
+        }
+        
+        .play-btn:focus {
+            outline: none;
+            border: none;
+            background-color: transparent;
+        }
+
+        &.screen-saving {
+            color: inherit !important;
+            border-color: inherit !important;
+        }
+    }
+
+    #spotify-link {
+        position: relative;
+        left: 0;
+
+        &.screen-saving {
+            color: inherit !important;
+        }
+        
+        .spotify-icon {
+            font-size: $sp-icon-fs;
+            margin-right: .5vw;
+            transition: opacity 1s linear;
+            background-position: center;
+            background-size: cover;
+            border-radius: 3px;
+
+            &.has-cover {
+                color: transparent !important;
+            }
+
+            body.screen-saving-color &.screen-saving {
+                //color: rgba(29, 185, 84, 0.443);
+                opacity: .5;
+            }
+
+            body.high-contrast &.screen-saving {
+                //color: rgba(29, 185, 84, 1);
+                opacity: 1;
+            }
+
+            @include md-screen {
+                font-size: 3vw;
+            }
+
+            @include phones {
+                font-size: $sp-icon-fs * 2;
+            }
+
+            @include xs-phone {
+                font-size: $sp-icon-fs * 2.5;
+            }
+        }
+    }
+    
+    #spotify-text {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        flex-grow: 20;
+        
+        #spotify-placeholder {
+            font-size: $sp-plh-fs;
+            position: relative;
+            opacity: 1;
+
+            &.error {
+                color: #fd3030;
+            }
+
+            @include md-screen {
+                font-size: $sp-plh-fs * 1.5;
+            }
+            @include phones {
+                font-size: $sp-plh-fs * 1.5;
+            }
+            @include xs-phone {
+                 font-size: $sp-plh-fs * 2.1;
+            }
+        }
+
+        #spotify-track-info{
+            max-width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: space-between;
+            justify-items: center;
+            position: absolute;
+            white-space: nowrap;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+        }
+
+        .spotify-inner-text {
+            top: 0;
+            left: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        #track-name {
+            flex-grow: 20;
+            font-size: $sp-plh-fs;
+
+            @include md-screen {
+                font-size: $sp-plh-fs * 1.5;
+            }
+    
+            @include phones {
+                font-size: $sp-plh-fs * 1.5;
+            }
+
+            @include xs-phone {
+                font-size: $sp-plh-fs * 2.3;
+            }
+        }
+        
+        #artist-name {
+            font-size: $sp-art-fs;
+
+            @include md-screen {
+                font-size: $sp-art-fs * 1.5;
+            }
+    
+            @include phones {
+                font-size: $sp-art-fs * 1.5;
+            }
+
+            @include xs-phone {
+                font-size: $sp-art-fs * 2.3;
+            }
+        }
+    }
+
+    @include md-screen {
+        padding: .8vw;
+        width: 21vw;
+    }
+
+    @include phones {
+        padding: .8vw;
+        width: 25vw;
+    }
+
+    @include xs-phone {
+        padding: 1vw;
+        width: 35vw;
+    }
+}
+
+
+/* End music box */
+
+/* Media queries */

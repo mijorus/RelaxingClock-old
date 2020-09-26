@@ -1,0 +1,209 @@
+#alarm-section {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    flex-direction: column;
+    opacity: 0;
+    color: $color-bg;
+    display: none;
+    
+    &.show {
+        display: flex;
+        background: radial-gradient(circle, darken(transparentize($color-white, 0), 20%), transparent) !important;
+
+        #alarm-big-clock {
+        opacity: 1;
+        color: $color-bg;
+
+            span {
+                position: relative;
+            }
+
+            .arrow {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: $settings-title-font-size;
+
+                @include phones {
+                    font-size: $alarm-arrow-phone;
+                }
+            }
+
+            .arrowup {
+                bottom: 100%;
+            }
+
+            .arrowdown {
+                top: 100%;
+            }
+        }
+
+        #am-pm-alarm {
+            position: absolute !important;
+            bottom: 50%;
+            transform: translateY(100%);
+        }
+
+        #alarm-set-box {
+            margin-top: 15vh;
+            position: relative;
+
+            button {
+                top: 50%;
+                position: absolute;
+                cursor: default !important;
+                
+                span {
+                    font-size: $alarm-set-size;
+                    cursor: pointer;
+                    font-weight: 500;
+
+                    @include phones {
+                        font-size: $alarm-set-size * 3;
+                    }
+                }
+            }
+
+            #alarm-set {
+                left: 0;
+                transform: translate(-100%, -50%);
+
+                #alarm-set-icon:before {
+                    content: "\e900"; 
+                }
+            }
+
+            #alarm-dismiss {
+                right: 0;
+                transform: translate(100%, -50%);
+
+                #alarm-dismiss-icon:before {
+                    content: "\e906";
+                }
+            }
+
+            #alarm-icon {
+            font-size: 5vw;
+
+            @include phones {
+                font-size: 10vw;
+            }
+            }
+        }
+    }
+
+    &.ring {
+        display: flex;
+        opacity: 1;
+
+        #alarm-big-clock {
+            display: none;
+        }
+
+        #alarm-set-box {
+            font-size: $alarm-font-size;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-content: center;
+            width: 80%;
+
+            button {
+                cursor: default;
+            }
+
+            span {
+                cursor: pointer;
+            }
+
+            #alarm-set {
+                flex-grow: 1;
+                transition: transform .2s $cb-default;
+
+                #alarm-set-icon:before {
+                    content: "\e921";
+                    font-size: $alarm-set-size + 1.5vw !important;
+
+                    @include phones {
+                        font-size: $alarm-set-size * 1.5;
+                    }
+                    
+                }
+
+                &:hover {
+                    transform: scale(1.2);
+                }
+            }
+
+            #alarm-icon {
+                flex-grow: 0;
+                font-size: 20vw;
+                animation: shake .1s ease-in-out infinite alternate forwards;
+
+                @include phones {
+                    font-size: 30vw;
+                }
+            }
+
+            #alarm-dismiss {
+                flex-grow: 1;
+                transition: transform .2s $cb-default;
+
+                #alarm-dismiss-icon:before {
+                    content: "\e906";
+                    font-size: $alarm-set-size + 1vw !important;
+
+                    @include phones {
+                        font-size: $alarm-set-size * 1.5;
+                    }
+                }
+                
+                &:hover {
+                    transform: scale(1.2);
+                }
+            }
+        }
+
+        #tomorrow-alarm {
+            position: absolute;
+            bottom: 1vh;
+        }
+    }
+
+    @keyframes shake {
+        from {
+            transform: rotate(30deg);
+        }
+
+        to {
+            transform: rotate(-30deg);
+        }
+    }
+
+    #tomorrow-alarm {
+        display: block;
+        font-size: $settings-title-font-size;
+        font-weight: 600;
+        margin-top: 5vh; 
+
+        @include phones {
+            font-size: $settings-title-font-size-phone;
+        }
+    }
+
+    .alarm-select-icon {
+        padding: 2vw;
+    
+        &:before {
+            font-family: 'icomoon' !important;
+            font-style: normal;
+            font-size: $alarm-set-size - .5vw;
+
+            @include phones {
+                font-size: $alarm-set-size * 1.5;
+            }
+        }
+    }
+}

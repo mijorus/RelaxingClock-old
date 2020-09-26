@@ -1,0 +1,151 @@
+@font-face {
+    font-family: 'Source Code Pro';
+    src: url('/font/sourcecodepro-medium.ttf');
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DM Mono';
+    src: url('/font/dmmono-regular.ttf');
+    font-weight: 500;
+    font-display: swap;
+}
+
+* {
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+
+body {
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important; 
+    background-color: rgb(29, 29, 29);
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    color: rgb(245, 245, 245);
+    stroke: rgba(245, 245, 245, 0.60);
+    position: sticky;
+    user-select: none; 
+    overflow-x: hidden;
+    
+    &::-webkit-scrollbar {
+        display: none; /* WebKit */
+    }
+
+    &.unscrollable{
+        overflow-y: hidden;
+    }
+}
+
+a {
+    color: inherit;
+}
+
+.screen-saving-color {
+    color: rgba(245, 245, 245, 0.45);
+    border-color: rgba(245, 245, 245, 0.45);
+    stroke: rgba(245, 245, 245, 0.192);
+}
+
+.high-contrast {
+    color: rgba(245, 245, 245, 1) !important;
+    border-color: rgba(245, 245, 245, 1) !important;
+    stroke: rgba(245, 245, 245, 1) !important;
+}
+
+.expand-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: inherit;
+    margin: .5vw;
+    cursor: pointer;
+    transform: scale(1, -1);
+    animation: fadeIn 2s linear;
+    z-index: 2;
+}
+
+.expand-icon.screen-saving {
+    color: inherit;
+}
+
+.expand-icon.lnr-frame-expand {
+    font-size: 1.2vw;
+
+    @media (max-width: $phone) {
+        font-size: 2.5vw;
+    }
+}
+
+.expand-icon.lnr-frame-contract {
+    font-size: 1.5vw;
+
+    @media (max-width: $phone) {
+        font-size: 2.7vw;
+    }
+}
+
+
+#main-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-10%) translateZ(0);
+    transition: transform 1.5s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+#main-container.screen-saving {
+    transform: translateY(0) translateZ(0);
+}
+
+#open-settings-container {
+    position: absolute;
+    bottom: .7vw;
+    left: 50%;
+    opacity: 0.5;
+    font-size: 1.1vw;
+    animation: arrow-bounce .7s ease-in-out 0s 6 alternate;
+    transform: translateX(-50%);
+    transform-origin: 0 50%;
+    transition: color 1s linear;
+
+    #open-settings {
+        color: $color-white;
+        cursor: pointer;
+        
+        #open-settings-arrow {
+            font-weight: 700;
+            transition: color 1s linear;
+        
+            &.screen-saving{
+                color: transparent;
+                cursor: default;
+                pointer-events: none;
+            }
+
+            &.in-settings{
+                color: $color-white !important;
+                font-weight: 700 !important;
+                cursor: pointer !important;
+            }
+        }
+    }
+}
+
+@keyframes arrow-bounce {
+    from {
+        opacity: .5;
+        transform: translate(-50%, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -10px);
+    }
+}

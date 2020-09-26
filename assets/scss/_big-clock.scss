@@ -1,0 +1,397 @@
+.center-container {
+    position: relative;
+    height: 15vw;
+    transition: all 1.5s $cb-default;
+}
+
+#clock-container {
+    margin-bottom: $cc-margin-bottom;
+    white-space: nowrap;
+    flex-direction: column;
+    height: inherit;
+    animation: comeIn 2s $cb-default;
+}
+
+#clock-inner-container {
+    position: relative;
+}
+
+.big-clock {
+    margin: 0;
+    height: fit-content;
+    width: fit-content;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 15vw;
+    font-weight: 500;
+    text-align: center;
+    z-index: 2;
+    opacity: 1;
+    display: inline-block;
+    transform: none;
+    white-space: nowrap;
+
+    #city-icon {
+        opacity: 0;
+    }
+
+    &.toscreensave {
+        height: 100vh;
+        margin: 0;
+    }
+}
+
+.ampm {
+    display: inline-block;
+    margin-left: 2vw;
+    font-size: 1.2vw;
+    color: inherit;
+    text-align: center;
+}
+
+#city-name {
+    flex-direction: column;
+}
+
+#ampm.screen-saving {
+    color: inherit;
+}
+
+@keyframes comeIn {
+    0% {transform: translateY(-50px); opacity: 0;}
+    100% {transform: translateY(0px); opacity: 1;}
+}
+
+/* Alternative clock styles */
+
+.classic {
+    .big-clock {
+        @include phones {
+            font-size: 18vw;
+            font-weight: 500;
+        }
+    }
+}
+
+.focused {
+    .big-clock {
+        @include phones {
+            font-size: 25vw;
+            font-weight: 500;
+        }
+    }
+}
+
+.metro {
+    .big-clock{
+        font-size: 8vw;
+
+        @media (max-width: $phone) {
+            font-size: 10vh;
+            font-weight: 500;
+        }
+    }
+
+    .ampm {
+        display: none;
+    }
+
+    .metro-margin {
+        transition: margin-bottom 1s linear !important;
+    }
+
+    #clock-inner-container {
+        position: relative;
+        margin-bottom: 7vw;;
+
+        &.metro-margin {
+            transition: margin-bottom 1s linear !important;
+        }
+
+        @media (max-width: $phone) {
+            margin-bottom: 15vh;
+        }
+    }
+
+    .screen-saving #clock-inner-container {
+        position: relative;
+        margin-bottom: 0vw;
+    }
+}
+
+.globe {
+    #clock-container {
+        position: relative;
+
+        &.screen-saving .big-clock-container {
+            transform: translate(0, 25%) translateZ(0);
+
+            @media (max-width: $phone) {
+                transform: translateY(0);
+            }
+        }
+
+        #clock-inner-container {
+            position: absolute;
+            bottom: 0;
+            margin-bottom: - ($cc-margin-bottom / 1.5);
+            width: 60vw;
+            text-align: center;
+            color: $color-white;
+            transition: opacity .5s linear;
+
+            @media (max-width: $phone) {
+                width: 80vw;
+                margin-bottom: - ($cc-margin-bottom / 1.2);
+            }
+        }
+
+        body.screen-saving-color &.screen-saving {
+            #clock-inner-container {
+                opacity: 0.8;
+            }
+        }
+
+        body.high-contrast &.screen-saving {
+            #clock-inner-container {
+                opacity: 1;
+            }
+        }
+    }
+
+    .big-clock-container {
+        width: 100%;
+        margin: auto;
+        position: relative;
+        transition: transform 1.8s $cb-default;
+
+        .big-clock{
+            position: initial;
+            margin: 0;
+            font-size: 7vw;
+            bottom: 0;
+            left: 50%;
+
+            @media (max-width: $phone) {
+                font-size: 12vw;
+            }
+        }
+
+        #city-icon {
+            width: 90%;
+            height: 225%;
+            opacity: 0.1;
+            position: absolute;
+            background-repeat: no-repeat;
+            background-position: bottom;
+            background-size: contain;
+            overflow: visible;
+            transform: translate(5%, -115%) translateZ(0);
+
+            // @media (max-width: $phone) {
+            //     width: 90%;
+            //     transform: translate(0%, -110%) translateZ(0);
+            // }
+        }
+    }
+
+    .city-name {
+        display: block;
+    }
+
+    #half-circle {
+        display: block;
+
+        #half-circle-path {
+            stroke: inherit;
+        }
+    
+        #half-circle-dashed {
+            display: block;
+            stroke: rgb(29, 29, 29);
+            stroke-dasharray: 1vw;
+        }
+    
+        #half-circle .screen-saving{
+            stroke: inherit;
+        }
+    
+        #half-circle-dashed .screen-saving{
+            stroke: rgb(29, 29, 29);
+        }
+    }
+}
+
+.analog {
+    #clock-inner-container {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .screen-saving #clock-inner-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .ampm {
+        display: none;
+    }
+
+    #circle-container {
+        display: block;
+        transition: top 2s cubic-bezier(0.37, 0, 0.63, 1);
+
+        &.screen-saving {
+            display: block;
+            top: 50%;
+        }
+        
+        body.screen-saving-color &.screen-saving {
+            opacity: .7;
+            transition: all 2s cubic-bezier(0.37, 0, 0.63, 1);
+            display: block;
+            top: 50%;
+        }
+
+        body.high-contrast &.screen-saving {
+            opacity: 1;
+            transition: all 2s cubic-bezier(0.37, 0, 0.63, 1);
+        }
+    }
+
+    .selection-box #clock-format-selector button {
+        opacity: 0;
+        cursor: default;
+
+        button {
+            cursor: default;
+            pointer-events: none;
+        }
+    }
+}
+
+.city-name {
+    display: none;
+    width: 100%;
+    margin-top: .2vw;
+    text-align: center;
+    font-size: 1.1vw;
+}
+
+#circle-container {
+    display: none;
+    overflow: visible;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transition: top 2s cubic-bezier(0.37, 0, 0.63, 1);
+
+    @media (max-width: $phone) {
+        top: 0;
+    }
+    
+    #circle {
+        position: absolute;
+        border: .2vw solid $color-white;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        display: block;
+        transition: opacity .5 linear;
+
+        #little-dot {
+            position: absolute;
+            background-color: darken($color: $color-white, $amount: 20%) ;
+            border-radius: 50%;
+            width: 1vw;
+            height: 1vw;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            z-index: 6;
+        }
+
+        .hand {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            border-radius: .3vw;
+            display: inline-block;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -100%);
+            transform-origin: 50% 100%;
+        }
+
+        #hand-hours {
+            width: .5vw;
+            background-color: $color-white;
+            z-index: 4;
+
+        }
+
+        #hand-min {
+            width: .3vw;
+            background-color: $color-white;
+            z-index: 3;
+        }
+
+        #hand-seconds {
+            width: .1vw;
+            background-color: red;
+            z-index: 5;
+        }
+    }
+}
+
+
+#half-circle {
+    display: none;
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+
+    #half-circle-dashed {
+        display: none;
+        position: absolute;
+        bottom: 50px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+#sky-icon {
+    position: absolute;
+    width: $sky-icon-size;
+    height: $sky-icon-size;
+    font-size: $sky-icon-size;
+    font-family: 'icomoon' !important;
+    font-style: normal;
+    display: none;
+    margin: 0;
+    padding: 0;
+
+    @include phones {
+        font-size: $sky-icon-size-phones;
+        width: $sky-icon-size-phones;
+        height: $sky-icon-size-phones;
+    }
+
+    &.sun:before {
+        content: "\e904";
+        color: #fc0;
+    }
+
+    &.moon:before {
+        content: "\e903";
+        color: #95f;
+    }
+}
+
+.globe #sky-icon {
+    display: block;
+    opacity: 0;
+}
+/* End of Alternative clock styles */

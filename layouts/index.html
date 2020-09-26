@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    {{partial "head.html"}}
+    <body>
+        {{partial "alarm-section.html"}}
+        <div id="big-container">
+            {{partial "main.html"}}
+            {{partial "settings.html"}}
+            {{partial "footer.html"}}
+        </div>
+    </body>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/serviceWorker.js').then(registration => {
+                    console.log(`Service Worker registered!`);
+                }, error => {
+                    console.error(`Service Worker registration failed: ${error}`);
+                });
+            });
+        }
+    </script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    {{ partial "vendor-scripts.html" }}
+    {{ partial "scripts.html" }}
+</html>
