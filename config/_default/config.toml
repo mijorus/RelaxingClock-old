@@ -3,6 +3,7 @@ languageCode = "en-us"
 
 [params]
   author    = "mijorus"
+  desc      = "Just an awesome way to relax yourself - Powered by Spotify"
   github    = "https://github.com/mijorus/RelaxingClock"
   instagram = "https://www.instagram.com/relaxingclock/"
   spotify   = "https://open.spotify.com/playlist/4ZTZhFPPyRzpfHZsWEXAW9?si=kvCqe0nMSdGbSmOB5ccQWA"

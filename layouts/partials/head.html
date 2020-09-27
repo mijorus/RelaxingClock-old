@@ -5,7 +5,18 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <meta name="description" content="{{ site.Params.desc }}">
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ site.Title }}">
+    <meta property="og:description" content="{{ site.Params.desc }}">
+    <meta property="og:image" content="{{ site.BaseURL }}img/thumb-01.png">
+    <meta property="og:url" content="{{ site.BaseURL }}">
+    <!-- Twitter -->
+    <meta name="twitter:title" content="{{ site.Title }}">
+    <meta name="twitter:description" content="{{ site.Params.desc }}">
+    <meta name="twitter:image" content="{{ site.BaseURL }}img/thumb-01.png">
+    <meta name="twitter:card" content="summary_large_image">
+    
     {{partial "css.html"}}
     <title>{{ site.Title }}</title>
-    <meta name="description" content="">
 </head>
