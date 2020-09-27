@@ -134,7 +134,9 @@ var spotify = {
             error: function(error) {
                 spotify.logError('PLAYBACK ERROR!', error);
                 switch (error.state) {
+                    case 500:
                     case 502:
+                    case 503:
                         $(spotifyPlaceholder).text('Server Error :(');
                     break;
                 
