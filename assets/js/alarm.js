@@ -154,6 +154,7 @@ var alarm = {
         let bgone, bgtwo;
 
         if (ringing) {
+            inSettings = true;
             $(alarmSection).addClass('ring');
             $('#big-container').addClass('blur');
             $(alarmSection).removeClass('show');
