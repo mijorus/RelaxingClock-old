@@ -10,7 +10,7 @@ playbackStarted = false,
 favourite = false,
 currentTrackId = '';
 
-// *** Spotify Player *** // Cannot perform operation; no list was loaded
+// *** Spotify Player *** //
 
 if (localStorage.userHasLogged === 'true' && compatibility.login) {
     window.onSpotifyWebPlaybackSDKReady = () => {
@@ -179,6 +179,35 @@ function initSpotifyPlayer() {
             }
         }
     });
+
+    $(musicBox).get(0).addEventListener('wheel', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const volumeStep = 0.1;
+
+        player.getVolume().then(volume => {
+            if (event.deltaY > 0) {
+                const newVolume = volume - volumeStep;
+                if (newVolume > 0) {
+                    console.log(`Volume down, set to ${Math.round(newVolume * 100)}%`);
+                    player.setVolume(newVolume);
+                } else {
+                    $('#mute-warning').removeClass('hide');
+                }
+            } else {
+                const newVolume = volume + volumeStep;
+                if (newVolume <= 1) {
+                    console.log(`Volume up, set to ${Math.round(newVolume * 100)}%`);
+                    $('#mute-warning').addClass('hide');
+                    player.setVolume(newVolume);
+                } 
+            } 
+        });
+
+        
+
+    }, { passive: false })
 }
 // *** END OF Spotify Player *** //
 

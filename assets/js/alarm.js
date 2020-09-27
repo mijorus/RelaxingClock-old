@@ -8,6 +8,11 @@ var alarm = {
 
     enabled: false,
 
+    oldPlaybackState: {
+        status: false,
+        volume: undefined,
+    },
+
     notificationStatus: false,
 
     notifications: function(enabled) {
@@ -153,6 +158,21 @@ var alarm = {
             $('#big-container').addClass('blur');
             $(alarmSection).removeClass('show');
 
+            this.oldPlaybackState.status = paused;
+            player.getVolume().then(volume => {
+               this.oldPlaybackState.volume = volume;
+                if (!this.oldPlaybackState.status) {
+                    const newVolume = 0.2;
+                    if (newVolume <= volume) player.setVolume(newVolume);
+                }
+            });
+
+            if (!this.oldPlaybackState.status) {
+                const newVolume = 0.2;
+                if (newVolume <= this.oldPlaybackState.volume) player.setVolume(newVolume);
+            }
+            document.querySelector('#alarm-sound').play();
+
             anime({
                 targets: $(alarmSection).get(0),
                 duration: 100,
@@ -162,6 +182,12 @@ var alarm = {
 
             bgone = randomColor({ luminosity: 'light', format: 'rgba', alpha: 0.9 });
             bgtwo = randomColor({ luminosity: 'light', format: 'rgba', alpha: 0.9 });
+        } else {
+            document.querySelector('#alarm-sound').pause();
+            if (!this.playbackState) {
+                player.setVolume(this.oldPlaybackState.volume);
+                player.resume();
+            }
         }
 
         const tl = { duration: 350, easing: 'linear', autoplay: false, loop: false };

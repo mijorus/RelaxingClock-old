@@ -61,7 +61,7 @@
             border-color: $color-white;
         }
 
-        button {
+        .sp-btn {
             font-size: $sp-btn-fs;
 
             @include md-screen {
@@ -131,6 +131,14 @@
             outline: none;
             border: none;
             background-color: transparent;
+        }
+
+        #mute-warning {
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transition: opacity.2s linear;
+            transform: translate(100%, -50%);
         }
 
         &.screen-saving {
