@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="{{ $vendorsCSS.RelPermalink }}">
 
     {{ $style := resources.Get "scss/index.scss" | resources.ExecuteAsTemplate "css/style.tmp.css" .}}
-    {{ if .Site.IsServer }}
+    {{ if site.IsServer }}
     {{ $scssOptions := (dict "targetPath" "css/style.css" "outputStyle" "expanded" "enableSourceMap" true) }}
     {{ $cssBundle := $style | toCSS $scssOptions | fingerprint }}
     <link rel="stylesheet" href="{{ $cssBundle.RelPermalink }}">
