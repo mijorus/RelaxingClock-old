@@ -12,7 +12,7 @@ var hours,min,sec,
 inSettings = false, //if the user is currently in the settings page
 logged = false, //if the user has succesfully logged to spotify
 settingsIsAnimating = false,
-player = {}, paused = true, //the music state
+player = undefined, paused = true, //the music state
 screenSaverIsActive = false, //whether or not the screen saver is active
 screenSaverisAnimating = false, //whether or not the screen saver is animating
 isFullScreen = false, //whether or not the clock is in fullscreen

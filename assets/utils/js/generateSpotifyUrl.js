@@ -1,5 +1,5 @@
 const clientId = '{{ print (getenv "HUGO_SPOTIFY_CLIENT_ID") }}';
-const redirectURI = '{{ print (getenv "HUGO_SPOTIFY_REDIRECT_URI") }}';
+const redirectURI = '{{ site.BaseURL }}';
 const scopes = 'user-read-email,user-read-private,user-read-playback-state,user-modify-playback-state,user-read-currently-playing,user-library-modify,user-library-read,streaming';
 var spotifyURL;
 
