@@ -226,7 +226,7 @@ var spotify = {
     },
 
     logError: function(message, error, throwError = true) {
-        var err = error.responseJSON.error.message;
+        const err = error.responseJSON.error.message;
         console.error(`${message} ${(err) ? err : null}`);
         if (throwError) this.throwGenericError();
     },
