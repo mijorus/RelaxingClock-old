@@ -17,7 +17,7 @@ if (localStorage.userHasLogged === 'true' && compatibility.login) {
         player = new Spotify.Player({
             name: 'Relaxing Clocks',
             getOAuthToken: function (callback) {
-                if (localStorage.code) {
+                if (localStorage.code !== undefined) {
                     //We request a token for the first time
                     spotify.requestToken();
                 }

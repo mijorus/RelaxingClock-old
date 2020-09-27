@@ -226,7 +226,8 @@ var spotify = {
     },
 
     logError: function(message, error, throwError = true) {
-        console.error(message + ' ' + error.responseJSON.error.message);
+        var err = error.responseJSON.error.message;
+        console.error(`${message} ${(err) ? err : null}`);
         if (throwError) this.throwGenericError();
     },
 
@@ -256,6 +257,6 @@ function saveLoginResponse(response) {
     sessionStorage.setItem('accessToken', response.access_token);
     localStorage.setItem('refreshToken', response.refresh_token);
 
-   const loginCompleted = new Event('loginCompleted');
-   document.dispatchEvent(loginCompleted);
+    const loginCompleted = new Event('loginCompleted');
+    document.dispatchEvent(loginCompleted);
 }
