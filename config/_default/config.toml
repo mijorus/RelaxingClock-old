@@ -2,4 +2,7 @@ title = "Relaxing Clock"
 languageCode = "en-us"
 
 [params]
-  author = "mijorus"
+  author    = "mijorus"
+  github    = "https://github.com/mijorus/RelaxingClock"
+  instagram = "https://www.instagram.com/relaxingclock/"
+  spotify   = "https://open.spotify.com/playlist/4ZTZhFPPyRzpfHZsWEXAW9?si=kvCqe0nMSdGbSmOB5ccQWA"
