@@ -1,0 +1,17 @@
+{{ $normalize := resources.Get "vendors/normalize/normalize.css" }}
+{{ $linearincons := resources.Get "vendors/linearicons/icon-font.min.css" }}
+{{ $loadersCSS := resources.Get "vendors/loaders/loaders.min.css" }}
+
+{{ $vendorsCSS := slice $normalize $linearincons $loadersCSS | resources.Concat "css/vendors.css" | fingerprint | minify}}
+<link rel="stylesheet" type="text/css" href="{{ $vendorsCSS.RelPermalink }}">
+
+{{ $style := resources.Get "scss/index.scss" | resources.ExecuteAsTemplate "css/style.tmp.css" .}}
+{{ if site.IsServer }}
+{{ $scssOptions := (dict "targetPath" "css/style.css" "outputStyle" "expanded" "enableSourceMap" true) }}
+{{ $cssBundle := $style | toCSS $scssOptions | fingerprint }}
+<link rel="stylesheet" href="{{ $cssBundle.RelPermalink }}">
+{{ else }}
+{{ $scssOptions := (dict "targetPath" "css/style.css" "outputStyle" "compressed" "enableSourceMap" false) }}
+{{ $cssBundle := $style | toCSS $scssOptions | fingerprint | minify}}
+<link rel="stylesheet" href="{{ $cssBundle.RelPermalink }}">
+{{ end }}
