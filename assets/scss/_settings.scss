@@ -70,7 +70,7 @@
             justify-items: center;
             justify-content: space-between;
             position: relative;
-            padding: 1.9vh;
+            padding: $dd-padding;
             margin-top: 3vh;
             border-radius: 1.8vh;
             background-color: $color-bg-settings;
@@ -153,6 +153,24 @@
                 @include md-screen {
                     font-size: 1.5vw;
                 }
+            }
+        }
+
+        div p {
+            display: flex;
+            flex-flow: row;
+            font-size: $settings-font-size - 0.45;
+            padding: $dd-padding;
+            margin-left: $dd-margin-left;
+            color: $color-white-ss;
+
+            i {
+                padding-right: 0.5vw;
+            }
+
+            @include phones {
+            font-size: $settings-font-size-phone - 3px;
+                margin-left: 0;
             }
         }
     
