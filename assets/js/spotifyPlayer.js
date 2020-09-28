@@ -39,7 +39,6 @@ if (localStorage.userHasLogged === 'true' && compatibility.login) {
 }
 
 function initSpotifyPlayer() {
-    if (logged === true) {
         var currentTrack = {};
 
         const trackName = $('#track-name'),
@@ -207,7 +206,6 @@ function initSpotifyPlayer() {
             });
 
         }, { passive: false });
-    }
 }
 // *** END OF Spotify Player *** //
 

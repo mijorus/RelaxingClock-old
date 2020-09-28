@@ -19,12 +19,11 @@
 
 {{ $assets := slice $compatibilityDetector $init $utils $fullScreenUtils $generateSpotifyUrl $screenSaver $getSettings $internationalClock $spotifyRequests $clockStyles $clocks $alarm $playerUtils $clockListeners $spotifyPlayer $spotifyAuth $settingsPage}}
 
-<!-- This is the concat of every custom js file -->
+<!-- This is the concatenation of every custom js file -->
 {{ $assetsConcat := $assets | resources.Concat "js/assets.js"}}
 
 {{ if site.IsServer }}
-{{ $jsBundleOpt := dict "targetPath" "js/assets.js" "minify" false }}
-{{ $assetsBundle := $assetsConcat | js.Build $jsBundleOpt | fingerprint}}
+{{ $assetsBundle := $assetsConcat | fingerprint}}
 <script src="{{ $assetsBundle.RelPermalink }}" crossorigin="anonymous"></script>
 {{ else }}
 {{ $jsBundleOpt := dict "targetPath" "js/assets.js" "minify" true }}
