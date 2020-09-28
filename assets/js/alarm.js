@@ -232,7 +232,7 @@ var alarm = {
                     lang: 'EN',
                     body: 'The alarm is ringing',
                     requireInteraction: true,
-                    icon: `${redirectURI}/static/img/clock.png`
+                    icon: `${redirectURI}/img/clock.png`
 
                 });
                 $(document).on('visibilitychange',() => visibilityCheck());
