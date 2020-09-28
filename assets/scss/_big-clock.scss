@@ -382,11 +382,13 @@
     &.sun:before {
         content: "\e904";
         color: #fc0;
+        text-shadow: 0px 0px 25px #ffd52e;
     }
 
     &.moon:before {
         content: "\e903";
         color: #95f;
+        text-shadow: 0px 0px 25px #a972fa;
     }
 }
 
