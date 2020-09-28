@@ -91,10 +91,10 @@ function initSpotifyPlayer() {
                 currentTrackId = currentTrack.id;
                 scrollText.stop($(trackName), $(artistName));
 
-                const spWidth = $(spotifyPlaceholder).width()
+                const spWidth = $(spotifyPlaceholder).width();
 
                 $(trackName).text(currentTrack.name);
-                var titleSize = $(trackName).get(0).scrollWidth
+                var titleSize = $(trackName).get(0).scrollWidth;
                 if (titleSize - 5 > spWidth) {
                     scrollText.play($(trackName).get(0), titleSize, spWidth, 2000);
                 }
@@ -113,7 +113,7 @@ function initSpotifyPlayer() {
                 });
                 var artistNameSize = $(artistName).get(0).scrollWidth;
                 if (artistNameSize - 5 > spWidth) {
-                    scrollText.play($(artistName).get(0), titleSize, spWidth, 4000);
+                    scrollText.play($(artistName).get(0), artistNameSize, spWidth, 4000);
                 }
                 setTimeout(spotify.isLiked(currentTrackId, false), 250);
             }

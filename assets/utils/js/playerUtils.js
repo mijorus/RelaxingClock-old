@@ -13,38 +13,38 @@ function updateStatusText (message) {
     $(spotifyStatusText).text(message);
 }
 
-var songTl = anime.timeline ({
-    easing: cbDefault,
-    autoplay: false,
-    loop: 3
-});
+var songTl;
 
-const scrollDuration = 10000;
 var scrollText = {
+
+    scrollDuration: 15000,
+
     scroll: function(target, scrollWidth, vpWidth, delay) {
         songTl.add({
             targets: target,
             delay: delay,
             translateX: - scrollWidth,
-            duration: scrollDuration,
+            duration: this.scrollDuration,
             complete: function() {
                 target.style.translateX = 0;
             }
-        })
+        }, '+=50')
         .add({
             targets: target,
             translateX: [vpWidth + 10, 0],
-            duration: scrollDuration
-        })
+            duration: this.scrollDuration
+        });
     },
 
     play: function(target, scrollWidth, vpWidth, delay) {
+        if (!songTl) songTl = anime.timeline({easing: cbDefault, autoplay: false, loop: 3});
         this.scroll(target, scrollWidth, vpWidth, delay);
         songTl.restart();
     },
 
     stop: function(...targets) {
-        songTl.pause();
+        if (songTl) songTl.pause();
+        songTl = undefined;
         for (el of targets) {
             $(el).css('transform', 'translateX(0px)');
         }
