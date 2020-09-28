@@ -66,6 +66,10 @@
     align-items: center;
 }
 
+.flex-col {
+    flex-flow: column;
+}
+
 .blur {
     filter: blur(10px);
 }
