@@ -34,7 +34,7 @@ var spotify = {
                 refresh_token: localStorage.refreshToken
             },
             success: function (response) {
-                console.log(`Token refreshed`);
+                console.warn(`Token refreshed`);
 
                 localStorage.removeItem('code');
                 saveLoginResponse(response);
