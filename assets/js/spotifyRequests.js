@@ -42,7 +42,18 @@ var spotify = {
             },
 
             error: function (error) {
-                spotify.logError("Can't refresh token from Spotify", error);
+                console.log(error);
+                switch (error.status) {
+                    case 400:
+                        spotify.throwTokenError();
+                    break;
+                
+                    default:
+                        spotify.throwGenericError();
+                        spotify.logError("Can't refresh token from Spotify", error);
+                    break;
+                }
+
             }
         });
     },
@@ -93,14 +104,14 @@ var spotify = {
                     $(spotifyPlaceholder).html('Music will<br>start soon...');
                     setTimeout(function() {
                         if (paused) {
-                            handleLoader($('#spotify-loader'), false, null);
+                            spotify.removeLoader();
                             $(playbackIcon).removeClass('hide');
                             spotify.play(deviceID, randomSong);
                         }
                     }, wait);
                 } else if (localStorage.autoplay === 'false') {
+                    spotify.removeLoader(); 
                     $(spotifyPlaceholder).html('Ready to<br>play!');
-                    handleLoader($('#spotify-loader'), false, null);
                     $(playbackIcon).removeClass('hide');
                 }
                 
@@ -227,14 +238,32 @@ var spotify = {
         });
     },
 
+    throwTokenError: function () {
+        this.removeLoader();
+        updateStatusText(`Sorry, but you need to login again`);
+        $(spotifyPlaceholder).html(
+            `Please <button id="toker-err-msg" class="transp-btn">login</button> again`
+        );
+        $('#toker-err-msg').on('click', async function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            logout(false);
+            url = await generateUrl();
+            window.location.replace(url);
+        });
+    },
+
+    //Logs an error to the console
     logError: function(message, error, throwError = true) {
         const err = error.responseJSON.error.message;
-        console.error(`${message} ${(err) ? err : null}`);
+        console.error(`${message} ${(err) ? err : ''}`);
         if (throwError) this.throwGenericError();
     },
 
     throwGenericError: function() {
         player.pause();
+        this.removeLoader();
         $('#spotify-track-info').hide();
         $(spotifyPlaceholder).css('opacity', 1);
         $(spotifyPlaceholder).html(
@@ -243,9 +272,14 @@ var spotify = {
     },
 
     throwPremiumError: function (username) {
+        this.removeLoader();
         localStorage.setItem('premium', 'false');
         updateStatusText(`Sorry ${username}, but you need a premium account`);
         $(spotifyPlaceholder).text(`Sorry, you must be a premium user :(`);
+    },
+
+    removeLoader: function() {
+        handleLoader($('#spotify-loader'), false, null);
     }
 }
 

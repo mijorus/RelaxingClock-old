@@ -6,7 +6,7 @@ if (compatibility.login) {
     if (localStorage.userHasLogged === 'false') {
         if (params.state === undefined) {
             //The user has never logged before to the app
-            generateUrl();
+            putURL();
             $(spotifyPlaceholder).html('Login with <br> Spotify');
             updateStatusText('Login with Spotify to listen some relaxing beats');
         } else if (params.state && params.error === undefined) {
@@ -50,14 +50,14 @@ function getUrlVars() {
     return vars;
 }
 
-function logout() {
+function logout(redirect = true) {
     localStorage.userHasLogged = 'false';
     if (sessionStorage.accessToken) sessionStorage.removeItem('accessToken');
     if (sessionStorage.expires_at) sessionStorage.removeItem('expires_at');
     if (localStorage.refreshToken) localStorage.removeItem('refreshToken');
     localStorage.removeItem('verifier');
     localStorage.removeItem('state');
-    window.location.replace(redirectURI);
+    if (redirect) window.location.replace(redirectURI);
 }
 
 function throwUncompatibilityErr() {
@@ -71,4 +71,9 @@ function throwUncompatibilityErr() {
         updateStatusText(`Your browser doesn't seem to be compatible :(`)
         console.error('Unsupported device: Base64 encoding is not supported!');
     }
+}
+
+async function putURL() {
+    url = await generateUrl();
+    $('#spotify-link').attr('href', url);
 }

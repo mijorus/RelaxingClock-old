@@ -19,7 +19,8 @@ async function generateUrl() {
   spotifyURL += '&code_challenge=' + encodeURIComponent(challenge);
   spotifyURL += '&state=' + encodeURIComponent(state);
   spotifyURL += '&scope=' + encodeURIComponent(scopes);
-  $('#spotify-link').attr('href', spotifyURL);
+
+  return spotifyURL
 }
 
 function generateRandomString() {
