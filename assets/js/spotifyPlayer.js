@@ -29,6 +29,7 @@ if (localStorage.userHasLogged === 'true' && compatibility.login) {
 
                 $(document).on('loginCompleted', function () {
                     console.info(`Login Completed!`);
+                    $(document).off('loginCompleted');
                     callback(sessionStorage.accessToken);
                 });
             }
