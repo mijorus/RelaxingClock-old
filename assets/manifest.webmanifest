@@ -14,5 +14,5 @@
         "sizes": "512x512"
       }
     ],
-    "start_url": "https://vigorous-murdock-a45fe2.netlify.app/"
+    "start_url": "{{ site.BaseURL }}"
   }
