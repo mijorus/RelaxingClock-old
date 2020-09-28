@@ -21,7 +21,9 @@ var alarm = {
         if (enabled) {
             if (perm === 'granted') {
                 this.notificationStatus = true;
+                console.log(`Alarm notifications enabled`);
             } else if (perm !== 'denied' || perm === "default") {
+                console.warn(`Alarm notifications: missing permission!`);
                 Notification.requestPermission()
                 .then(function (result) {
                     if (result === 'granted') {
@@ -31,6 +33,7 @@ var alarm = {
             }
         } else {
             this.notificationStatus = false;
+            console.log(`Alarm notifications disbled`);
         }
     },
 
@@ -89,38 +92,40 @@ var alarm = {
     set: function (when) {
         console.log(`Alarm set at ${when.format('HH:mm')}`);
         
-        alarm.enabled = true;
-        $('#set-alarm-btn').addClass('btn-dismiss');
-        if (compatibility.notification && (Notification.permission !== 'denied')) {
-            $('#alarm-notif-box').removeClass('unavailable');
+        if (moment().isBefore(when)) {
+            alarm.enabled = true;
+            localStorage.setItem('alarmTime', alarmTime.unix());
+            $('#set-alarm-btn').addClass('btn-dismiss');
+            if (compatibility.notification && (Notification.permission !== 'denied')) {
+                $('#alarm-notif-box').removeClass('unavailable');
+            }
+
+
+            anime({
+                targets: $(alarm.alarmLable).get(0),
+                direction: 'alternate', duration: 650, loop: 1, easing: cbDefault, opacity: [1, 0],
+                loopComplete: () => {
+                    $(alarm.alarmLable).text(`Rings ${this.timeToAlarm().toLowerCase()}`);
+                }
+            });
+
+            this.at = setInterval(function () {
+                if (moment().isSameOrAfter(when)) {
+                    console.log('RING! RING! RING!');
+
+                    alarm.ring(true);
+                    alarm.enabled = false;
+                    clearInterval(alarm.at);
+                }
+
+                const left = alarm.timeToAlarm().toLowerCase();
+                if (alarm.alarmLable.text() !== `Rings ${left}` && alarm.enabled) {
+                    $(alarm.alarmLable).text(`Rings ${left}`)
+                }
+
+            }, 1000);
         }
-            
 
-        anime({
-            targets: $(alarm.alarmLable).get(0),
-            direction: 'alternate', duration: 650, loop: 1, easing: cbDefault, opacity: [1, 0],
-            loopComplete: () => {
-                $(alarm.alarmLable).text(`Rings ${this.timeToAlarm().toLowerCase()}`);
-            }
-        });
-
-        this.at = setInterval(function () {
-            if (moment().isSameOrAfter(when)) {
-                console.log('RING! RING! RING!');
-
-                alarm.ring(true);
-                alarm.enabled = false;
-                clearInterval(alarm.at);
-            }
-
-            const left = alarm.timeToAlarm().toLowerCase();
-            if (alarm.alarmLable.text() !== `Rings ${left}` && alarm.enabled) {               
-                $(alarm.alarmLable).text(`Rings ${left}`)
-            }
-
-        }, 1000);
-
-       
         this.closePage();
     },
 
@@ -150,16 +155,9 @@ var alarm = {
         this.set(alarmTime.add(10, 'm'));
     },
 
-    ring: function (ringing = true) {
-        let bgone, bgtwo;
-
-        if (ringing) {
-            inSettings = true;
-            $(alarmSection).addClass('ring');
-            $('#big-container').addClass('blur');
-            $(alarmSection).removeClass('show');
-
-            if (player !== undefined) {
+    handleMusic: function(turnDown) {
+        if (player !== undefined) {
+            if (turnDown) {
                 this.oldPlaybackState.status = paused;
                 player.getVolume().then(volume => {
                     this.oldPlaybackState.volume = volume;
@@ -168,13 +166,34 @@ var alarm = {
                         if (newVolume <= volume) player.setVolume(newVolume);
                     }
                 });
-            
+
 
                 if (!this.oldPlaybackState.status) {
                     const newVolume = 0.2;
                     if (newVolume <= this.oldPlaybackState.volume) player.setVolume(newVolume);
                 }
+            } else {
+                if (!this.playbackState) {
+                    player.setVolume(this.oldPlaybackState.volume);
+                    player.resume();
+                }
             }
+        }
+    },
+
+    ring: function (ringing = true) {
+        let bgone, bgtwo;
+
+        const tl = { duration: 350, easing: 'linear', autoplay: false, loop: false };
+        ringTl = anime.timeline(tl);
+
+        if (ringing) {
+            inSettings = true;
+            $(alarmSection).addClass('ring');
+            $('#big-container').addClass('blur');
+            $(alarmSection).removeClass('show');
+            this.handleMusic(true);
+
             document.querySelector('#alarm-sound').play();
 
             anime({
@@ -184,61 +203,50 @@ var alarm = {
                 opacity: [0, 1],
             });
 
-            bgone = randomColor({ luminosity: 'light', format: 'rgba', alpha: 0.9 });
-            bgtwo = randomColor({ luminosity: 'light', format: 'rgba', alpha: 0.9 });
-        } else {
-            document.querySelector('#alarm-sound').pause();
-            if (player !== undefined) {
-                if (!this.playbackState) {
-                    player.setVolume(this.oldPlaybackState.volume);
-                    player.resume();
-                }
-            }
-        }
-
-        const tl = { duration: 350, easing: 'linear', autoplay: false, loop: false };
-
-        ringTl = anime.timeline(tl);
-        const ringTll = anime.timeline(tl);
-
-        ringTl.add({
-            update: function (percent) {
-                $(alarmSection).get(0).style.background = `radial-gradient(circle, ${bgone} ${(percent.progress) / 2}%, ${bgtwo} ${(percent.progress) * 2}%)`
-            },
-            complete: function () {
-                ringTll.restart()
-            }
-        }, 0)
-
-        ringTll.add({
-            update: function (percent) {
-                $(alarmSection).get(0).style.background = `radial-gradient(circle, ${bgtwo}  ${(percent.progress)}%, ${bgone} ${(percent.progress) * 2}%)`
-            },
-            complete: function () {
-                setTimeout(function () {
-                    if (ringing) ringTl.restart();
-                }, 250)
-            }
-        }, 0);
-
-        visibilityCheck()
-        function visibilityCheck() {
-            if (document.visibilityState === 'visible') {
-                $(document).off('visibilitychange');
-                (ringing) ? ringTl.restart() : ringTl.pause();
-            } else {
+            if (document.visibilityState !== 'visible' && alarm.notificationStatus) {
                 const alarmFormat = (clockFormat === '24h') ? alarmTime.format('HH:mm') : alarmTime.format('hh:mm');
                 const alarmNotif = new Notification(`IT'S ${alarmFormat} WAKE UP!!!`, {
                     lang: 'EN',
                     body: 'The alarm is ringing',
                     requireInteraction: true,
                     icon: `${redirectURI}/img/clock.png`
-
                 });
-                $(document).on('visibilitychange',() => visibilityCheck());
             }
+
+            bgone = randomColor({ luminosity: 'light', format: 'rgba', alpha: 0.9 });
+            bgtwo = randomColor({ luminosity: 'light', format: 'rgba', alpha: 0.9 });
+
+            const ringTll = anime.timeline(tl);
+
+            ringTl.add({
+                update: function (percent) {
+                    $(alarmSection).get(0).style.background = `radial-gradient(circle, ${bgone} ${(percent.progress) / 2}%, ${bgtwo} ${(percent.progress) * 2}%)`
+                },
+                complete: function () {
+                    ringTll.restart()
+                }
+            }, 0)
+
+            ringTll.add({
+                update: function (percent) {
+                    $(alarmSection).get(0).style.background = `radial-gradient(circle, ${bgtwo}  ${(percent.progress)}%, ${bgone} ${(percent.progress) * 2}%)`
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        if (ringing) ringTl.restart();
+                    }, 250)
+                }
+            }, 0);
+
+            ringTl.restart();
+        } else {
+            ringTl.pause();
+            $(document).off('visibilitychange');
+            document.querySelector('#alarm-sound').pause();
+            this.handleMusic(false);
         }
 
+        localStorage.removeItem('alarmTime');
         $(this.alarmSet).on('click', (event) => { event.stopPropagation(); this.snooze() });
         $(this.alarmDismiss).on('click', (event) => { event.stopPropagation(); this.dismiss() });
     },
@@ -338,5 +346,16 @@ function checkSubt(time) {
         if (moment().add(1, 'h').isSameOrBefore(alarmTime)) {
             alarmTime.subtract(1, 'h');
         }
+    }
+}
+
+if (localStorage.getItem('alarmTime') !== null) {
+    console.log('Restored old alarm');
+    
+    const savedAlarm = parseInt(localStorage.alarmTime);
+    if (savedAlarm + 900 > moment().unix() && moment().unix() < savedAlarm) {
+        alarm.init();
+        alarmTime = moment.unix(savedAlarm);
+        alarm.set(alarmTime);    
     }
 }
