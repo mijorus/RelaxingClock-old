@@ -240,6 +240,8 @@ var spotify = {
 
     throwTokenError: function () {
         this.removeLoader();
+        $('#spotify-track-info').hide();
+        $(spotifyPlaceholder).css('opacity', 1);
         updateStatusText(`Sorry, but you need to login again`);
         $(spotifyPlaceholder).html(
             `Please <button id="toker-err-msg" class="transp-btn">login</button> again`
