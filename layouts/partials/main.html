@@ -54,26 +54,5 @@
             <span id="open-settings-arrow" class="lnr lnr-arrow-down toscreensave"></span>
         </bottom>
     </div>
-    <div id="music-box" class="unlogged toscreensave">
-        <a id="spotify-link">
-            <i id="spotify-icon" class="fab fa-spotify spotify-icon toscreensave"></i>
-        </a>
-        <div id="spotify-text">
-            <p id="spotify-placeholder" class="spotify-inner-text">Loading...<br></p>
-            <div id="spotify-track-info" class="hide">
-                <p id="track-name" class="spotify-inner-text"></p>
-                <p id="artist-name" class="spotify-inner-text"></p>
-            </div>
-        </div>
-        <button class="like-btn transp-btn">
-            <i id="like-icon" class="far fa-heart toscreensave"></i>
-        </button>
-        <button class="play-btn transp-btn">
-            <div id="spotify-loader" class="loader-container">
-                <div class="loader line-scale"></div>
-            </div>
-            <i id="playback-icon" class="fas fa-play hide"></i>
-        </button>
-        <span id="mute-warning" class="sp-btn hide"></span>
-    </div>
+    {{ partial "music-box.html" }}
 </main>

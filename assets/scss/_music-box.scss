@@ -55,10 +55,65 @@
     &.logged {
         border: 2px solid;
         border-color: transparent;
-        transition: border-color 1s $cb-default, opacity 1s $cb-default;
+        transition: border-color 1s $cb-default, opacity 1s $cb-default, color 1s $cb-default;
         
         &.loaded {
             border-color: $color-white;
+
+            #song-info{
+                display: block;
+                position: absolute;
+                background-color: $color-white;
+                bottom: 120%;
+                left: 0;
+                width: 25vw;
+                height: 10vw;
+                background-color: $color-bg;
+                font-size: $sp-art-fs;
+
+                @include md-screen {
+                    width: 35vw;
+                    height: 15vw;
+                    font-size: $sp-art-fs * 1.5;
+                }
+
+                @include phones {
+                    display: none;
+                }
+
+                @include xs-phone {
+                    display: none;
+                }
+
+                #song-info-thumb {
+                    height: 100%;
+                    width: 50%;
+                    border-radius: 0.7vw;
+                    background-color: transparent;
+                    position: absolute;
+                    background-size: cover !important;
+
+                    #song-info-thumb-placeholder {
+                        height: 100%;
+                        width: 100%;
+                        font-size: 5vw;
+                        color: inherit;
+                    }
+                }
+
+                #song-details {
+                    width: 48%;
+                    display: flex;
+                    position: absolute;
+                    right: 0;
+                    flex-flow: column;
+                }
+            }
+
+            &.screen-saving {
+                color: inherit !important;
+                border-color: inherit !important;
+            }
         }
 
         .sp-btn {
@@ -143,8 +198,11 @@
 
         &.screen-saving {
             color: inherit !important;
-            border-color: inherit !important;
         }
+    }
+
+    #song-info {
+        display: none;
     }
 
     #spotify-link {

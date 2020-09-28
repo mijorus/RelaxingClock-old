@@ -66,6 +66,7 @@ function initSpotifyPlayer() {
         // Playback status updates
         player.addListener('player_state_changed', function (state) {
             currentTrack = state.track_window.current_track;
+            console.log(state);
 
             if (state.paused) {
                 paused = true;
@@ -99,22 +100,29 @@ function initSpotifyPlayer() {
                     scrollText.play($(trackName).get(0), titleSize, spWidth, 2000);
                 }
 
-                $(artistName).text(function () {
-                    var text = '';
-                    const artists = currentTrack.artists;
-                    for (var i = 0; i < artists.length; i++) {
-                        if (i == (artists.length - 1)) {
-                            text += `${artists[i].name}`
-                        } else {
-                            text += `${artists[i].name}, `
-                        }
+                var artistsText = '';
+                const artists = currentTrack.artists;
+                for (var i = 0; i < artists.length; i++) {
+                    if (i == (artists.length - 1)) {
+                        artistsText += `${artists[i].name}`
+                    } else {
+                        artistsText += `${artists[i].name}, `
                     }
-                    return text
-                });
+                }
+
+                $(artistName).text(artistsText);
+
                 var artistNameSize = $(artistName).get(0).scrollWidth;
                 if (artistNameSize - 5 > spWidth) {
                     scrollText.play($(artistName).get(0), artistNameSize, spWidth, 4000);
                 }
+
+                $('#song-det-title').text(currentTrack.name);
+                $('#song-det-artist').text(artistsText);
+                $('#song-det-album').text(currentTrack.album.name);
+                $('#song-info-thumb').css({
+                    'background-image': `url(${currentTrack.album.images[2].url})`
+                });
                 setTimeout(spotify.isLiked(currentTrackId, false), 250);
             }
         });
