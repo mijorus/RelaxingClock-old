@@ -180,29 +180,37 @@ function initSpotifyPlayer() {
             }
         });
 
+        let volTimeout;
         $(musicBox).get(0).addEventListener('wheel', (event) => {
             event.preventDefault();
             event.stopPropagation();
 
-            const volumeStep = 0.1;
-
             player.getVolume().then(volume => {
+                const volumeStep = 0.1;
+                let newVolume;
+
                 if (event.deltaY > 0) {
-                    const newVolume = volume - volumeStep;
-                    if (newVolume > 0) {
-                        console.log(`Volume down, set to ${Math.round(newVolume * 100)}%`);
-                        player.setVolume(newVolume);
-                    } else {
-                        $('#mute-warning').removeClass('hide');
-                    }
+                    //Volume DOWN
+                    newVolume = volume - volumeStep;
+                    if (newVolume > 0) player.setVolume(newVolume);
                 } else {
-                    const newVolume = volume + volumeStep;
-                    if (newVolume <= 1) {
-                        console.log(`Volume up, set to ${Math.round(newVolume * 100)}%`);
-                        $('#mute-warning').addClass('hide');
-                        player.setVolume(newVolume);
-                    }
+                    //Volume UP
+                    newVolume = volume + volumeStep;
+                    if (newVolume <= 1) player.setVolume(newVolume);
                 }
+
+                let roundVolume = Math.round(newVolume * 100);
+                if (roundVolume > 0) {
+                    clearTimeout(volTimeout);
+                    if (roundVolume > 100) roundVolume = 100;
+                    $('#mute-warning').removeClass('hide').html(`${roundVolume}%`);
+                    volTimeout = setTimeout(() => $('#mute-warning').addClass('hide'), 750);
+                } else if (roundVolume <= 0){
+                    clearTimeout(volTimeout);
+                    $('#mute-warning').removeClass('hide').html(`<i id="volume-mute" class="fas fa-volume-mute"></i>`);
+                }
+
+                console.log(`Volume set to ${roundVolume}%`);
             });
 
         }, { passive: false });
