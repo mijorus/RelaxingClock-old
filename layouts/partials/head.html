@@ -1,5 +1,6 @@
 <head>
     <meta charset="UTF-8">
+    {{ hugo.Generator }}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{ $manifest := resources.Get "manifest.webmanifest" | resources.ExecuteAsTemplate "manifest.webmanifest" . }}
     <link rel="manifest" href="{{ $manifest.RelPermalink }}">
