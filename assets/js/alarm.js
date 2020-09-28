@@ -173,7 +173,7 @@ var alarm = {
                     if (newVolume <= this.oldPlaybackState.volume) player.setVolume(newVolume);
                 }
             } else {
-                if (!this.oldPlaybackState.status) {
+                if (this.oldPlaybackState.volume !== undefined) {
                     player.setVolume(this.oldPlaybackState.volume);
                     player.resume();
                 }
