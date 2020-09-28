@@ -68,11 +68,14 @@
                 left: 0;
                 width: 25vw;
                 height: 10vw;
+                //opacity: 0;
+                transition: opacity .2s $cb-default;
+                border-radius: 0.7vw;
                 background-color: $color-bg;
                 font-size: $sp-art-fs;
 
                 @include md-screen {
-                    width: 35vw;
+                    width: 32vw;
                     height: 15vw;
                     font-size: $sp-art-fs * 1.5;
                 }

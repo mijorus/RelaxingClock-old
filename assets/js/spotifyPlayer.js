@@ -117,9 +117,11 @@ function initSpotifyPlayer() {
                     scrollText.play($(artistName).get(0), artistNameSize, spWidth, 4000);
                 }
 
+                $('#song-info-thumb-placeholder').addClass('hide');
                 $('#song-det-title').text(currentTrack.name);
                 $('#song-det-artist').text(artistsText);
                 $('#song-det-album').text(currentTrack.album.name);
+                $('#song-det-durat').text(moment.duration(currentTrack.duration_ms, 'milliseconds').format('mm:ss'));
                 $('#song-info-thumb').css({
                     'background-image': `url(${currentTrack.album.images[2].url})`
                 });
@@ -223,6 +225,13 @@ function initSpotifyPlayer() {
             });
 
         }, { passive: false });
+
+    const songInfo = $('#song-info');
+        $(spotifyIcon).hover(function() {
+            $(songInfo).removeClass('hide');
+        }, function() {
+            $(songInfo).addClass('hide');
+        });
 }
 // *** END OF Spotify Player *** //
 
