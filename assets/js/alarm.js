@@ -9,7 +9,7 @@ var alarm = {
     enabled: false,
 
     oldPlaybackState: {
-        status: false,
+        status: false, //if the playback was paused or not (true if it was, false if it was playing)
         volume: undefined,
     },
 
@@ -173,7 +173,7 @@ var alarm = {
                     if (newVolume <= this.oldPlaybackState.volume) player.setVolume(newVolume);
                 }
             } else {
-                if (!this.playbackState) {
+                if (!this.oldPlaybackState.status) {
                     player.setVolume(this.oldPlaybackState.volume);
                     player.resume();
                 }
