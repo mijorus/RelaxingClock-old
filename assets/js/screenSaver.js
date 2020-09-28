@@ -91,7 +91,7 @@ function handleMouseCursor(setState) {
             break;
 
         case 'hide':
-            if (!inSettings) $(body).css('cursor', 'none');
+            if (!inSettings) $('main').css('cursor', 'none');
             $(expandIcon).addClass('hide');
             $(window).on('mousemove', function() {
                 $(window).off('mousemove');
@@ -101,7 +101,7 @@ function handleMouseCursor(setState) {
         
         case 'leave':
             clearTimeout(cursorTimeout);
-            $(body).css('cursor', 'auto');
+            $('main').css('cursor', 'auto');
             $(expandIcon).removeClass('hide');
             $(window).off('mousemove');
             break;
@@ -109,7 +109,7 @@ function handleMouseCursor(setState) {
 }
 
 function showMouseCursor() {
-    $(body).css('cursor', 'auto');
+    $('main').css('cursor', 'auto');
     $(expandIcon).removeClass('hide');
     $(window).on('mousemove', function() {
         clearTimeout(cursorTimeout);
