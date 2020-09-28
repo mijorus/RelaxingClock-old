@@ -53,7 +53,7 @@
     }
 
     &.logged {
-        border: 2px solid;
+        border: $sp-border-box solid;
         border-color: transparent;
         transition: border-color 1s $cb-default, opacity 1s $cb-default, color 1s $cb-default;
         
@@ -63,15 +63,14 @@
             #song-info{
                 display: block;
                 position: absolute;
-                background-color: $color-white;
+                background-color: lighten($color-bg, $amount: 3%);
                 bottom: 120%;
-                left: 0;
+                left: - $sp-border-box;
                 width: 25vw;
                 height: 10vw;
                 //opacity: 0;
                 transition: opacity .2s $cb-default;
                 border-radius: 0.7vw;
-                background-color: $color-bg;
                 font-size: $sp-art-fs;
 
                 @include md-screen {

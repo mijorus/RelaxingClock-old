@@ -32,6 +32,7 @@ $sp-btn-fs: 1.1vw;
 $sp-plh-fs: 1vw;
 $sp-art-fs: .7vw;
 $sp-icon-fs: 2.2vw;
+$sp-border-box: 2px;
 
 @mixin phones {
     @media all and (max-width: $phone) {
