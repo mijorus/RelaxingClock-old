@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    {{partial "head/head.html"}}
+    {{partial "head/vendor-css.html"}}
+    {{partial "pages/pages-css.html"}}
+    <title>{{ site.Title }} - FAQ</title>
+    <body class="full-viewport">
+        <header>
+            <a id="go-back-arrow" href="{{ site.BaseURL }}"><i class="fas fa-arrow-left"></i></a>
+            <h1 class="font-semibold">{{ .Title }}</h1>  
+        </header>
+        <main>
+            {{ .Content }}
+        </main>
+        <section id="branding">
+            <div>Relaxing</div>
+            <div>Clock</div>
+        </section>
+    </body>
+</html>

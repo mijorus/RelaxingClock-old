@@ -1,3 +1,7 @@
+//FONTAWESOME
+@import '../vendors/fontawesome/index.scss';
+
+//VARIABLES
 @import 'variables.scss';
 
 //ASSETS
@@ -13,10 +17,3 @@
 
 //UTILS
 @import '../utils/scss/utils'; 
-
-//FONTAWESOME
-$fa-font-path: "/font/fa-webfonts";
-@import "../vendors/fontawesome/scss/fontawesome.scss";
-@import "../vendors/fontawesome/scss/brands.scss";
-@import "../vendors/fontawesome/scss/solid.scss";
-@import "../vendors/fontawesome/scss/regular.scss";

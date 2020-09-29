@@ -1,0 +1,10 @@
+{{ $style := resources.Get "scss/index.scss" | resources.ExecuteAsTemplate "css/style.tmp.css" .}}
+{{ if site.IsServer }}
+{{ $scssOptions := (dict "targetPath" "css/style.css" "outputStyle" "expanded" "enableSourceMap" true) }}
+{{ $cssBundle := $style | toCSS $scssOptions | fingerprint }}
+<link rel="stylesheet" href="{{ $cssBundle.RelPermalink }} " integrity="{{ $cssBundle.Data.Integrity }}">
+{{ else }}
+{{ $scssOptions := (dict "targetPath" "css/style.css" "outputStyle" "compressed" "enableSourceMap" false) }}
+{{ $cssBundle := $style | toCSS $scssOptions | fingerprint | minify}}
+<link rel="stylesheet" href="{{ $cssBundle.RelPermalink }} " integrity="{{ $cssBundle.Data.Integrity }}">
+{{ end }}

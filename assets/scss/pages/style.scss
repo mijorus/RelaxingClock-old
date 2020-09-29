@@ -1,0 +1,69 @@
+//FONTAWESOME
+@import '../../vendors/fontawesome/index.scss';
+
+//VARIABLES
+@import '../variables';
+
+//STYLE
+@import '../../utils/scss/utils';
+@import '../main';
+
+body {
+    position: relative;
+    margin-top: 30px;
+}
+
+header {
+    width: 80%;
+    display: flex;
+    flex-flow: row;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+
+    #go-back-arrow {
+        display: inline-block;
+        font-size: 3vw;
+        cursor: pointer;
+        flex-grow: 1;
+    }
+
+    h1 {
+        display: inline-block;
+        font-family: 'Source Code Pro';
+        font-size: 5vw;
+        white-space: nowrap;
+        flex-grow: 2;
+    }
+}
+
+main {
+    width: 50%;
+    margin: auto;
+
+    h2 {
+        font-size: 2vw;
+    }
+}
+
+#branding {
+    opacity: 0.2;
+    right: 0;
+    bottom: 0;
+    transform: rotate(-45deg) translate(15%, 30%);;
+    font-family: 'Source Code Pro';
+    font-size: 15vw;
+    display: inline-block;
+    position: fixed;
+    font-weight: 900;
+
+    @include phones {
+        font-size: 30vw;
+        transform: rotate(-45deg) translate(20%, 50%);
+    }
+
+    div {
+        text-align: center;
+    }
+}

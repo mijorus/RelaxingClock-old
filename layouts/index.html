@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-    {{partial "head.html"}}
-    {{partial "css.html"}}
+    {{partial "head/head.html"}}
+    {{partial "head/vendor-css.html"}}
+    {{partial "head/css.html"}}
     <title>{{ site.Title }}</title>
     <body>
         {{partial "alarm-section.html"}}
@@ -23,6 +24,6 @@
         }
     </script>
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
-    {{ partial "vendor-scripts.html" }}
-    {{ partial "scripts.html" }}
+    {{ partial "scripts/vendor-scripts.html" }}
+    {{ partial "scripts/scripts.html" }}
 </html>

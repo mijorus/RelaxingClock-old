@@ -1,0 +1,6 @@
+{{ $normalize := resources.Get "vendors/normalize/normalize.css" }}
+{{ $linearincons := resources.Get "vendors/linearicons/icon-font.min.css" }}
+{{ $loadersCSS := resources.Get "vendors/loaders/loaders.min.css" }}
+
+{{ $vendorsCSS := slice $normalize $linearincons $loadersCSS | resources.Concat "css/vendors.css" | fingerprint | minify}}
+<link rel="stylesheet" type="text/css" href="{{ $vendorsCSS.RelPermalink }}">

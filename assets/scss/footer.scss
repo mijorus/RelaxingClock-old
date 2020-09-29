@@ -69,7 +69,7 @@ footer {
             }
 
             &.fa-instagram {
-                color: #ff3fa0;
+                color: #fc93c8;
             }
 
             &.fa-spotify {
@@ -111,6 +111,7 @@ footer {
                 border-bottom: 2px solid transparent;
                 transition: border-color .2s linear;
                 cursor: pointer;
+                text-decoration: none;
 
                 &.visited {
                     text-decoration: none;
