@@ -3,4 +3,8 @@
 {{ $scssOptions := (dict "targetPath" "css/pages/style.css" "outputStyle" "expanded" "enableSourceMap" true) }}
 {{ $cssBundle := $style | toCSS $scssOptions | fingerprint }}
 <link rel="stylesheet" href="{{ $cssBundle.RelPermalink }}">
+{{ else }}
+{{ $scssOptions := (dict "targetPath" "css/pages/style.css" "outputStyle" "comporessed" "enableSourceMap" false) }}
+{{ $cssBundle := $style | toCSS $scssOptions | fingerprint | minify }}
+<link rel="stylesheet" href="{{ $cssBundle.RelPermalink }}">
 {{ end }}
