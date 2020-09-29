@@ -82,3 +82,26 @@ main {
         text-align: center;
     }
 }
+
+.show-email {
+    display: flex;
+    flex-flow: row;
+    justify-content: right;
+    align-items: center;
+
+    :last-child {
+        margin: 0;
+    }
+
+    .show-email-btn {
+        margin-right: 30px;
+        height: 150%;
+        cursor: pointer;
+        font-size: $settings-icon-font-size;
+        transform: translateY(-10%);        
+
+        @include phones {
+            font-size: $fs-icon-phone + 10px;
+        }
+    }
+}

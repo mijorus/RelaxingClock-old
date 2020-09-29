@@ -25,4 +25,6 @@ But you can open an issue on Github! Also, if you are a bit geecky, the console 
 
 Alternatively, you can send me an email!  
 
-{{< show-email >}}
+{{< show-email >}}  
+
+I will try to repay ASAP
