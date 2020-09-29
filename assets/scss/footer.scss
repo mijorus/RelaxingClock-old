@@ -1,0 +1,103 @@
+footer {
+    color: $color-white;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    height: 50vh;
+    justify-content: space-around;
+
+    @include phones {
+        height: 30vh;
+    }
+
+    h1 {
+        font-size: $settings-title-font-size;
+        font-weight: 600;
+        text-align: center;
+        white-space: nowrap;
+        margin: 0;
+
+        @media (max-width: $phone) {
+            font-size: $settings-title-font-size-phone;
+        }
+    }
+
+    #made-with-love {
+        font-size: $settings-font-size - .1vw;
+
+            .fa-heart {
+                color: #ff0000;
+            }
+
+            @include md-screen {
+                    font-size: $settings-title-font-size-md;
+                }
+
+            @media (max-width: $phone) {
+                    font-size: $settings-font-size-phone;
+            }
+        }
+
+    #social-icons-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        width: 20%;
+        justify-content: space-around;
+
+        a {
+            color: $color-white;
+            
+            &:visited {
+                color: $color-white;
+            }
+        }
+
+        i {
+            font-size: $settings-icon-font-size;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: color .2s linear;
+
+            &.fa-github {
+                filter: invert(black);
+                
+            }
+
+            &.fa-instagram {
+                color: #ff3fa0;
+            }
+
+            &.fa-spotify {
+                color: $spotify-color !important;
+            }
+
+            @media (max-width: $phone) {
+                font-size: $fs-icon-phone;
+            }
+        }
+    }
+
+    #link-list {
+        margin: 0;
+        padding: 0;
+
+        li {
+            display: inline-block;
+        }
+    }
+
+    #follow-me-separator {
+        width: 100%;
+        color: $color-white;
+        text-align: center;
+
+        @include md-screen {
+            font-size: $settings-title-font-size-md;
+        }
+
+        @media (max-width: $phone) {
+            font-size: $settings-font-size-phone;
+        }
+    }
+}
