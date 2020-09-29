@@ -21,6 +21,9 @@ header {
     justify-content: center;
     align-items: center;
     position: sticky;
+    top: 0;
+    box-shadow: 0 20px 20px 5px $color-bg;
+    background-color: $color-bg;
 
     #go-back-arrow {
         display: inline-block;
@@ -41,14 +44,24 @@ header {
 main {
     width: 50%;
     margin: auto;
+    z-index: 3;
+
+    @include phones {
+        width: 80%;
+    }
 
     h2 {
         font-size: 2vw;
+        font-family: 'Source Code Pro';
+    }
+
+    :last-child {
+        margin-bottom: 5vh;
     }
 }
 
 #branding {
-    opacity: 0.2;
+    opacity: 0.1;
     right: 0;
     bottom: 0;
     transform: rotate(-45deg) translate(15%, 30%);;
@@ -57,9 +70,11 @@ main {
     display: inline-block;
     position: fixed;
     font-weight: 900;
+    z-index: 2;
 
     @include phones {
         font-size: 30vw;
+        opacity: 0.05;
         transform: rotate(-45deg) translate(20%, 50%);
     }
 
