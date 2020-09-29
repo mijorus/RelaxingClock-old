@@ -68,13 +68,13 @@
                 left: - $sp-border-box;
                 width: 25vw;
                 height: 10vw;
-                //opacity: 0;
+                overflow: hidden;
                 transition: opacity .2s $cb-default;
                 border-radius: 0.7vw;
                 font-size: $sp-art-fs;
 
                 @include md-screen {
-                    width: 32vw;
+                    width: 35vw;
                     height: 15vw;
                     font-size: $sp-art-fs * 1.5;
                 }
@@ -108,7 +108,9 @@
                     display: flex;
                     position: absolute;
                     right: 0;
+                    padding: .1vw;
                     flex-flow: column;
+                    justify-content: flex-start;
                 }
             }
 
