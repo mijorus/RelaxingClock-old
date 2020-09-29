@@ -7,7 +7,7 @@ footer {
     justify-content: space-around;
 
     @include phones {
-        height: 30vh;
+        height: 300px;
     }
 
     h1 {
@@ -45,6 +45,10 @@ footer {
         width: 20%;
         justify-content: space-around;
 
+        @include phones {
+            width: 60%;
+        }
+
         a {
             color: $color-white;
             
@@ -81,9 +85,55 @@ footer {
     #link-list {
         margin: 0;
         padding: 0;
+        display: flex;
+        flex-flow: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+
+        @include phones {
+            flex-flow: column;
+        }
 
         li {
+            text-align: center;
             display: inline-block;
+            transform: translateX(-1vw);
+            font-size: $settings-font-size - .1vw;
+
+            &.center-item {
+                margin: {
+                    left: 4vw;
+                    right: 4vw;
+                }
+            }
+
+            a {
+                border-bottom: 2px solid transparent;
+                transition: border-color .2s linear;
+                cursor: pointer;
+
+                &.visited {
+                    text-decoration: none;
+                    color: $color-white;
+                }
+
+                &:hover {
+                    border-color: $color-white;
+                }
+            }
+
+            @include md-screen {
+                font-size: $settings-title-font-size-md;
+            }
+
+            @media (max-width: $phone) {
+                width: auto;
+                font-size: $settings-font-size-phone;
+                margin: {
+                    top: 10px;
+                    bottom: 10px;
+                }
+            }
         }
     }
 
