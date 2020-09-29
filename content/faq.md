@@ -23,5 +23,6 @@ Sad :(
 
 But you can open an issue on Github! Also, if you are a bit geecky, the console logs are quite explicit and could help me and you to figure out what is going wrong. You can press F12 to launch the console in almost every major browser.  
 
-Alternatively, you can sent me an email!  
+Alternatively, you can send me an email!  
 
+{{< show-email >}}
