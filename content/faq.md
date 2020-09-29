@@ -27,4 +27,4 @@ Alternatively, you can send me an email!
 
 {{< show-email >}}  
 
-I will try to repay ASAP
+I will try to reply ASAP
