@@ -17,11 +17,16 @@ header {
     width: 80%;
     display: flex;
     flex-flow: row;
-    margin: auto;
+    margin: {
+        left: auto;
+        right: auto;
+        bottom: 30px;
+    };
     justify-content: center;
     align-items: center;
     position: sticky;
     top: 0;
+    left: 0;
     box-shadow: 0 20px 20px 5px $color-bg;
     background-color: $color-bg;
 
@@ -38,6 +43,7 @@ header {
         font-size: 5vw;
         white-space: nowrap;
         flex-grow: 2;
+        margin: .3em !important;
     }
 }
 
@@ -51,7 +57,6 @@ main {
     }
 
     h2 {
-        font-size: 2vw;
         font-family: 'Source Code Pro';
     }
 
