@@ -131,12 +131,13 @@ var alarm = {
         this.closePage();
     },
 
-    dismiss: function () {
+    dismiss: function (closePage = true) {
         console.log('Dismissed alarm!');
 
         this.ring(false);
-        this.closePage();
+        if (closePage) this.closePage();
         clearInterval(this.at);
+        clearTimeout(this.alarmTimeout);
         this.enabled = false;
         $('#set-alarm-btn').removeClass('btn-dismiss');
         $('#alarm-notif-box').addClass('unavailable');
@@ -206,6 +207,8 @@ var alarm = {
                     icon: `${redirectURI}/img/clock.png`
                 });
             }
+            
+            this.alarmTimeout = setTimeout(() => { this.dismiss() }, (90 * 1000));
 
             this.animateRing(true);
             

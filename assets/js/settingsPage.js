@@ -94,7 +94,7 @@ for (btn of $(btns)) {
                 if (!alarm.enabled) {
                     alarm.openPage();
                 } else {
-                    alarm.dismiss();
+                    alarm.dismiss(false);
                 }
             break;
 
