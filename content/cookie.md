@@ -1,5 +1,5 @@
 ---
-title: Cookies - Relaxing Clock
+title: Cookies
 type: page
 layout: page
 ---
