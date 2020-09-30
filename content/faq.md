@@ -32,3 +32,6 @@ Currently, Spotify does not support music playback on smartphones and tablets.
 Altought it could work on some modern phones, **Relaxing Clock** does a simple check of the User Agent of your browser to make sure you won't run into issues by logging in from an unsupported device; however, this check might fail if you enable **Desktop Mode** on your smartphone or by some extentions of your Browser.   
   
 Please, before reporting any issue, disable any browser add-ons that could interfere.
+
+## "Can I play other playlists?"
+You can use your smartphone to select the music and the playlist you want to play on **Relaxing Clock**, but by default (at least for now), it will play the relaxing music. I will propably add a playlist selector in the future :)
