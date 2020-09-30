@@ -99,11 +99,12 @@ footer {
         li {
             text-align: center;
             display: inline-block;
-            transform: translateX(-1vw);
+            width: 5vw;
             font-size: $settings-font-size - .1vw;
 
             @include phones {
                 display: block;
+                width: auto;
                 transform: translateX(0);
                 margin: {
                     left: 0 !important;
