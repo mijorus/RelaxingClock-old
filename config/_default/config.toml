@@ -1,6 +1,6 @@
 title = "Relaxing Clock"
 languageCode = "en-us"
-disableKinds = ["taxonomy", "term"]
+disableKinds = ["taxonomy", "term","RSS", "sitemap"]
 
 [params]
   author    = "mijorus"
