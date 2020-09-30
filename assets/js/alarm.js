@@ -6,6 +6,8 @@ var alarm = {
     
     at: undefined,
 
+    alarmTimeout : undefined,
+
     enabled: false,
 
     oldPlaybackState: {
@@ -182,10 +184,6 @@ var alarm = {
     },
 
     ring: function (ringing = true) {
-        let bgone, bgtwo;
-
-        const tl = { duration: 350, easing: 'linear', autoplay: false, loop: false };
-        ringTl = anime.timeline(tl);
 
         if (ringing) {
             inSettings = true;
@@ -194,14 +192,10 @@ var alarm = {
             $(alarmSection).removeClass('show');
             this.handleMusic(true);
 
-            document.querySelector('#alarm-sound').play();
+            $(this.alarmSet).on('click', (event) => { event.stopPropagation(); this.snooze() });
+            $(this.alarmDismiss).on('click', (event) => { event.stopPropagation(); this.dismiss() });
 
-            anime({
-                targets: $(alarmSection).get(0),
-                duration: 100,
-                easing: cbDefault,
-                opacity: [0, 1],
-            });
+            document.querySelector('#alarm-sound').play();
 
             if (document.visibilityState !== 'visible' && alarm.notificationStatus) {
                 const alarmFormat = (clockFormat === '24h') ? alarmTime.format('HH:mm') : alarmTime.format('hh:mm');
@@ -213,10 +207,36 @@ var alarm = {
                 });
             }
 
+            this.animateRing(true);
+            
+        } else {
+            this.animateRing(false);
+            $(document).off('visibilitychange');
+            document.querySelector('#alarm-sound').pause();
+            this.handleMusic(false);
+        }
+
+        localStorage.removeItem('alarmTime');
+    },
+
+    animateRing: function(start) {
+        const tl = { duration: 350, easing: 'linear', autoplay: false, loop: false };
+        ringTl = anime.timeline(tl);
+
+        if (start) {
+            let bgone, bgtwo;
+
             bgone = randomColor({ luminosity: 'light', format: 'rgba', alpha: 0.9 });
             bgtwo = randomColor({ luminosity: 'light', format: 'rgba', alpha: 0.9 });
 
             const ringTll = anime.timeline(tl);
+
+            anime({
+                targets: $(alarmSection).get(0),
+                duration: 100,
+                easing: cbDefault,
+                opacity: [0, 1],
+            });
 
             ringTl.add({
                 update: function (percent) {
@@ -225,7 +245,7 @@ var alarm = {
                 complete: function () {
                     ringTll.restart()
                 }
-            }, 0)
+            }, 0);
 
             ringTll.add({
                 update: function (percent) {
@@ -233,7 +253,7 @@ var alarm = {
                 },
                 complete: function () {
                     setTimeout(function () {
-                        if (ringing) ringTl.restart();
+                        ringTl.restart();
                     }, 250)
                 }
             }, 0);
@@ -241,29 +261,23 @@ var alarm = {
             ringTl.restart();
         } else {
             ringTl.pause();
-            $(document).off('visibilitychange');
-            document.querySelector('#alarm-sound').pause();
-            this.handleMusic(false);
         }
-
-        localStorage.removeItem('alarmTime');
-        $(this.alarmSet).on('click', (event) => { event.stopPropagation(); this.snooze() });
-        $(this.alarmDismiss).on('click', (event) => { event.stopPropagation(); this.dismiss() });
     },
 
-    closePage: function () {
-        $(this.tomorrowBox).empty();
-        this.removeAlarmListeners();
-        $(body).removeClass('unscrollable');
-        $('#big-container').removeClass('blur');
-
+    closePage: function () {   
         anime({
+            begin: () => { $('#big-container').removeClass('blur') },
             targets: $(alarmSection).get(0),
             duration: 350,
             easing: cbDefault,
             opacity: [1, 0],
-            complete: () => { $(alarmSection).removeClass('show ring') }
-        })
+            complete: () => { 
+                $(this.tomorrowBox).empty();
+                this.removeAlarmListeners();
+                $(body).removeClass('unscrollable');
+                $(alarmSection).removeClass('show ring');
+            }
+        });
     },
 
     updateTime: function () {
