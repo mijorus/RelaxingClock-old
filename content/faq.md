@@ -6,7 +6,7 @@ layout: page
 ## "Does this website use my Spotify account in any bad way?"
 No! :) This website uses Spotify's Web Playback SDK and their official APIs to handle login and music playback. Those services are free-to-use for anyone and **no data about your account is sent to the developer.** 
 
-## Can I play music with a free account?
+## "Can I play music with a free account?"
 Sorry, but you need a Premium account to use the Spotify integration
 
 ## "Will the alarm ring if I close the tab/browser?"
