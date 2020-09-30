@@ -31,4 +31,17 @@ hugo server --environment development -p 3000
 make sure you are using the --environment flag
   
 
-Enjoy!
+Enjoy!  
+
+## Report a bug
+Please, also include a description of the the error and an output of the browser console if possible, it will help a lot!
+  
+## Libraries
+- jQuery
+- Normalize.css
+- Mobile-detect.js [LINK](https://github.com/hgoebl/mobile-detect.js)
+- Moment.js && Moment-timezone [Link](https://momentjs.com/)
+- Anime.js [Link](https://animejs.com/)
+- Suncalc [Link](https://github.com/mourner/suncalc)
+- RandomColor [Link](https://github.com/davidmerfield/randomColor)
+- ConnorAtherton/loaders.css [Link](https://github.com/ConnorAtherton/loaders.css)  
