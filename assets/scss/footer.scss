@@ -91,7 +91,9 @@ footer {
         justify-content: space-between;
 
         @include phones {
+            height: 35%;
             flex-flow: column;
+            justify-content: space-around;
         }
 
         li {
@@ -99,6 +101,15 @@ footer {
             display: inline-block;
             transform: translateX(-1vw);
             font-size: $settings-font-size - .1vw;
+
+            @include phones {
+                display: block;
+                transform: translateX(0);
+                margin: {
+                    left: 0 !important;
+                    right: 0 !important;
+                }
+            }
 
             &.center-item {
                 margin: {
@@ -123,17 +134,9 @@ footer {
                 }
             }
 
+
             @include md-screen {
                 font-size: $settings-title-font-size-md;
-            }
-
-            @media (max-width: $phone) {
-                width: auto;
-                font-size: $settings-font-size-phone;
-                margin: {
-                    top: 10px;
-                    bottom: 10px;
-                }
             }
         }
     }
