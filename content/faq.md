@@ -1,5 +1,5 @@
 ---
-title: FAQ - Relaxing Clock
+title: FAQ
 type: page
 layout: page
 ---

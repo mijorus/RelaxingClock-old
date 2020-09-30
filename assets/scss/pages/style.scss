@@ -27,6 +27,7 @@ header {
     position: sticky;
     top: 0;
     left: 0;
+    flex-wrap: nowrap;
     box-shadow: 0 20px 20px 5px $color-bg;
     background-color: $color-bg;
 
@@ -35,6 +36,11 @@ header {
         font-size: 3vw;
         cursor: pointer;
         flex-grow: 1;
+
+        @include phones {
+            flex-grow: 0;
+            font-size: 1em;
+        }
     }
 
     h1 {
@@ -44,6 +50,14 @@ header {
         white-space: nowrap;
         flex-grow: 2;
         margin: .3em !important;
+
+        @include phones {
+            font-size: 2em;
+
+            span {
+                display: none;
+            }
+        }
     }
 }
 

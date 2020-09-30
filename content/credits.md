@@ -1,5 +1,5 @@
 ---
-title: Credits - Relaxing Clock
+title: Credits
 type: page
 layout: page
 ---

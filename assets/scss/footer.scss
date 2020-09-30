@@ -33,7 +33,7 @@ footer {
                     font-size: $settings-title-font-size-md;
                 }
 
-            @media (max-width: $phone) {
+            @include phones {
                     font-size: $settings-font-size-phone;
             }
         }
@@ -105,6 +105,7 @@ footer {
             @include phones {
                 display: block;
                 width: auto;
+                font-size: $settings-font-size-phone !important;
                 transform: translateX(0);
                 margin: {
                     left: 0 !important;
