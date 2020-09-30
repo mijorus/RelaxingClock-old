@@ -88,7 +88,7 @@ main {
     }
 }
 
-.show-email {
+#show-email-box {
     display: flex;
     flex-flow: row;
     justify-content: right;
@@ -100,12 +100,15 @@ main {
 
     .show-email-btn {
         margin-right: 30px;
-        height: 150%;
         cursor: pointer;
+        width: 10%;
+        z-index: 10 !important;
+        color: $color-white;
         font-size: $settings-icon-font-size;
         transform: translateY(-10%);        
 
         @include phones {
+            cursor: pointer;
             font-size: $fs-icon-phone + 10px;
         }
     }

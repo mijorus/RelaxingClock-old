@@ -1,4 +1,4 @@
-$('.show-email-btn').on('click', ()=> {
+$('.show-email-btn').on('click', () => {
     $('.show-email-btn').off('click');
 
     anime({
