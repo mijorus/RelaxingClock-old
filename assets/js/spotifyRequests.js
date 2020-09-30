@@ -75,6 +75,8 @@ var spotify = {
             },
             error: function(error) {
                 spotify.logError('CANNOT GET YOUR USERNAME:', error);
+                updateStatusText(`CANNOT GET YOUR USERNAME, ARE YOU ON PC?`);
+                spotify.throwGenericError();
             }
         });
     },
