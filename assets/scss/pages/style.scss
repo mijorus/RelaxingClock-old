@@ -104,8 +104,7 @@ main {
         width: 10%;
         z-index: 10 !important;
         color: $color-white;
-        font-size: $settings-icon-font-size;
-        transform: translateY(-10%);        
+        font-size: $settings-icon-font-size;        
 
         @include phones {
             cursor: pointer;
