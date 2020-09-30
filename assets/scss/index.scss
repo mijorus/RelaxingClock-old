@@ -5,9 +5,10 @@
 @import 'variables.scss';
 
 //ASSETS
+{{ $cities := resources.Get "scss/_cities.scss" | resources.ExecuteAsTemplate "css/cities.css" . | resources.ToCSS}}
 @import 'custom-fonts';
 @import 'main.scss';
-@import 'cities';
+@import '{{ $cities.RelPermalink }}';
 @import 'big-clock';
 @import 'music-box';
 @import 'selection-box';

@@ -1,36 +1,39 @@
+{{ $citiesCDN := getenv "HUGO_LANDSCAPES_SOURCE"}}
 .globe {
     .big-clock-container {
+        {{ with $citiesCDN }}
         #city-icon {
             &.beijin {
-                background-image: url('/svg/cities/beijin.svg');
+                background-image: url('{{ $citiesCDN }}/beijin.svg');
             }
             &.delhi {
-                background-image: url('/svg/cities/delhi.svg');
+                background-image: url('{{ $citiesCDN }}/delhi.svg');
             }
             &.hongkong {
-                background-image: url('/svg/cities/hongkong.svg');
+                background-image: url('{{ $citiesCDN }}/hongkong.svg');
             }
             &.london {
-                background-image: url('/svg/cities/london.svg');
+                background-image: url('{{ $citiesCDN }}/london.svg');
             }
             &.newyork {
-                background-image: url('/svg/cities/newyork.svg');
+                background-image: url('{{ $citiesCDN }}/newyork.svg');
             }
             &.paris {
-                background-image: url('/svg/cities/paris.svg');
+                background-image: url('{{ $citiesCDN }}/paris.svg');
             }
             &.rome {
-                background-image: url('/svg/cities/rome.svg');
+                background-image: url('{{ $citiesCDN }}/rome.svg');
             }
             &.sydney {
-                background-image: url('/svg/cities/sydney.svg');
+                background-image: url('{{ $citiesCDN }}/sydney.svg');
             }
             &.tokyo {
-                background-image: url('/svg/cities/tokyo.svg');
+                background-image: url('{{ $citiesCDN }}/tokyo.svg');
             }
             &.toronto {
-                background-image: url('/svg/cities/toronto.svg');
+                background-image: url('{{ $citiesCDN }}/toronto.svg');
             }
         }
+        {{ end }}
     }
 }
