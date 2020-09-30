@@ -18,6 +18,7 @@ screenSaverisAnimating = false, //whether or not the screen saver is animating
 isFullScreen = false, //whether or not the clock is in fullscreen
 logs = true, //whether of not activate logs in the console
 clock, //THE Clock
+noSleep = new NoSleep();
 aRandomPlace; //a Random place in the array of cities, is a function;
 
 //Handle Log switch
