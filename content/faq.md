@@ -6,6 +6,9 @@ layout: page
 ## "Does this website use my Spotify account in any bad way?"
 No! :) This website uses Spotify's Web Playback SDK and their official APIs to handle login and music playback. Those services are free-to-use for anyone and **no data about your account is sent to the developer.** 
 
+## Can I play music with a free account?
+Sorry, but you need a Premium account to use the Spotify integration
+
 ## "Will the alarm ring if I close the tab/browser?"
 It won't! At the moment - as far as I know - there is no way to keep a timer running while a website is closed. However, if you close the page by accident, don't worry!. Your Alarm **will be saved for 15 minutes.**
 
