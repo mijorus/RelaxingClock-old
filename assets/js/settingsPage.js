@@ -13,7 +13,11 @@ function setSpotifyLoginButton() {
     if (localStorage.userHasLogged == 'true') {
         $(logoutBtn).text('Logout');
     } else if (localStorage.userHasLogged == 'false') {
-        $(logoutBtn).text('Login'); 
+        if (!accessDenied) {
+            $(logoutBtn).text('Login'); 
+        } else {
+            $(logoutBtn).text('Reload'); 
+        }
     }
 }
 
@@ -68,7 +72,12 @@ for (btn of $(btns)) {
                 if (localStorage.userHasLogged === 'true') {
                     logout();
                 } else if (localStorage.userHasLogged === 'false' && compatibility.login) {
-                    window.location.replace(spotifyURL);
+                    if (!accessDenied) {
+                        window.location.replace(spotifyURL);
+                    } else {
+                        logout();
+                        window.location.replace(redirectURI);
+                    }
                 }
             break;
 

@@ -22,7 +22,7 @@ if (compatibility.login) {
                 window.location.replace(redirectURI);
             } else {
                 //The states don't match, the authentication failed
-                throwAuthError('states do not match');
+                throwAuthError('States do not match');
             }
         } else if (params.error) {
             //Spotify responded with an error during the authentication process
@@ -38,8 +38,12 @@ if (compatibility.login) {
 
 function throwAuthError(error) {
     console.error(`Authentication Error, ${error}!`);
-    $(spotifyPlaceholder).html('Authentication<br>Error :(');
+
+    accessDenied = true;
+    $(spotifyPlaceholder).html('Authentication<br>Error');
     $(spotifyPlaceholder).addClass('error');
+    (error === 'access_denied') ? updateStatusText(`Access denied! :(`) 
+    : updateStatusText(`Authentication Error :(`) ;
 }
     
 function getUrlVars() {
@@ -65,10 +69,10 @@ function throwUncompatibilityErr() {
     $('#spotify-status-box').addClass('unavailable');
 
     if (compatibility.isMobile) {
-        updateStatusText(`Connect from your PC to login with Spotify`)
+        updateStatusText(`Connect from your PC to login with Spotify`);
         console.error('Unsupported device: Spotify does not currenty support login from smartphones or tablets');
     } else if (!compatibility.isMobile && !compatibility.urlEncoding) {
-        updateStatusText(`Your browser doesn't seem to be compatible :(`)
+        updateStatusText(`Your browser doesn't seem to be compatible :(`);
         console.error('Unsupported device: Base64 encoding is not supported!');
     }
 }
