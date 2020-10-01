@@ -178,7 +178,7 @@ var alarm = {
             } else {
                 if (this.oldPlaybackState.volume !== undefined) {
                     player.setVolume(this.oldPlaybackState.volume);
-                    player.resume();
+                    if (!this.oldPlaybackState.status) player.resume();
                 }
             }
         }
