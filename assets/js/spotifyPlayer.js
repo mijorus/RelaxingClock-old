@@ -194,33 +194,36 @@ function initSpotifyPlayer() {
             event.preventDefault();
             event.stopPropagation();
 
-            player.getVolume().then(volume => {
-                const volumeStep = 0.1;
-                let newVolume;
+            if (!playerIsBusy() && playbackStarted) {
+                player.getVolume().then((volume) => {
+                    const volumeStep = 0.05;
+                    let newVolume;
+                    (volume !== null) ? volume = parseFloat(volume.toFixed(2)) : volume = 0;
+                    console.log(volume);
+                    if (event.deltaY > 0) {
+                        //Volume DOWN
+                        newVolume = volume - volumeStep;
+                        if (newVolume >= 0) player.setVolume(newVolume);
+                    } else {
+                        //Volume UP
+                        newVolume = volume + volumeStep;
+                        if (newVolume <= 1) player.setVolume(newVolume);
+                    }
 
-                if (event.deltaY > 0) {
-                    //Volume DOWN
-                    newVolume = volume - volumeStep;
-                    if (newVolume > 0) player.setVolume(newVolume);
-                } else {
-                    //Volume UP
-                    newVolume = volume + volumeStep;
-                    if (newVolume <= 1) player.setVolume(newVolume);
-                }
+                    let roundVolume = (newVolume > 0) ? parseInt(newVolume * 100) : 0;
+                    if (roundVolume > 0) {
+                        clearTimeout(volTimeout);
+                        if (roundVolume > 100) roundVolume = 100;
+                        $('#mute-warning').removeClass('hide').html(`${roundVolume}%`);
+                        volTimeout = setTimeout(() => $('#mute-warning').addClass('hide'), 750);
+                    } else if (roundVolume <= 0) {
+                        clearTimeout(volTimeout);
+                        $('#mute-warning').removeClass('hide').html(`<i id="volume-mute" class="fas fa-volume-mute"></i>`);
+                    }
 
-                let roundVolume = Math.round(newVolume * 100);
-                if (roundVolume > 0) {
-                    clearTimeout(volTimeout);
-                    if (roundVolume > 100) roundVolume = 100;
-                    $('#mute-warning').removeClass('hide').html(`${roundVolume}%`);
-                    volTimeout = setTimeout(() => $('#mute-warning').addClass('hide'), 750);
-                } else if (roundVolume <= 0){
-                    clearTimeout(volTimeout);
-                    $('#mute-warning').removeClass('hide').html(`<i id="volume-mute" class="fas fa-volume-mute"></i>`);
-                }
-
-                console.log(`Volume set to ${roundVolume}%`);
-            });
+                    console.log(`Volume set to ${roundVolume}%`);
+                });
+            }
 
         }, { passive: false });
 
