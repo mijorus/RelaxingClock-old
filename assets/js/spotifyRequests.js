@@ -67,6 +67,7 @@ var spotify = {
             success: function (response) {
                 if (response.product == 'premium') {
                     premium = true;
+                    spotify.selectSong();
                     updateStatusText(`Logged in as ${response.id}`)
                     $('#autoplay-box').removeClass('unavailable');
                 } else {
@@ -279,7 +280,7 @@ var spotify = {
         this.removeLoader();
         localStorage.setItem('premium', 'false');
         updateStatusText(`Sorry ${username}, but you need a premium account`);
-        $(spotifyPlaceholder).text(`Sorry, you must be a premium user :(`);
+        $(spotifyPlaceholder).html(`Sorry, you must be <br>a premium user :(`);
     },
 
     removeLoader: function() {

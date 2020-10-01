@@ -66,7 +66,6 @@ function initSpotifyPlayer() {
         // Playback status updates
         player.addListener('player_state_changed', function (state) {
             currentTrack = state.track_window.current_track;
-            console.log(state);
 
             if (state.paused) {
                 paused = true;
@@ -136,7 +135,6 @@ function initSpotifyPlayer() {
             }, 1000);
             playerIsReady = true;
             deviceID = device_id;
-            spotify.selectSong()
             console.log('Ready with Device ID', deviceID);
         });
 

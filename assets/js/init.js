@@ -10,7 +10,7 @@ clockInnerCont = $('#clock-inner-container'),
 clockContainer = $('#clock-container');
 var hours,min,sec,
 inSettings = false, //if the user is currently in the settings page
-logged = false, accessDenied = false, //if the user has succesfully logged to spotify
+logged = false, accessDenied = false, premium = false, //if the user has succesfully logged to spotify
 settingsIsAnimating = false,
 player = undefined, paused = true, //the music state
 screenSaverIsActive = false, //whether or not the screen saver is active
