@@ -22,12 +22,12 @@
 <!-- Analytics -->
 {{ $gtag := getenv "HUGO_ANALYTICS_ID"}}
 {{ with $gtag }}
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-179337286-1"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ $gtag }}"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-    gtag('config', 'UA-179337286-1');
+    gtag('config', '{{ $gtag }}');
     gtag('config', '<GA_MEASUREMENT_ID>', { 'anonymize_ip': true });
 </script>
 {{ end }}
