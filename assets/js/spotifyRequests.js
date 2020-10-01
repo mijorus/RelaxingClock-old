@@ -67,7 +67,7 @@ var spotify = {
             success: function (response) {
                 if (response.product == 'premium') {
                     premium = true;
-                    spotify.selectSong();
+                    setTimeout(() => spotify.selectSong(), 1000);
                     updateStatusText(`Logged in as ${response.id}`)
                     $('#autoplay-box').removeClass('unavailable');
                 } else {
