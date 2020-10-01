@@ -44,4 +44,10 @@ Please, also include a description of the the error and an output of the browser
 - Anime.js [Link](https://animejs.com/)
 - Suncalc [Link](https://github.com/mourner/suncalc)
 - RandomColor [Link](https://github.com/davidmerfield/randomColor)
-- ConnorAtherton/loaders.css [Link](https://github.com/ConnorAtherton/loaders.css)  
+- ConnorAtherton/loaders.css [Link](https://github.com/ConnorAtherton/loaders.css)
+
+## Thanks to 
+- aaronpk/pkce-vanilla-js [LINK](https://github.com/aaronpk/pkce-vanilla-js)
+- IcoMoon [LINK](https://icomoon.io/app/)
+- Linearicons and FontAwesome
+- W3S (always thank them)
