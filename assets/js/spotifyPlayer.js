@@ -130,9 +130,6 @@ function initSpotifyPlayer() {
 
         // Ready
         player.addListener('ready', function ({ device_id }) {
-            setTimeout(function () {
-                spotify.getUserDetails(false);
-            }, 1000);
             playerIsReady = true;
             deviceID = device_id;
             console.log('Ready with Device ID', deviceID);

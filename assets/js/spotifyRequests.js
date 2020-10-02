@@ -59,7 +59,7 @@ var spotify = {
     },
 
     getUserDetails: function() {
-        $.ajax({
+        setTimeout(() => $.ajax({
             type: "GET", async: true, cache: false, url: "https://api.spotify.com/v1/me", 
             headers: {
                 'Authorization': `Bearer ${sessionStorage.accessToken}`
@@ -76,10 +76,10 @@ var spotify = {
             },
             error: function(error) {
                 spotify.logError('CANNOT GET YOUR USERNAME:', error);
-                updateStatusText(`CANNOT GET YOUR USERNAME, ARE YOU ON PC?`);
+                updateStatusText(`Can't get your username, are you on PC?`);
                 spotify.throwGenericError();
             }
-        });
+        }), 1000);
     },
 
     selectSong: function() {
