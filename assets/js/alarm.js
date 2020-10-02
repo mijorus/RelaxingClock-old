@@ -153,6 +153,8 @@ var alarm = {
 
     snooze: function () {
         console.log('Snoozed alarm!');
+        clearInterval(this.at);
+        clearTimeout(this.alarmTimeout);
 
         this.ring(false);
         this.set(alarmTime.add(10, 'm'));
