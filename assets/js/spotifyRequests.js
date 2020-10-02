@@ -268,7 +268,7 @@ var spotify = {
     //Logs an error to the console
     logError: function(message, error, throwError = true) {
         const err = error.responseJSON.error.message;
-        if (error) console.error(`${error}`);
+        if (error) console.error(error);
         console.error(`${message} ${(err) ? err : ''}`);
         if (throwError) this.throwGenericError();
     },
