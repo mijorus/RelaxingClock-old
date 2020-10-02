@@ -147,7 +147,7 @@ var spotify = {
             },
             error: function(error) {
                 spotify.logError('PLAYBACK ERROR!', error);
-                switch (error.state) {
+                switch (error.status) {
                     case 500:
                     case 502:
                     case 503:
