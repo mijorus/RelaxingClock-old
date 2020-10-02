@@ -1,5 +1,7 @@
 // *** Ajax ***//
 var spotify = {
+    requestHeader: undefined,
+
     requestToken: function() {
         $.ajax({
             method: 'POST',
@@ -61,9 +63,7 @@ var spotify = {
     getUserDetails: function() {
         setTimeout(() => $.ajax({
             type: "GET", async: true, cache: false, url: "https://api.spotify.com/v1/me", 
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.accessToken}`
-            },
+            headers: spotify.requestHeader,
             success: function (response) {
                 if (response.product == 'premium') {
                     premium = true;
@@ -86,9 +86,7 @@ var spotify = {
         const playlistURL = '4ZTZhFPPyRzpfHZsWEXAW9';
         $.ajax({
             type: "GET", async: true, cache: false, url: `https://api.spotify.com/v1/playlists/${playlistURL}`,
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.accessToken}`
-            },
+            headers: spotify.requestHeader,
             success: function(response) {
                 const playlistLength = response.tracks.total;
                 randomPosition = getRandomIntInclusive(0, playlistLength);
@@ -130,9 +128,7 @@ var spotify = {
         console.log(`I am playing on: [Device id:${device_id}]`);
         $.ajax({
             type: "PUT",
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.accessToken}`
-            },
+            headers: spotify.requestHeader,
             url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
             data: JSON.stringify(song),
             success: function() {
@@ -179,9 +175,7 @@ var spotify = {
     shuffle: function(state) {
         $.ajax({
             type: "PUT", async: true, cache: false,
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.accessToken}`
-            },
+            headers: spotify.requestHeader,
             url: `https://api.spotify.com/v1/me/player/shuffle?state=${state}&device_id=${deviceID}`,
             success: function() {
                 console.log('SHUFFLE IS ENABLED!');
@@ -197,9 +191,7 @@ var spotify = {
     isLiked: function(song, changeState) {
         $.ajax({
             type: "GET", async: true, cache: false,
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.accessToken}`
-            },
+            headers: spotify.requestHeader,
             url: `https://api.spotify.com/v1/me/tracks/contains?ids=${song}`,
             success: function(response) {
                 if (response[0]) {
@@ -224,9 +216,7 @@ var spotify = {
         $.ajax({
             type: (toLike) ? "PUT" : "DELETE", 
             async: true, cache: false,
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.accessToken}`
-            },
+            headers: spotify.requestHeader,
             url: `https://api.spotify.com/v1/me/tracks?ids=${song}`,
             success: function () {
                 if (toLike) {
@@ -267,7 +257,8 @@ var spotify = {
 
     //Logs an error to the console
     logError: function(message, error, throwError = true) {
-        const err = error.responseJSON.error.message;
+        const e = error.responseJSON.error.message;
+        if (e) err = e;
         if (error) console.error(error);
         console.error(`${message} ${(err) ? err : ''}`);
         if (throwError) this.throwGenericError();
@@ -307,6 +298,7 @@ function saveLoginResponse(response) {
 
     sessionStorage.setItem('expires_at', expires_at);
     sessionStorage.setItem('accessToken', response.access_token);
+    spotify.requestHeader = { 'Authorization': `Bearer ${sessionStorage.accessToken}` };
     localStorage.setItem('refreshToken', response.refresh_token);
 
     const loginCompleted = new Event('loginCompleted');
