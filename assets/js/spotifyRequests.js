@@ -38,7 +38,7 @@ var spotify = {
 
                 localStorage.removeItem('code');
                 saveLoginResponse(response);
-                spotify.getUserDetails();
+                if (!premium) spotify.getUserDetails();
             },
 
             error: function (error) {

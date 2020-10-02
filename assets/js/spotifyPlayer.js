@@ -35,7 +35,7 @@ if (localStorage.userHasLogged === 'true' && compatibility.login) {
             }
         });
         
-        initSpotifyPlayer();
+        player.connect().then(success => { if (success) initSpotifyPlayer(); });
     }
 }
 
