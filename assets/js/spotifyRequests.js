@@ -153,6 +153,12 @@ var spotify = {
                     case 503:
                         $(spotifyPlaceholder).text('Server Error :(');
                     break;
+
+                    case 401:
+                        if (error.responseJSON.error.message === 'The access token expired') {
+                            spotify.throwGenericError('It has been a long <br>time, please <a href="${redirectURI}">Reload</a>')
+                        }
+                    break;
                 
                     case 403:
                         if (error.reason === 'PREMIUM_REQUIRED') {
@@ -262,18 +268,23 @@ var spotify = {
     //Logs an error to the console
     logError: function(message, error, throwError = true) {
         const err = error.responseJSON.error.message;
-        console.error(`${message} ${(err) ? err : ''}`);
+        const errCode = error.state;
+        console.error(`${(errCode) ? errCode : ''} ${message} ${(err) ? err : ''}`);
         if (throwError) this.throwGenericError();
     },
 
-    throwGenericError: function() {
+    throwGenericError: function(message = 'default') {
         player.pause();
         this.removeLoader();
         $('#spotify-track-info').hide();
         $(spotifyPlaceholder).css('opacity', 1);
-        $(spotifyPlaceholder).html(
-            `Something went<br>wrong :( <a href="${redirectURI}">Try again</a>`
-        );
+        
+        if (message === 'default') {
+            $(spotifyPlaceholder).html(
+                `Something went<br>wrong :( <a href="${redirectURI}">Try again</a>`);
+        } else {
+            $(spotifyPlaceholder).html(message);
+        }
     },
 
     throwPremiumError: function (username) {
