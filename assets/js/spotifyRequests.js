@@ -26,7 +26,7 @@ var spotify = {
         });
     },
 
-    refreshToken: function() {
+    refreshToken: function(play = false) {
         $.ajax({
             method: 'POST',
             url: 'https://accounts.spotify.com/api/token',
@@ -41,6 +41,7 @@ var spotify = {
                 localStorage.removeItem('code');
                 saveLoginResponse(response);
                 if (!premium) spotify.getUserDetails();
+                if (play) spotify.play();
             },
 
             error: function (error) {
@@ -152,7 +153,8 @@ var spotify = {
 
                     case 401:
                         if (error.responseJSON.error.message === 'The access token expired') {
-                            spotify.throwGenericError('It has been a long <br>time, please <a href="${redirectURI}">Reload</a>')
+                            spotify.refreshToken(true);
+                            //spotify.throwGenericError('It has been a long <br>time, please <a href="${redirectURI}">Reload</a>')
                         }
                     break;
                 
