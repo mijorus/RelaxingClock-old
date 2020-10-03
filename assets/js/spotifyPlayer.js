@@ -70,6 +70,7 @@ function initSpotifyPlayer() {
     // Playback status updates
     player.addListener('player_state_changed', function (state) {
         if (state) {
+            console.log(state);
             currentState = state;
             currentTrack = state.track_window.current_track;
 
@@ -244,15 +245,19 @@ function initSpotifyPlayer() {
         playerIsReady = false;
 
         let lastSong;
-        const lastUri = { 'uri': currentTrack.uri };
         const context = currentState.context.uri;
-        if (context) {
+        /* We will test the context uri against this regex
+        to see if is it a valid uris recognised but the 
+        web API, if the context is not recognised (fox ex 
+        the user's favourite playlist) it will just play the last track*/
+        const validContext = /:artist|:album|:playlist/;
+        if (validContext.test(context)) {
             lastSong = {
                 'context_uri': context,
-                'offset': lastUri,
+                'offset': { 'uri': currentTrack.uri },
             }
         } else {
-            lastSong = lastUri;
+            lastSong = { 'uris': [currentTrack.uri] };
         }
 
         player.connect().then((success) => {
