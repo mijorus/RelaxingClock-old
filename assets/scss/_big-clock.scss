@@ -16,7 +16,7 @@ main {
         z-index: -1;
         background-repeat: no-repeat;
         background-position: bottom;
-        background-size: auto;
+        background-size: contain;
         transition: opacity .5s $cb-default;
     }
 }
