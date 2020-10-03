@@ -1,3 +1,26 @@
+main {
+    &.metro {
+        #metro-background  {
+            opacity: 0.1 !important;
+        }
+    }
+
+    #metro-background {
+        opacity: 0;
+        display: block !important;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+        background-repeat: no-repeat;
+        background-position: bottom;
+        background-size: auto;
+        transition: opacity .5s $cb-default;
+    }
+}
+
 .center-container {
     position: relative;
     height: 15vw;

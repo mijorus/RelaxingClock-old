@@ -69,7 +69,7 @@ const cities = [
 const firstCity = (Math.floor(Math.random() * (cities.length)));
 var currentCity;
 //saves a random place in a variable
-function getRandomPlace() {
+function getRandomPlace(getTz = true) {
     if (aRandomPlace === null) {
         aRandomPlace = cities[firstCity];
         currentCity = firstCity;
@@ -83,42 +83,44 @@ function getRandomPlace() {
         }
     }
 
-    console.log(aRandomPlace.city, moment.tz(aRandomPlace.tz).format('HH mm ss'));
-    var sunc = SunCalc.getTimes(new Date(), aRandomPlace.lat, aRandomPlace.long);
-    var now = moment().valueOf();
-    const millsecInDay = moment.duration(24, 'hours').asMilliseconds();
+    if (getTz) {
+        console.log(aRandomPlace.city, moment.tz(aRandomPlace.tz).format('HH mm ss'));
+        var sunc = SunCalc.getTimes(new Date(), aRandomPlace.lat, aRandomPlace.long);
+        var now = moment().valueOf();
+        const millsecInDay = moment.duration(24, 'hours').asMilliseconds();
 
-    const sunrise = sunc.sunrise.getTime(),
-    sunset = sunc.sunset.getTime();
+        const sunrise = sunc.sunrise.getTime(),
+            sunset = sunc.sunset.getTime();
 
-    console.log(sunc.sunrise, sunc.sunset, now);
+        console.log(sunc.sunrise, sunc.sunset, now);
 
-    isDay = getDay();
+        isDay = getDay();
 
-    if (isDay) {
-        console.log(`We are at about ${circlePercentage}% of the day in ${aRandomPlace.city}`);
-    } else {
-        console.log(`We are at about ${circlePercentage}% of the night in ${aRandomPlace.city}`);
-    
-    }
+        if (isDay) {
+            console.log(`We are at about ${circlePercentage}% of the day in ${aRandomPlace.city}`);
+        } else {
+            console.log(`We are at about ${circlePercentage}% of the night in ${aRandomPlace.city}`);
 
-    function getDay() {
+        }
 
-        if (now > sunrise && now >= sunset) {
-            circlePercentage = getPercentage(sunset, sunrise + millsecInDay, now)
-            return false
+        function getDay() {
 
-        } else if (sunset <= now && sunrise > now) {
-            circlePercentage = getPercentage(sunset, sunrise, now);
-            return false
+            if (now > sunrise && now >= sunset) {
+                circlePercentage = getPercentage(sunset, sunrise + millsecInDay, now)
+                return false
 
-        } else if (sunrise >= now && sunset > now) {
-            circlePercentage = getPercentage((sunset - millsecInDay), sunrise, now)
-            return false
+            } else if (sunset <= now && sunrise > now) {
+                circlePercentage = getPercentage(sunset, sunrise, now);
+                return false
 
-        } else if (sunrise <= now && sunset > now) {
-            circlePercentage = getPercentage(sunrise, sunset, now)
-            return true
+            } else if (sunrise >= now && sunset > now) {
+                circlePercentage = getPercentage((sunset - millsecInDay), sunrise, now)
+                return false
+
+            } else if (sunrise <= now && sunset > now) {
+                circlePercentage = getPercentage(sunrise, sunset, now)
+                return true
+            }
         }
     }
 }

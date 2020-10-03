@@ -29,7 +29,7 @@ function setScreenSaver() {
                 scale: function(){
                     const clockY = $(bigClock).height();
                     const windowY = $(window).height();
-                    return ((windowY * 0.95) / clockY);
+                    return ((windowY * 0.85) / clockY);
                 },
                 complete: function() {
                     screenSaverisAnimating = false;

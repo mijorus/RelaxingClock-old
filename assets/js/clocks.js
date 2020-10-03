@@ -182,8 +182,14 @@ function loadTime(timeFormat, zone = localTimezone) { //International or america
 function handleSelectedClock(userSelection, transition, resetClock) {
     (circleTl !== undefined) ? circleTl.pause() : null;
 
-    if  (transition && resetClock) {
+    if (transition && resetClock) {
         switch (userSelection) {
+            case 2:
+                const metroBg = $('#metro-background');
+                $(metroBg).removeClass();
+                getRandomPlace(false);
+                $(metroBg).addClass(aRandomPlace.class);
+            break;
             case 4:
                 $(cityIcon).removeClass();
                 getRandomPlace();
@@ -201,7 +207,9 @@ function handleSelectedClock(userSelection, transition, resetClock) {
             complete: function() {
                 //remove classes for specific clock styles on style change
                 $(bigClock).empty();
-                $(centerContainer).removeClass(styleList);
+                [$(main), $(centerContainer)].forEach((el) => {
+                    $(el).removeClass(styleList);
+                })
                 handleSelection(userSelection);
                 handleClockProgression(userSelection);
                 anime({
@@ -238,8 +246,12 @@ function handleSelectedClock(userSelection, transition, resetClock) {
 
     else if (!transition && resetClock) {
         switch (userSelection) {
+            case 2: 
+                getRandomPlace(false);
+                $('#metro-background').addClass(aRandomPlace.class);
+            break;
             case 4:
-                getRandomPlace()
+                getRandomPlace();
             break;
         }
 
@@ -275,6 +287,7 @@ function handleSelection(userSelection) {
         break;
 
         case 2:
+            $(main).addClass('metro');
             $(centerContainer).addClass('metro');
             clockStyles.handleMetroClock();
         break;

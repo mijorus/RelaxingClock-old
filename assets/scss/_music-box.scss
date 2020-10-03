@@ -15,6 +15,11 @@
     align-content: space-between;
     color: white;
     flex-wrap: nowrap;
+    transition: background-color .2s linear;
+
+    main.metro &.logged {
+        background-color: black;
+    }
 
     &.unsupported {
         display: none !important;
@@ -56,6 +61,14 @@
         border: $sp-border-box solid;
         border-color: transparent;
         transition: border-color 1s $cb-default, opacity 1s $cb-default, color 1s $cb-default;
+
+        main.metro &.loaded {
+            border-color: transparent !important;
+
+            #song-info {
+                background-color: black !important;
+            }
+        }
         
         &.loaded {
             border-color: $color-white;
@@ -116,7 +129,7 @@
 
             &.screen-saving {
                 color: inherit !important;
-                border-color: inherit !important;
+                border-color: inherit;
 
                 &.error {
                     border-color: transparent !important;

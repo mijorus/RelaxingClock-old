@@ -1,4 +1,5 @@
 const body = $('body'),
+main = $('main'),
 bigClock = $('#big-clock'),
 expandIcon = $('.expand-icon'),
 toScreenSave = $('.toscreensave'),
