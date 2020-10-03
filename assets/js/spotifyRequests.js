@@ -103,18 +103,16 @@ var spotify = {
                 if (localStorage.autoplay === 'true') {
                     const wait = getRandomIntInclusive(4000, 7500);
                     console.log(`Autoplay is enabled, starting in ${wait / 1000} seconds`);
-                    $(spotifyPlaceholder).html('Music will<br>start soon...');
+                    updatePlaceholderText('Music will<br>start soon...');
                     setTimeout(function() {
                         if (paused) {
                             spotify.removeLoader();
-                            $(playbackIcon).removeClass('hide');
                             spotify.play(deviceID, randomSong);
                         }
                     }, wait);
                 } else if (localStorage.autoplay === 'false') {
                     spotify.removeLoader(); 
-                    $(spotifyPlaceholder).html('Ready to<br>play!');
-                    $(playbackIcon).removeClass('hide');
+                    updatePlaceholderText('Ready to<br>play!');
                 }
                 
                 console.log(`There are ${response.tracks.total} songs in the playlist, I have selected the #${randomPosition}`);
@@ -197,13 +195,13 @@ var spotify = {
             url: `https://api.spotify.com/v1/me/tracks/contains?ids=${song}`,
             success: function(response) {
                 if (response[0]) {
-                    favourite = true;
+                    //favourite = true;
                     console.log('This song is in your library');
                     /*If we only have to change the color of the heart, it calls the func
                     directly, otherwise will execute an ajax request*/
                     (changeState) ? spotify.likeSong(currentTrackId, false) : handleHeartButton(true);
                 } else {
-                    favourite =  false;
+                    //favourite =  false;
                     console.log('This song is NOT in your library');
                     (changeState) ? spotify.likeSong(currentTrackId, true) : handleHeartButton(false);
                 }
@@ -242,9 +240,9 @@ var spotify = {
     throwTokenError: function () {
         this.removeLoader();
         $('#spotify-track-info').hide();
-        $(spotifyPlaceholder).css('opacity', 1);
+        $(spotifyPlaceholder).addClass('general-error');
         updateStatusText(`Sorry, but you need to login again`);
-        $(spotifyPlaceholder).html(
+        updatePlaceholderText(
             `Please <button id="toker-err-msg" class="transp-btn">login</button> again`
         );
         $('#toker-err-msg').on('click', async function (event) {
@@ -259,8 +257,7 @@ var spotify = {
 
     //Logs an error to the console
     logError: function(message, error, throwError = true) {
-        const e = error.responseJSON.error.message;
-        if (e) err = e;
+        const err = error.responseJSON.error.message;
         if (error) console.error(error);
         console.error(`${message} ${(err) ? err : ''}`);
         if (throwError) this.throwGenericError();
@@ -269,14 +266,13 @@ var spotify = {
     throwGenericError: function(message = 'default') {
         player.pause();
         this.removeLoader();
-        $('#spotify-track-info').hide();
-        $(spotifyPlaceholder).css('opacity', 1);
+        $(musicBox).addClass('error');
         
         if (message === 'default') {
-            $(spotifyPlaceholder).html(
+            updatePlaceholderText(
                 `Something went<br>wrong :( <a href="${redirectURI}">Try again</a>`);
         } else {
-            $(spotifyPlaceholder).html(message);
+            updatePlaceholderText(message);
         }
     },
 
@@ -284,11 +280,17 @@ var spotify = {
         this.removeLoader();
         localStorage.setItem('premium', 'false');
         updateStatusText(`Sorry ${username}, but you need a premium account`);
-        $(spotifyPlaceholder).html(`Sorry, you must be <br>a premium user :(`);
+        updatePlaceholderText(`Sorry, you must be <br>a premium user :(`);
     },
 
-    removeLoader: function() {
-        handleLoader($('#spotify-loader'), false, null);
+    removeLoader: function(remove = true) {
+        if (remove) {
+            $(playbackIcon).removeClass('hide');
+            handleLoader($('#spotify-loader'), false, null);
+        } else {
+            $(playbackIcon).addClass('hide');
+            handleLoader($('#spotify-loader'), true, null);
+        }
     }
 }
 

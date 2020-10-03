@@ -4,67 +4,73 @@ playbackIcon = $('#playback-icon');
 
 var deviceID = undefined,
 randomSong = undefined,
+currentTrackId = undefined,
 playerIsReady = false,
 songIsSelected = false,
-playbackStarted = false,
-favourite = false,
-currentTrackId = '';
+currentTrack = {},
+currentState = {},
+currentTrackId = undefined,
+playbackStarted = false;
+//favourite = false;
 
 // *** Spotify Player *** //
 
 if (localStorage.userHasLogged === 'true' && compatibility.login) {
     window.onSpotifyWebPlaybackSDKReady = () => {
-        player = new Spotify.Player({
-            name: 'Relaxing Clocks',
-            getOAuthToken: function (callback) {
-                if (localStorage.code !== undefined) {
-                    //We request a token for the first time
-                    spotify.requestToken();
-                }
-
-                else if (localStorage.refreshToken) {
-                    //We need to request a new token using the refresh_token
-                    spotify.refreshToken();
-                }
-
-                $(document).on('loginCompleted', function () {
-                    console.info(`Login Completed!`);
-                    $(document).off('loginCompleted');
-                    callback(sessionStorage.accessToken);
-                });
-            }
-        });
-        
-        player.connect().then(success => { if (success) initSpotifyPlayer(); });
+        createNewSpotifyPlayer();
     }
 }
 
+function createNewSpotifyPlayer() {
+    player = new Spotify.Player({
+        name: 'Relaxing Clocks',
+        getOAuthToken: function (callback) {
+            if (localStorage.code !== undefined) {
+                //We request a token for the first time
+                spotify.requestToken();
+            }
+
+            else if (localStorage.refreshToken) {
+                //We need to request a new token using the refresh_token
+                spotify.refreshToken();
+            }
+
+            $(document).on('loginCompleted', function () {
+                console.info(`Login Completed!`);
+                $(document).off('loginCompleted');
+                callback(sessionStorage.accessToken);
+            });
+        }
+    });
+
+    player.connect();
+    initSpotifyPlayer();
+}
+
 function initSpotifyPlayer() {
-        var currentTrack = {};
+    const trackName = $('#track-name'),
+    likeBtn = $('.like-btn'),
+    artistName = $('#artist-name'),
+    spotifyTrackInfo = $('#spotify-track-info'),
+    spotifyIcon = $('#spotify-icon'),
+    songInfo = $('#song-info'),
+    playbackIcon = $('#playback-icon');
 
-        const trackName = $('#track-name'),
-            likeBtn = $('.like-btn'),
-            artistName = $('#artist-name'),
-            spotifyTrackInfo = $('#spotify-track-info'),
-            spotifyIcon = $('#spotify-icon'),
-            playbackIcon = $('#playback-icon');
+    // Error handling
+    player.addListener('initialization_error', function ({ message }) {
+        console.error(message);
+        spotify.throwGenericError();
+    });
+    player.addListener('playback_error', function ({ message }) {
+        console.error(message);
+        player.removeListener('playback_error');
+        reconnect();
+    });
 
-        // Error handling
-        player.addListener('initialization_error', function ({ message }) {
-            console.error(message);
-        });
-        player.addListener('authentication_error', function ({ message }) {
-            console.error(message);
-        });
-        player.addListener('account_error', function ({ message }) {
-            console.error(message);
-        });
-        player.addListener('playback_error', function ({ message }) {
-            console.error(message);
-        });
-
-        // Playback status updates
-        player.addListener('player_state_changed', function (state) {
+    // Playback status updates
+    player.addListener('player_state_changed', function (state) {
+        if (state) {
+            currentState = state;
             currentTrack = state.track_window.current_track;
 
             if (state.paused) {
@@ -116,6 +122,7 @@ function initSpotifyPlayer() {
                     scrollText.play($(artistName).get(0), artistNameSize, spWidth, 4000);
                 }
 
+                setTimeout(spotify.isLiked(currentTrackId, false), 250);
                 $('#song-info-thumb-placeholder').addClass('hide');
                 $('#song-det-title').text(currentTrack.name);
                 $('#song-det-artist').text(artistsText);
@@ -124,34 +131,31 @@ function initSpotifyPlayer() {
                 $('#song-info-thumb').css({
                     'background-image': `url(${currentTrack.album.images[2].url})`
                 });
-                setTimeout(spotify.isLiked(currentTrackId, false), 250);
             }
-        });
+        }
+    });
 
-        // Ready
-        player.addListener('ready', function ({ device_id }) {
-            playerIsReady = true;
-            deviceID = device_id;
-            console.log('Ready with Device ID', deviceID);
-        });
+    // Ready
+    player.addListener('ready', function ({ device_id }) {
+        playerIsReady = true;
+        deviceID = device_id;
+        console.log('Ready with Device ID', deviceID);
+    });
 
-        // Not Ready
-        player.addListener('not_ready', function ({ device_id }) {
-            console.log('Device ID has gone offline', device_id);
-        });
+    // Not Ready
+    player.addListener('not_ready', function ({ device_id }) {
+        console.log('Device has gone offline', device_id);
+    });
 
-        // Connect to the player!
-        player.connect();
-
-        //Listeners
-        $(playBtn).on('click', function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            if (!playerIsBusy()) {
-                if (!playbackStarted) {
-                    spotify.play(deviceID, randomSong);
-                } else {
-                    player.getCurrentState().then(state => {
+    //Listeners
+    $(playBtn).on('click', function (event) {
+        event.preventDefault(); event.stopPropagation();
+        if (!playerIsBusy()) {
+            if (!playbackStarted) {
+                spotify.play(deviceID, randomSong);
+            } else {
+                player.getCurrentState().then((state) => {
+                    if (state) {
                         if (!state.paused) {
                             player.pause().then(() => {
                                 console.log('Music Paused!');
@@ -161,75 +165,115 @@ function initSpotifyPlayer() {
                                 console.log('Playback Resumed!');
                             });
                         }
-                    });
-                }
-            }
-        });
-
-        $(likeBtn).on('click', function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            if (!playerIsBusy() && playbackStarted) {
-                spotify.isLiked(currentTrackId, true);
-            }
-        });
-
-        $(playBtn).on('contextmenu', function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            if (!playerIsBusy()) {
-                if (playbackStarted) {
-                    player.nextTrack().then(() => {
-                        console.log('Skipped to next track!');
-                    });
-                }
-            }
-        });
-
-        let volTimeout;
-        $(musicBox).get(0).addEventListener('wheel', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            if (!playerIsBusy() && playbackStarted) {
-                player.getVolume().then((volume) => {
-                    const volumeStep = 0.05;
-                    let newVolume;
-                    (volume !== null) ? volume = parseFloat(volume.toFixed(2)) : volume = 0;
-                    console.log(volume);
-                    if (event.deltaY > 0) {
-                        //Volume DOWN
-                        newVolume = volume - volumeStep;
-                        if (newVolume >= 0) player.setVolume(newVolume);
                     } else {
-                        //Volume UP
-                        newVolume = volume + volumeStep;
-                        if (newVolume <= 1) player.setVolume(newVolume);
+                        reconnect(true);
                     }
-
-                    let roundVolume = (newVolume > 0) ? parseInt(newVolume * 100) : 0;
-                    if (roundVolume > 0) {
-                        clearTimeout(volTimeout);
-                        if (roundVolume > 100) roundVolume = 100;
-                        $('#mute-warning').removeClass('hide').html(`${roundVolume}%`);
-                        volTimeout = setTimeout(() => $('#mute-warning').addClass('hide'), 750);
-                    } else if (roundVolume <= 0) {
-                        clearTimeout(volTimeout);
-                        $('#mute-warning').removeClass('hide').html(`<i id="volume-mute" class="fas fa-volume-mute"></i>`);
-                    }
-
-                    console.log(`Volume set to ${roundVolume}%`);
                 });
             }
+        }
+    });
 
-        }, { passive: false });
+    $(likeBtn).on('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (!playerIsBusy() && playbackStarted) {
+            spotify.isLiked(currentTrackId, true);
+        }
+    });
 
-    const songInfo = $('#song-info');
-        $(spotifyIcon).hover(function() {
-            $(songInfo).removeClass('hide');
-        }, function() {
-            $(songInfo).addClass('hide');
+    $(playBtn).on('contextmenu', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (!playerIsBusy()) {
+            if (playbackStarted) {
+                player.nextTrack().then(() => {
+                    console.log('Skipped to next track!');
+                });
+            }
+        }
+    });
+
+    let volTimeout;
+    $(musicBox).get(0).addEventListener('wheel', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!playerIsBusy() && playbackStarted) {
+            player.getVolume().then((volume) => {
+                const volumeStep = 0.05;
+                let newVolume;
+                (volume !== null) ? volume = parseFloat(volume.toFixed(2)) : volume = 0;
+                console.log(volume);
+                if (event.deltaY > 0) {
+                    //Volume DOWN
+                    newVolume = volume - volumeStep;
+                    if (newVolume >= 0) player.setVolume(newVolume);
+                } else {
+                    //Volume UP
+                    newVolume = volume + volumeStep;
+                    if (newVolume <= 1) player.setVolume(newVolume);
+                }
+
+                let roundVolume = (newVolume > 0) ? parseInt(newVolume * 100) : 0;
+                if (roundVolume > 0) {
+                    clearTimeout(volTimeout);
+                    if (roundVolume > 100) roundVolume = 100;
+                    $('#mute-warning').removeClass('hide').html(`${roundVolume}%`);
+                    volTimeout = setTimeout(() => $('#mute-warning').addClass('hide'), 750);
+                } else if (roundVolume <= 0) {
+                    clearTimeout(volTimeout);
+                    $('#mute-warning').removeClass('hide').html(`<i id="volume-mute" class="fas fa-volume-mute"></i>`);
+                }
+
+                console.log(`Volume set to ${roundVolume}%`);
+            });
+        }
+
+    }, { passive: false });
+
+    $(spotifyIcon).hover(function() {
+        $(songInfo).removeClass('hide');
+    }, function() {
+        $(songInfo).addClass('hide');
+    });
+
+    //Helpers
+    function reconnect(play = false) {
+        updatePlaceholderText('Reconnecting <br> to Spotify...');
+        spotify.removeLoader(false);
+        playerIsReady = false;
+
+        player.connect().then((success) => {
+            if (success) {
+                console.warn('Reconnected to Spotify');
+                setTimeout(() => {
+                    spotify.removeLoader();
+                    $(musicBox).removeClass('error');
+                    if (!play) {
+                        updatePlaceholderText('Ready to <br>play!');
+                    } else {
+                        let lastSong;
+                        const lastUri = {'uri': currentTrack.uri};
+                        const context = currentState.context.uri;
+                        if (context) {
+                            lastSong = {
+                                'context_uri': context,
+                                'offset': lastUri,
+                            }
+                        } else {
+                            lastSong = lastUri;
+                        }
+
+                        spotify.play(deviceID, lastSong);
+                    }
+
+                    playerIsReady = true;
+                }, (play) ? 5000 : 1500);
+            } else {
+                spotify.throwGenericError(`I can't play this <br>song right now. <a href="${redirectURI}">Reload</a>`);
+            }
         });
+    }
 }
 // *** END OF Spotify Player *** //
 

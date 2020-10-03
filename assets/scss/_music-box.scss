@@ -117,6 +117,10 @@
             &.screen-saving {
                 color: inherit !important;
                 border-color: inherit !important;
+
+                &.error {
+                    border-color: transparent !important;
+                }
             }
         }
 
@@ -203,6 +207,18 @@
         &.screen-saving {
             color: inherit !important;
         }
+
+        &.error {
+             border-color: transparent !important;
+
+            #spotify-placeholder {
+                opacity: 1 !important;
+            }
+
+            #spotify-track-info {
+                display: none !important;
+            }
+        }
     }
 
     #song-info {
@@ -269,9 +285,7 @@
                 color: $color-white;
             }
 
-            &.error {
-                color: #fd3030;
-            }
+
 
             @include md-screen {
                 font-size: $sp-plh-fs * 1.5;

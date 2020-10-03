@@ -13,6 +13,10 @@ function updateStatusText (message) {
     $(spotifyStatusText).text(message);
 }
 
+function updatePlaceholderText(text) {
+    $(spotifyPlaceholder).html(text);
+}
+
 var songTl;
 
 var scrollText = {
