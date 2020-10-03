@@ -129,8 +129,8 @@ var spotify = {
             type: "PUT",
             headers: spotify.requestHeader,
             url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
-            data: JSON.stringify(song),
-            success: function() {
+            data: JSON.stringify(song)})
+            .done(function() {
                 console.log('I AM PLAYING!');
                 playbackStarted = true;
                 $(playbackIcon).removeClass('fa-play');
@@ -139,8 +139,8 @@ var spotify = {
                     spotify.shuffle(true);
                 }, 2000);
 
-            },
-            error: function(error) {
+            })
+            .fail(function(error) {
                 spotify.logError('PLAYBACK ERROR!', error);
                 switch (error.status) {
                     case 500:
@@ -168,8 +168,8 @@ var spotify = {
                         spotify.throwGenericError();
                     break;
                 }
-            }
-        });
+            })
+        // });
     },
     
     shuffle: function(state) {

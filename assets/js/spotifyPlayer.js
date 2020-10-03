@@ -64,7 +64,7 @@ function initSpotifyPlayer() {
     player.addListener('playback_error', function ({ message }) {
         console.error(message);
         player.removeListener('playback_error');
-        player.disconnect().then(reconnect())
+        reconnect();
     });
 
     // Playback status updates
@@ -243,6 +243,18 @@ function initSpotifyPlayer() {
         spotify.removeLoader(false);
         playerIsReady = false;
 
+        let lastSong;
+        const lastUri = { 'uri': currentTrack.uri };
+        const context = currentState.context.uri;
+        if (context) {
+            lastSong = {
+                'context_uri': context,
+                'offset': lastUri,
+            }
+        } else {
+            lastSong = lastUri;
+        }
+
         player.connect().then((success) => {
             if (success) {
                 console.warn('Reconnected to Spotify');
@@ -252,27 +264,22 @@ function initSpotifyPlayer() {
                     if (!play) {
                         updatePlaceholderText('Ready to <br>play!');
                     } else {
-                        let lastSong;
-                        const lastUri = {'uri': currentTrack.uri};
-                        const context = currentState.context.uri;
-                        if (context) {
-                            lastSong = {
-                                'context_uri': context,
-                                'offset': lastUri,
-                            }
-                        } else {
-                            lastSong = lastUri;
-                        }
-
                         spotify.play(deviceID, lastSong);
                     }
 
                     playerIsReady = true;
                 }, (play) ? 5000 : 1500);
             } else {
-                spotify.throwGenericError(`I can't play this <br>song right now. <a href="${redirectURI}">Reload</a>`);
+                if (currentTrack.is_playable) {
+                    playerIsReady = true;
+                    spotify.removeLoader();
+                    spotify.play(deviceID, lastSong);
+                } else {
+                    playerIsReady = false;
+                    spotify.throwGenericError(`I can't play this <br>song right now. <a href="${redirectURI}">Reload</a>`);
+                }
             }
-        });
+        })
     }
 }
 // *** END OF Spotify Player *** //
