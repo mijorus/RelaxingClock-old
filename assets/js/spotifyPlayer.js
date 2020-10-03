@@ -64,7 +64,7 @@ function initSpotifyPlayer() {
     player.addListener('playback_error', function ({ message }) {
         console.error(message);
         player.removeListener('playback_error');
-        reconnect();
+        player.disconnect().then(reconnect())
     });
 
     // Playback status updates
