@@ -55,6 +55,7 @@ function getUrlVars() {
 }
 
 function logout(redirect = true) {
+    if (player) player.disconnect();
     localStorage.userHasLogged = 'false';
     if (sessionStorage.accessToken) sessionStorage.removeItem('accessToken');
     if (sessionStorage.expires_at) sessionStorage.removeItem('expires_at');

@@ -240,7 +240,7 @@ function initSpotifyPlayer() {
 
     //Helpers
     function reconnect(play = false) {
-        updatePlaceholderText('Reconnecting <br> to Spotify...');
+        updatePlaceholderText('Reconnecting <br> to Spotify...', true);
         spotify.removeLoader(false);
         playerIsReady = false;
 

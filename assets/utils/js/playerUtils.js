@@ -13,8 +13,9 @@ function updateStatusText (message) {
     $(spotifyStatusText).text(message);
 }
 
-function updatePlaceholderText(text) {
+function updatePlaceholderText(text, error = false) {
     $(spotifyPlaceholder).html(text);
+    if (error) $(musicBox).addClass('error');
 }
 
 var songTl;

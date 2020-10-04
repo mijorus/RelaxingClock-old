@@ -129,8 +129,8 @@ var spotify = {
             type: "PUT",
             headers: spotify.requestHeader,
             url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
-            data: JSON.stringify(song)})
-            .done(function() {
+            data: JSON.stringify(song),
+            success: (function() {
                 console.log('I AM PLAYING!');
                 playbackStarted = true;
                 $(playbackIcon).removeClass('fa-play');
@@ -139,8 +139,8 @@ var spotify = {
                     spotify.shuffle(true);
                 }, 2000);
 
-            })
-            .fail(function(error) {
+            }),
+            error: (function(error) {
                 spotify.logError('PLAYBACK ERROR!', error);
                 switch (error.status) {
                     case 500:
@@ -169,8 +169,27 @@ var spotify = {
                     break;
                 }
             })
-        // });
+        });
     },
+
+    // player: function(device_id, play = true) {
+    //     $.ajax({
+    //         type: "PUT",
+    //         headers: spotify.requestHeader,
+    //         url: "https://api.spotify.com/v1/me/player/play",
+    //         data: JSON.stringify({
+    //             "device_ids": [`${device_id}`],
+    //             "play": play
+    //         }),
+    //         success: (function() {
+    //             console.log(`SWITCHED BACK TO Relaxing Clock`);
+    //         }),
+    //         error: (function(error) {
+    //             spotify.logError(`CAN'T PLAY ON THIS DEVICE RIGHT NOW`, error);
+    //             spotify.throwGenericError(error);
+    //         })
+    //     })
+    // },
     
     shuffle: function(state) {
         $.ajax({
@@ -239,12 +258,10 @@ var spotify = {
 
     throwTokenError: function () {
         this.removeLoader();
-        $('#spotify-track-info').hide();
-        $(spotifyPlaceholder).addClass('general-error');
         updateStatusText(`Sorry, but you need to login again`);
         updatePlaceholderText(
-            `Please <button id="toker-err-msg" class="transp-btn">login</button> again`
-        );
+            `Please <button id="toker-err-msg" class="transp-btn">login</button> again`, 
+            true);
         $('#toker-err-msg').on('click', async function (event) {
             event.preventDefault();
             event.stopPropagation();
@@ -264,15 +281,15 @@ var spotify = {
     },
 
     throwGenericError: function(message = 'default') {
-        player.pause();
+        player.disconnect();
         this.removeLoader();
         $(musicBox).addClass('error');
         
         if (message === 'default') {
             updatePlaceholderText(
-                `Something went<br>wrong :( <a href="${redirectURI}">Try again</a>`);
+                `Something went<br>wrong :( <a href="${redirectURI}">Try again</a>`, true);
         } else {
-            updatePlaceholderText(message);
+            updatePlaceholderText(message, true);
         }
     },
 
@@ -280,7 +297,7 @@ var spotify = {
         this.removeLoader();
         localStorage.setItem('premium', 'false');
         updateStatusText(`Sorry ${username}, but you need a premium account`);
-        updatePlaceholderText(`Sorry, you must be <br>a premium user :(`);
+        updatePlaceholderText(`Sorry, you must be <br>a premium user :(`, true);
     },
 
     removeLoader: function(remove = true) {

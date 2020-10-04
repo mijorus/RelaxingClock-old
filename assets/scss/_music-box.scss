@@ -234,6 +234,18 @@
         }
     }
 
+    &.error {
+        border-color: transparent !important;
+
+        #spotify-placeholder {
+            opacity: 1 !important;
+        }
+
+        #spotify-track-info {
+            display: none !important;
+        }
+    }
+
     #song-info {
         display: none;
     }
