@@ -23,9 +23,27 @@ noSleep = new NoSleep();
 aRandomPlace; //a Random place in the array of cities, is a function;
 
 //Handle Log switch
-if (!logs) {
+if (localStorage.getItem('logs') === null) {
   console.log = function() {}
-  console.error = function() {}
+
+  let logsClickCounter = 0;
+  let logsTimeout;
+  const logSwitch = $('#log-switch');
+  $(logSwitch).on('click', () => {
+    clearTimeout(logsTimeout);
+    logsClickCounter++
+    if (logsClickCounter < 5) {
+      logsTimeout = setTimeout(() => {
+        logsClickCounter = 0;
+      }, 250)
+    } else {
+      localStorage.setItem('logs', 'true');
+      $(logSwitch).css('color', 'rgb(245, 245, 245)');
+      $(logSwitch).off('click');
+    }
+  });
+} else {
+  $('#log-switch').css('color', 'rgb(245, 245, 245)');
 }
 
 $('.loader').loaders();

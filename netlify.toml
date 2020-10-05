@@ -1,5 +1,5 @@
 [build]
 publish = "public"
-command = "hugo --gc --environment production"
+command = "hugo --gc --environment production --enableGitInfo"
 [context.production.environment]
 HUGO_VERSION = "0.75.1"

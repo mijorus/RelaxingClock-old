@@ -28,6 +28,11 @@
     </div>
     <div id="made-with-love">
         Made with <i class="fas fa-heart"></i> by {{ site.Params.Author }}
+        {{ with .GitInfo.AbbreviatedHash}}
+        <p>version {{ . }}</p> 
+        {{ else }}
+        <p id="log-switch">version: development </p>
+        {{ end }}
         <br><br>
     </div>
 </footer>
