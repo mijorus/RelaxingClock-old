@@ -314,9 +314,6 @@ function saveLoginResponse(response) {
     logged = true;
     console.log(`Saving data...`);
 
-    const expires_at = moment().unix() + (parseInt(response.expires_in));
-
-    sessionStorage.setItem('expires_at', expires_at);
     sessionStorage.setItem('accessToken', response.access_token);
     spotify.requestHeader = { 'Authorization': `Bearer ${sessionStorage.accessToken}` };
     localStorage.setItem('refreshToken', response.refresh_token);
