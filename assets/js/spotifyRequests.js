@@ -45,7 +45,6 @@ var spotify = {
             },
 
             error: function (error) {
-                console.log(error);
                 switch (error.status) {
                     case 400:
                         spotify.throwTokenError();

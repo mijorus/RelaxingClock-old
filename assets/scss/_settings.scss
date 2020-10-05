@@ -79,13 +79,13 @@
             margin-left: $dd-margin-left;
             transition: opacity .2s linear;
 
-            @media (max-width: $phone) {
-                font-size: $settings-font-size-phone;
-                margin-left: 0;
-            }
-
             @include md-screen {
                 font-size: $settings-title-font-size-md;
+            }
+
+            @include phones {
+                font-size: $settings-font-size-phone;
+                margin-left: 0;
             }
 
             .settings-btn-container {
@@ -109,7 +109,7 @@
             span {
                 position: relative;
 
-                @media (max-width: $phone) {
+                @include phones {
                     white-space: normal;
                 }
             }
@@ -137,7 +137,7 @@
                     transition: all .1s linear;
                 }
 
-                @media (max-width: $phone) {
+                @include phones {
                     font-size: $settings-font-size-phone;
                     border-width: 1px;
                     border-radius: 7px;
