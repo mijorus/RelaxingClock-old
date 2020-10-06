@@ -16,5 +16,8 @@ layout: page
 ## - City landscapes: 
 Credits: Shutterstock@JosepPerianes [Link](https://www.shutterstock.com/it/g/josep+perianes+jorba)
 
-## - Alarm sound
+## - Alarm sound:
 Credits: Zapsplat [Link](https://www.zapsplat.com/)
+
+## - Tomato Icon:
+Pixel perfect @flaticon [Link](https://www.flaticon.com/free-icon/tomato_1202125)

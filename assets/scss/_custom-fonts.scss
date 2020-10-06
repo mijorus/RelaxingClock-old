@@ -20,6 +20,40 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+$pomodoro-red: rgb(248, 48, 48);
+
+.icon-tomato-22 {
+
+  .path1:before {
+    content: "\e90e";
+    color: $pomodoro-red;
+    font-weight: 200;
+  }
+
+  .path2:before {
+    content: "\e90f";
+    margin-left: -1em;
+    color: $pomodoro-red;
+    font-weight: 200;
+  }
+  .path3:before {
+    content: "\e910";
+    margin-left: -1em;
+    color: rgb(68, 170, 0);
+    font-weight: 200;
+  }
+  .path4:before {
+    content: "\e911";
+    margin-left: -1em;
+    color: rgb(68, 170, 0);
+    font-weight: 200;
+  }
+}
+
+.icon-tomato:before {
+  content: "\e90b";
+}
+
 .icon-moon-centered:before {
   content: "\e903";
   color: #95f;

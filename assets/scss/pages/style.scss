@@ -89,7 +89,7 @@ main {
     display: inline-block;
     position: fixed;
     font-weight: 900;
-    z-index: 2;
+    z-index: -2;
 
     @include phones {
         font-size: 30vw;

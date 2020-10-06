@@ -221,6 +221,15 @@
             }
         }
 
+        #pomodoro-box {
+            #pomodoro-icon {
+                .icon-tomato-22 {
+                    top: 4px;
+                    position: relative;
+                }
+            }
+        }
+
         .unavailable {
                 opacity: .5;
                 pointer-events: none !important;
