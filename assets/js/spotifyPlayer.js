@@ -8,7 +8,7 @@ currentTrackId = undefined,
 playerIsReady = false,
 songIsSelected = false,
 currentTrack = {},
-currentState = {},
+currentStateContext = {},
 currentTrackId = undefined,
 playbackStarted = false;
 //favourite = false;
@@ -70,8 +70,7 @@ function initSpotifyPlayer() {
     // Playback status updates
     player.addListener('player_state_changed', function (state) {
         if (state) {
-            console.log(state);
-            currentState = state;
+            currentStateContext = state.context;
             currentTrack = state.track_window.current_track;
 
             if (state.paused) {
@@ -245,7 +244,7 @@ function initSpotifyPlayer() {
         playerIsReady = false;
 
         let lastSong;
-        const context = currentState.context.uri;
+        const context = currentStateContext.context.uri;
         /* We will test the context uri against this regex
         to see if is it a valid uris recognised but the 
         web API, if the context is not recognised (fox ex 
