@@ -69,13 +69,13 @@
                         class="path4"></span><span class="path5"></span></span></i>
                 <span>Pomodoro Timer</span>
             </dt>
-            <dd>
+            <dd id="pomodoro-lable-box">
                 <span id="pomodoro-lable">Start the timer</span>
                 <div class="settings-btn-container">
-                    <button id="set-pomodoro-btn" class="settings-btn activated transp-btn" alt="Start timer">Start</button>
+                    <button id="set-pomodoro-btn" class="settings-btn activated transp-btn" alt="Start timer"></button>
                 </div>
             </dd>
-            <dd id="pomodoro-notif-box" class="nested">
+            <dd id="pomodoro-long-box" class="nested">
                 <span>Longer sessions</span>
                 <div class="settings-btn-container">
                     <button id="pom-long-on" class="settings-btn transp-btn" data-option="on" alt="Longer session on">
@@ -101,6 +101,9 @@
                 <i class="lnr lnr-question-circle"></i>
                 <span>The Pomodoro Timer efficiently splits your workflow into a 25-minutes working session and a 5-minutes break. <strong>Relaxing Clock</strong> can also set a longer 45/15-minutes session if you really are an hard-worker</span>
             </p>
+            <audio id="pomodoro-sound">
+                <source src="/media/pomodoro.mp3" type="audio/mpeg">
+            </audio>
         </div>
         {{/*  High contrast  */}}
         <div id="presentation-box" class="setting-box">

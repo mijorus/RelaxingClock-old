@@ -222,6 +222,37 @@
         }
 
         #pomodoro-box {
+            #pomodoro-lable-box {
+                transition: background-color .2s linear;
+
+                &.working {
+                    background-color: #e44242 !important;
+                }
+
+                &.relaxing {
+                    color: $color-bg !important;
+                    background-color: #3aff80 !important;
+                }
+
+                #set-pomodoro-btn{
+
+                    &.activated::before {
+                        content: "Start";
+                    }
+                    
+                    &.btn-dismiss {
+                        color: $color-white !important;
+                        background-color: $color-bg !important;
+                        border-color: $color-bg !important;
+                    }
+                    
+                    &.btn-dismiss::before {
+                        content: "Stop" !important;
+                    }
+                }
+            }
+
+
             #pomodoro-icon {
                 .icon-tomato-22 {
                     top: 4px;

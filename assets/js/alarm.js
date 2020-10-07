@@ -10,11 +10,6 @@ var alarm = {
 
     enabled: false,
 
-    oldPlaybackState: {
-        status: false, //if the playback was paused or not (true if it was, false if it was playing)
-        volume: undefined,
-    },
-
     notificationStatus: false,
 
     notifications: function(enabled) {
@@ -154,40 +149,13 @@ var alarm = {
         this.set(alarmTime.add(10, 'm'));
     },
 
-    handleMusic: function(turnDown) {
-        if (player !== undefined) {
-            if (turnDown) {
-                this.oldPlaybackState.status = paused;
-                player.getVolume().then(volume => {
-                    this.oldPlaybackState.volume = volume;
-                    if (!this.oldPlaybackState.status) {
-                        const newVolume = 0.2;
-                        if (newVolume <= volume) player.setVolume(newVolume);
-                    }
-                });
-
-
-                if (!this.oldPlaybackState.status) {
-                    const newVolume = 0.2;
-                    if (newVolume <= this.oldPlaybackState.volume) player.setVolume(newVolume);
-                }
-            } else {
-                if (this.oldPlaybackState.volume !== undefined) {
-                    player.setVolume(this.oldPlaybackState.volume);
-                    if (!this.oldPlaybackState.status) player.resume();
-                }
-            }
-        }
-    },
-
     ring: function (ringing = true) {
 
         if (ringing) {
             inSettings = true;
-            $(alarmSection).addClass('ring');
             $('#big-container').addClass('blur');
-            $(alarmSection).removeClass('show');
-            this.handleMusic(true);
+            $(alarmSection).removeClass('show').addClass('ring');
+            handleMusic(true);
 
             $(this.alarmSet).on('click', (event) => { event.stopPropagation(); this.snooze() });
             $(this.alarmDismiss).on('click', (event) => { event.stopPropagation(); this.dismiss() });
@@ -212,7 +180,7 @@ var alarm = {
             this.animateRing(false);
             $(document).off('visibilitychange');
             document.querySelector('#alarm-sound').pause();
-            this.handleMusic(false);
+            handleMusic(false);
         }
 
         localStorage.removeItem('alarmTime');
@@ -264,6 +232,7 @@ var alarm = {
     },
 
     closePage: function () {   
+        this.removeAlarmListeners();
         anime({
             begin: () => { $('#big-container').removeClass('blur') },
             targets: $(alarmSection).get(0),
@@ -272,7 +241,6 @@ var alarm = {
             opacity: [1, 0],
             complete: () => { 
                 $(this.tomorrowBox).empty();
-                this.removeAlarmListeners();
                 $(body).removeClass('unscrollable');
                 $(alarmSection).removeClass('show ring');
             }

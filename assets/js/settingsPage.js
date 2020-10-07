@@ -39,7 +39,6 @@ function getButtonSettings() {
             button: 'pom-long',
         },
    ].forEach((setting) => {
-        console.log(setting);
         const val = (setting.button).toLocaleLowerCase();
         if (setting.stored === 'true') {
             setButtonSelection($(settingsSection).get(0).querySelector(`#${val}-on`), setting.callback);
@@ -112,7 +111,17 @@ for (btn of $(btns)) {
             case 'set-pomodoro-btn':
                 if (!pomodoro.running) {
                     pomodoro.start();
+                } else {
+                    pomodoro.stop();
                 }
+            break;
+
+            case 'pom-long-on':
+                localStorage.longPomodoro = 'true';
+            break;
+
+            case 'pom-long-off':
+                localStorage.longPomodoro = 'false';
             break;
 
             case 'alarm-notif-on':

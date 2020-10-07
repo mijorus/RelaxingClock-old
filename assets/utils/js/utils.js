@@ -43,15 +43,35 @@ function changeBtnLable(target, nextMessage, dur = 650) {
     });
 }
 
+let handlingMusic = false;
+let oldPlaybackState = {
+    status: false, //if the playback was paused or not (true if it was, false if it was playing)
+    volume: undefined,
+}
 
+function handleMusic (turnDown) {
+    if (player !== undefined) {
+        if (!handlingMusic) {
+            if (turnDown) {
+                oldPlaybackState.status = paused;
+                player.getVolume().then(volume => {
+                    oldPlaybackState.volume = volume;
+                    if (!oldPlaybackState.status) {
+                        const newVolume = 0.2;
+                        if (newVolume <= volume) player.setVolume(newVolume);
+                    }
+                });
 
-
-
-
-// anime({
-//     targets: $(alarm.alarmLable).get(0),
-//     direction: 'alternate', duration: 650, loop: 1, easing: cbDefault, opacity: [1, 0],
-//     loopComplete: () => {
-//         $(alarm.alarmLable).text(`Rings ${this.timeToAlarm().toLowerCase()}`);
-//     }
-// });
+                if (!oldPlaybackState.status) {
+                    const newVolume = 0.2;
+                    if (newVolume <= oldPlaybackState.volume) player.setVolume(newVolume);
+                }
+            } else {
+                if (oldPlaybackState.volume !== undefined) {
+                    player.setVolume(oldPlaybackState.volume);
+                    if (!oldPlaybackState.status) player.resume();
+                }
+            }
+        }
+    }
+}
