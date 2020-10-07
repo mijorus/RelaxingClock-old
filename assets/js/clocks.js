@@ -155,14 +155,6 @@ function loadTime(timeFormat, zone = localTimezone) { //International or america
     switch (timeFormat) {
         case '12h':
             hours   = now.format('hh');
-            min     = now.format('mm');
-
-            if (currentPosition === 0 && hours == '04' && min == '20' && now.format('HH') > 12) {
-                sec = '69';
-            } else {
-                sec = now.format('ss');
-            }
-
             if ((now.format('HH') <= 12)) {
                 $(ampmIcon).text('AM');
             } else {
@@ -172,11 +164,11 @@ function loadTime(timeFormat, zone = localTimezone) { //International or america
     
         case '24h':
             hours   = now.format('HH');
-            min     = now.format('mm');
-            sec     = now.format('ss'); 
         break;
-
     }
+
+    min = now.format('mm');
+    sec = now.format('ss'); 
 }
 
 function handleSelectedClock(userSelection, transition, resetClock) {
