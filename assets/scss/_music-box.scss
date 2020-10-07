@@ -2,7 +2,7 @@
 #music-box {
     width: 15vw;
     position: absolute;
-    border-radius: 1.3vh;
+    border-radius: 10px;
     bottom: 0;
     left: 0;
     margin: 1vw;
@@ -178,6 +178,10 @@
             }
         }
         
+        .music-btn {
+            font-size: 1.2vw;
+        }
+
         .play-btn {
             cursor: pointer;
             color: inherit;
