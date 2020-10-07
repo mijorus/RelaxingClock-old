@@ -93,6 +93,7 @@ var alarm = {
 
     set: function (when) {
         console.log(`Alarm set at ${when.format('HH:mm')}`);
+        this.removeAlarmListeners();
         
         if (moment().isBefore(when)) {
             alarm.enabled = true;
@@ -102,14 +103,7 @@ var alarm = {
                 $('#alarm-notif-box').removeClass('unavailable');
             }
 
-
-            anime({
-                targets: $(alarm.alarmLable).get(0),
-                direction: 'alternate', duration: 650, loop: 1, easing: cbDefault, opacity: [1, 0],
-                loopComplete: () => {
-                    $(alarm.alarmLable).text(`Rings ${this.timeToAlarm().toLowerCase()}`);
-                }
-            });
+            changeBtnLable($(this.alarmLable), `Rings ${this.timeToAlarm().toLowerCase()}`);
 
             this.at = setInterval(function () {
                 if (moment().isSameOrAfter(when)) {
@@ -122,7 +116,7 @@ var alarm = {
 
                 const left = alarm.timeToAlarm().toLowerCase();
                 if (alarm.alarmLable.text() !== `Rings ${left}` && alarm.enabled) {
-                    $(alarm.alarmLable).text(`Rings ${left}`)
+                    changeBtnLable($(alarm.alarmLable), `Rings ${left}`);
                 }
 
             }, 1000);
