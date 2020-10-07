@@ -142,6 +142,13 @@ a {
     }
 }
 
+#pomodoro-message {
+    position: absolute;
+    left: 50%;
+    top: 2vh;
+    transform: translateX(-50%);
+}
+
 @keyframes arrow-bounce {
     from {
         opacity: .5;

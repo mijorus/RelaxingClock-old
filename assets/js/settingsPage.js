@@ -2,9 +2,7 @@ var settingsSection = $('#settings-section');
 var btns = settingsSection.find('button');
 
 setSpotifyLoginButton();
-setAutoplayButtons();
-setPresentationButtons();
-setRemoteTimeButtons();
+getButtonSettings();
 
 //Spotify login button
 function setSpotifyLoginButton() {
@@ -21,36 +19,38 @@ function setSpotifyLoginButton() {
     }
 }
 
-//Autoplay buttons
-function setAutoplayButtons() {
-    if (localStorage.autoplay == 'false') {
-        setButtonSelection($(settingsSection).get(0).querySelector('#autoplay-off'));
-    } else if (localStorage.autoplay == 'true') {
-        setButtonSelection($(settingsSection).get(0).querySelector('#autoplay-on'));
-
-    }
-}
-
-//Presentation buttons
-function setPresentationButtons() {
-    if (localStorage.presentation == 'false') {
-        setButtonSelection($(settingsSection).get(0).querySelector('#presentation-off'));
-    } else if (localStorage.presentation == 'true') {
-        setButtonSelection($(settingsSection).get(0).querySelector('#presentation-on'));
-    }
-}
-
-function setRemoteTimeButtons() {
-    if (localStorage.remoteTime == 'false') {
-        setButtonSelection($(settingsSection).get(0).querySelector('#remote-time-off'));
-    } else if (localStorage.remoteTime == 'true') {
-        getRemoteTime(true);
-        setButtonSelection($(settingsSection).get(0).querySelector('#remote-time-on'));
-    }
+function getButtonSettings() {
+   [
+        {
+            stored: localStorage.autoplay,
+            button: 'autoplay'
+        },
+        {
+            stored: localStorage.presentation,
+            button: 'presentation'
+        },
+        {
+            stored: localStorage.remoteTime,
+            button: 'remote-time',
+            callback: (localStorage.remoteTime === 'true') ? getRemoteTime(true) : null
+        },
+        {
+            stored: localStorage.longPomodoro,
+            button: 'pom-long',
+        },
+   ].forEach((setting) => {
+        console.log(setting);
+        const val = (setting.button).toLocaleLowerCase();
+        if (setting.stored === 'true') {
+            setButtonSelection($(settingsSection).get(0).querySelector(`#${val}-on`), setting.callback);
+        } else if (setting.stored === 'false') {
+            setButtonSelection($(settingsSection).get(0).querySelector(`#${val}-off`), setting.callback);
+        }
+   });
 }
 
 //Helper function
-function setButtonSelection(target) {
+function setButtonSelection(target, callback) {
     if (target.dataset.option == 'on') {
         target.classList.add('activated');
         target.nextElementSibling.classList.remove('activated');
@@ -58,6 +58,8 @@ function setButtonSelection(target) {
         target.classList.add('activated');
         target.previousElementSibling.classList.remove('activated');
     }
+
+    if (callback) callback();
 }
 
 //Actions to be executed on button click
@@ -104,6 +106,12 @@ for (btn of $(btns)) {
                     alarm.openPage();
                 } else {
                     alarm.dismiss(false);
+                }
+            break;
+
+            case 'set-pomodoro-btn':
+                if (!pomodoro.running) {
+                    pomodoro.start();
                 }
             break;
 

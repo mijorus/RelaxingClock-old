@@ -15,7 +15,8 @@ if (localStorage) {
     [
         'userHasLogged', 
         'autoplay', 
-        'presentation', 
+        'presentation',
+        'longPomodoro',
         'remoteTime',
     ].forEach((value) => {
         if (localStorage.getItem(value) === null) {

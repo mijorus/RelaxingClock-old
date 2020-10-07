@@ -1,5 +1,6 @@
 <section id="settings-section" alt="Settings">
     <dl>
+        {{/*  Spotify  */}}
         <div id="spotify-logout-box" class="setting-box">
             <dt>
                 <i class="fab fa-spotify spotify-icon"></i>
@@ -26,11 +27,13 @@
                     </button>
                 </div>
             </dd>
-             <p>
-                <i class="lnr lnr-rocket"></i>
-                <span>Pro Tip: <strong>Right</strong> click on the play button to skip tracks; <strong>scroll</strong> with the
-                mouse wheel on the player to set the volume.</span>
-             </p>
+            <p>
+            <i class="lnr lnr-rocket"></i>
+            <span>Pro Tip: <strong>Right</strong> click on the play button to skip tracks; <strong>scroll</strong> with the
+            mouse wheel on the player to set the volume.</span>
+            </p>
+        </div>
+        {{/*  Alarm  */}}
         <div id="alarm-box" class="setting-box">
             <dt>
                 <i id="alarm-icon-settings" class="icon-clock-white bg-center"><span class="path1"></span><span
@@ -59,6 +62,7 @@
                 <span>I can send you a notification if you are doing something else and you don't have Relaxing Clock opened in front of you</span>
             </p>
         </div>
+        {{/*  Pomodoro  */}}
         <div id="pomodoro-box" class="setting-box">
             <dt>
                 <i id="pomodoro-icon"><span class="icon-tomato-22"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span
@@ -77,8 +81,7 @@
                     <button id="pom-long-on" class="settings-btn transp-btn" data-option="on" alt="Longer session on">
                         ON
                     </button>
-                    <button id="pom-long-of" class="settings-btn activated transp-btn" data-option="off"
-                        alt="Longer session off">
+                    <button id="pom-long-off" class="settings-btn activated transp-btn" data-option="off" alt="Longer session off">
                         OFF
                     </button>
                 </div>
@@ -99,6 +102,7 @@
                 <span>The Pomodoro Timer efficiently splits your workflow into a 25-minutes working session and a 5-minutes break. <strong>Relaxing Clock</strong> can also set a longer 45/15-minutes session if you really are an hard-worker</span>
             </p>
         </div>
+        {{/*  High contrast  */}}
         <div id="presentation-box" class="setting-box">
             <dt>
                 <i class="icon-lightbulb"></i>
@@ -120,6 +124,7 @@
                 <span>Keep the colors bright and vivid when the screen saver is active, super useful if you want <strong>Relaxing Clock</strong> to shine</span>
             </p>
         </div>
+        {{/*  Beta  */}}
         <div id="beta-features-box" class="setting-box">
             <dt>
                 <i class="icon-lab1"></i>

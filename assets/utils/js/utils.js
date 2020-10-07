@@ -30,3 +30,28 @@ function getRandomIntInclusive(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+//Change button lable with animation
+function changeBtnLable(target, nextMessage, dur = 650) {
+    anime({
+        targets: $(target).get(0),
+        direction: 'alternate', duration: dur, 
+        loop: 1, easing: cbDefault, opacity: [1, 0],
+        loopComplete: () => {
+            $(target).text(`${nextMessage}`);
+        }
+    });
+}
+
+
+
+
+
+
+// anime({
+//     targets: $(alarm.alarmLable).get(0),
+//     direction: 'alternate', duration: 650, loop: 1, easing: cbDefault, opacity: [1, 0],
+//     loopComplete: () => {
+//         $(alarm.alarmLable).text(`Rings ${this.timeToAlarm().toLowerCase()}`);
+//     }
+// });
