@@ -4,6 +4,7 @@ bigClock = $('#big-clock'),
 expandIcon = $('.expand-icon'),
 toScreenSave = $('.toscreensave'),
 musicBox = $('#music-box'),
+pomodoroBox = $('#pomodoro-feature-box'),
 settingsArrow = $('#open-settings-container'),
 cbDefault = 'cubicBezier(0.37, 0, 0.63, 1)',
 eaElasticDefault = 'easeOutElastic(1, 1)',
@@ -106,11 +107,11 @@ $(window).on('scroll', function(event) {
     if ($(window).scrollTop() === 0 ) {
       inSettings = false;
       settingsPage.arrow(true);
-      $(musicBox).removeClass('hide');
+      [$(musicBox), $(pomodoroBox)].forEach((el) => $(el).removeClass('hide'));
     } else {
       inSettings = true;
       settingsPage.arrow(false);
-      $(musicBox).addClass('hide');
+      [$(musicBox), $(pomodoroBox)].forEach((el) => $(el).addClass('hide'));
     }
   }, 250)
 });

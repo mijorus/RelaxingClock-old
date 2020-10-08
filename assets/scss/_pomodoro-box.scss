@@ -4,7 +4,7 @@
     border: $sp-border-box solid;
     border-color: transparent;
     justify-content: space-between;
-    transition: opacity .2s linear;
+    transition: opacity 1s linear;
     opacity: .9;
 
     body.screen-saving-color &.screen-saving {
@@ -13,6 +13,10 @@
 
     body.high-contrast &.screen-saving {
         opacity: 1;
+    }
+
+    &.hide {
+        opacity: 0 !important;
     }
     
     &.working {

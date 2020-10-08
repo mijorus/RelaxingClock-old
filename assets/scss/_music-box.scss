@@ -20,7 +20,7 @@
     }
 
     &.unlogged {
-        transition: all 1s linear;
+        transition: opacity 1s linear;
         border: none;
         .far.fa-heart{
             display: none;
