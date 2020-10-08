@@ -23,7 +23,11 @@ var pomodoro = {
     start: function() {
         this.running = true;
         clearTimeout(this.timeout);
-        $('#pomodoro-lable-box').removeClass('relaxing').addClass('working');
+        [$('#pomodoro-feature-box'), $('#pomodoro-lable-box')].forEach((el) => {
+            $(el).removeClass('force-hide relaxing')
+            setTimeout(() => { $(el).addClass('working') }, 200)
+        });
+
         $('#pomodoro-long-box').addClass('unavailable');
         $('#set-pomodoro-btn').addClass('btn-dismiss');
         const cycleLenght = this.workingCycle();
@@ -37,7 +41,11 @@ var pomodoro = {
 
     relax: function() {
         clearTimeout(this.timeout);
-        $('#pomodoro-lable-box').removeClass('working').addClass('relaxing');
+        [$('#pomodoro-feature-box'), $('#pomodoro-lable-box')].forEach((el) => {
+            $(el).removeClass('working')
+            setTimeout(() => { $(el).addClass('relaxing') }, 200)
+        });
+        
         const cycleLenght = this.relaxingCycle();
         console.log(`Starting Pomodoro Timer for ${cycleLenght / (60 * 1000)} minutes...`);
         changeBtnLable($('#pomodoro-lable'), `Time to relax! Empty your mind :)`);
@@ -51,7 +59,9 @@ var pomodoro = {
         this.running = false;
         clearTimeout(this.timeout);
         console.log('Dismissed pomodoro timer');
-        $('#pomodoro-lable-box').removeClass('working relaxing');
+        [$('#pomodoro-feature-box'), $('#pomodoro-lable-box')].forEach((el) => {
+            $(el).removeClass('working relaxing') });
+        $('#pomodoro-feature-box').addClass('force-hide')
         $('#pomodoro-long-box').removeClass('unavailable');
         $('#set-pomodoro-btn').removeClass('btn-dismiss');
         changeBtnLable($('#pomodoro-lable'), `Start the timer`);

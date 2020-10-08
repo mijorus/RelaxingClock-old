@@ -1,21 +1,9 @@
 /* Music box */
 #music-box {
-    width: 15vw;
-    position: absolute;
-    border-radius: 10px;
+    background-color: $color-bg;
+    color: $color-white;
     bottom: 0;
     left: 0;
-    margin: 1vw;
-    padding: .6vw;
-    display: flex;
-    background-color: $color-bg;
-    justify-content: flex-start;
-    z-index: 2;
-    align-items: center;
-    align-content: space-between;
-    color: $color-white;
-    flex-wrap: nowrap;
-    transition: background-color .2s linear;
 
     main.metro &.logged {
         background-color: black;
@@ -263,7 +251,7 @@
         }
         
         .spotify-icon {
-            font-size: $sp-icon-fs;
+            //font-size: $sp-icon-fs;
             margin-right: .5vw;
             transition: opacity 1s linear;
             background-position: center;
@@ -282,18 +270,6 @@
             body.high-contrast &.screen-saving {
                 //color: rgba(29, 185, 84, 1);
                 opacity: 1;
-            }
-
-            @include md-screen {
-                font-size: 3vw;
-            }
-
-            @include phones {
-                font-size: $sp-icon-fs * 2;
-            }
-
-            @include xs-phone {
-                font-size: $sp-icon-fs * 2.5;
             }
         }
     }

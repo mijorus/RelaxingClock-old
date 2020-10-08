@@ -226,12 +226,12 @@
                 transition: background-color .2s linear;
 
                 &.working {
-                    background-color: #e44242 !important;
+                    background-color: $concentration !important;
                 }
 
                 &.relaxing {
                     color: $color-bg !important;
-                    background-color: #3aff80 !important;
+                    background-color: $relax !important;
                 }
 
                 #set-pomodoro-btn{

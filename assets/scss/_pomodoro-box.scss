@@ -1,0 +1,84 @@
+#pomodoro-feature-box {
+    bottom: 0;
+    right: 0;
+    border: $sp-border-box solid;
+    border-color: transparent;
+    justify-content: space-between;
+    transition: opacity .2s linear;
+    opacity: .9;
+
+    body.screen-saving-color &.screen-saving {
+        opacity: .5;
+    }
+
+    body.high-contrast &.screen-saving {
+        opacity: 1;
+    }
+    
+    &.working {
+        background-color: $concentration;
+        border-color: $concentration;
+        color: $color-white;
+        animation: shaky-shake .5s linear;
+        transform-origin: bottom;
+
+        #pomodoro-feature-text {
+
+            &:before {
+                content: 'Stay focused!';
+            }
+        }
+
+        i {
+            right: 0;
+
+            &:before {
+                content: "\e919";
+            }
+        }
+    }
+
+    &.relaxing {
+        background-color: $relax;
+        border-color: $relax;
+        color: $color-bg;
+        animation: shaky-shake .5s linear;
+        transform-origin: bottom;
+
+        #pomodoro-feature-text {
+
+            &:before {
+                content: 'Time to relax!';
+            }
+        }
+
+        i {
+            right: 0;
+
+            &:before {
+                content: "\e917";
+            }
+        }
+    }
+
+    @keyframes shaky-shake {    
+        0% {
+            transform: scale(0) rotate(0);
+        }
+        20% {
+            transform: scale(1.1) rotate(10deg);
+        }
+        40% {
+            transform: scale(1.2) rotate(0deg);
+        }
+        60% {
+            transform: scale(1.2) rotate(-10deg);
+        }
+        80% {
+            transform: scale(1.1) rotate(10deg);
+        }
+        100% {
+            transform: scale(1) rotate(0deg);
+        }
+    }
+}
