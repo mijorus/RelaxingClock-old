@@ -180,3 +180,17 @@
         font-size: $sp-icon-fs * 2.5;
     }
 }
+
+.feature-placeholder {
+    font-size: $sp-plh-fs;
+
+    @include md-screen {
+        font-size: $sp-plh-fs * 1.5;
+    }
+    @include phones {
+        font-size: $sp-plh-fs * 1.5;
+    }
+    @include xs-phone {
+            font-size: $sp-plh-fs * 2.1;
+    }
+}

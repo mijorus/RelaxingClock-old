@@ -281,25 +281,12 @@
         flex-grow: 20;
         
         #spotify-placeholder {
-            font-size: $sp-plh-fs;
             position: relative;
             opacity: 1;
 
             #toker-err-msg{
                 text-decoration: underline;
                 color: $color-white;
-            }
-
-
-
-            @include md-screen {
-                font-size: $sp-plh-fs * 1.5;
-            }
-            @include phones {
-                font-size: $sp-plh-fs * 1.5;
-            }
-            @include xs-phone {
-                 font-size: $sp-plh-fs * 2.1;
             }
         }
 
