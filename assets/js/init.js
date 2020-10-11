@@ -23,6 +23,18 @@ clock, //THE Clock
 noSleep = new NoSleep();
 aRandomPlace; //a Random place in the array of cities, is a function;
 
+//Cookie Banner
+if (localStorage.getItem('cookie') === null) {
+  $('#cookie').show();
+  $('#cookie-dismiss').on('click', () => {
+    $('#cookie').remove();
+    localStorage.setItem('cookie', '1');
+    $('#cookie-dismiss').off('click');
+  });
+} else {
+  $('#cookie').remove();
+}
+
 //Handle Log switch
 if (localStorage.getItem('logs') === null) {
   console.log = function() {}
