@@ -70,8 +70,9 @@ function initSpotifyPlayer() {
     // Playback status updates
     player.addListener('player_state_changed', function (state) {
         if (state) {
+            const thisTrack = state.track_window.current_track;
             currentStateContext = state.context;
-            currentTrack = state.track_window.current_track;
+            currentTrack = (thisTrack) ? thisTrack : currentTrack;
 
             if (state.paused) {
                 paused = true;
