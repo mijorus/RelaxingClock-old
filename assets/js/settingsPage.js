@@ -124,6 +124,22 @@ for (btn of $(btns)) {
                 localStorage.longPomodoro = 'false';
             break;
 
+            case 'pom-notif-on':
+                if (compatibility.notification) {
+                    if (pomodoro.running) {
+                        pomodoro.notifications(true);
+                    }
+                }
+            break;
+
+            case 'pom-notif-off':
+                if (compatibility.notification) {
+                    if (pomodoro.running) {
+                        pomodoro.notifications(false);
+                    }
+                }
+            break;
+
             case 'alarm-notif-on':
                 if (compatibility.notification) {
                     if (alarm.enabled) {

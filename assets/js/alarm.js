@@ -13,23 +13,20 @@ var alarm = {
     notificationStatus: false,
 
     notifications: function(enabled) {
-        const perm = Notification.permission
+        const alarmNotifBox = $('#alarm-notif-box span');
+        const notifBoxText = 'Send a notification when the alarm rings';
 
         if (enabled) {
-            if (perm === 'granted') {
-                this.notificationStatus = true;
-                console.log(`Alarm notifications enabled`);
-            } else if (perm !== 'denied' || perm === "default") {
-                console.warn(`Alarm notifications: missing permission!`);
-                Notification.requestPermission()
-                .then(function (result) {
-                    if (result === 'granted') {
-                        this.notificationStatus = true;
-                    }
-                })
-            }
+            checkNotificationStatus($(alarmNotifBox)).then((notif) => {
+               if (notif) {
+                   this.notificationStatus = true;
+                   changeBtnLable($(alarmNotifBox), notifBoxText);
+                   console.log(`Alarm notifications enabled`);
+               }
+           });
         } else {
             this.notificationStatus = false;
+            if ($(alarmNotifBox).text() !== notifBoxText) changeBtnLable($(alarmNotifBox), notifBoxText);
             console.log(`Alarm notifications disbled`);
         }
     },

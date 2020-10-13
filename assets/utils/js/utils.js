@@ -49,6 +49,27 @@ let oldPlaybackState = {
     volume: undefined,
 }
 
+function checkNotificationStatus (targetLable) {
+    return new Promise (function (resolve) {
+        const perm = Notification.permission;
+
+        if (perm === 'granted') {
+            console.log(`Notifications enabled`);
+            return resolve(true)
+        } else if (perm !== 'denied' || perm === "default") {
+            if (targetLable) changeBtnLable($(targetLable), 'Please allow notifications permission');
+            console.warn(`Notifications: missing permission!`);
+            Notification.requestPermission().then(function (result) {
+                if (result === 'granted') {
+                    return resolve(true)
+                } else {
+                    return resolve(false)
+                }
+            })
+        }
+    })
+}
+
 function handleMusic (turnDown) {
     if (player !== undefined) {
         if (!handlingMusic) {

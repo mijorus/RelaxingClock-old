@@ -4,6 +4,27 @@ var pomodoro = {
 
     timeout: undefined,
 
+    notificationStatus: false,
+
+    notifications: function(status) {
+        const pomodoroNotifBox = $('#pomodoro-notif-box span');
+        const notifText = 'Send a notification on each cycle';
+
+        if (status) {
+            checkNotificationStatus($(pomodoroNotifBox)).then((notif) => {
+                if (notif) {
+                    this.notificationStatus = true;
+                    changeBtnLable($(pomodoroNotifBox), notifText);
+                    console.log(`Pomodoro notifications enabled`);
+                }
+            })
+        } else {
+            this.notificationStatus = false;
+            if ($(pomodoroNotifBox).text() !== notifText) changeBtnLable($(pomodoroNotifBox), notifText);
+            console.log(`Pomodoro notifications disbled`);
+        }
+    },
+
     workingCycle: function() {
         if (localStorage.longPomodoro === 'false') {
             return 1000 * 60 * 25
@@ -28,6 +49,10 @@ var pomodoro = {
             setTimeout(() => { $(el).addClass('working') }, 200)
         });
 
+        if (compatibility.notification && (Notification.permission !== 'denied')) {
+            $('#pomodoro-notif-box').removeClass('unavailable');
+        }
+
         $('#pomodoro-long-box').addClass('unavailable');
         $('#set-pomodoro-btn').addClass('btn-dismiss');
         const cycleLenght = this.workingCycle();
@@ -36,6 +61,14 @@ var pomodoro = {
         this.timeout = setTimeout(() => {
             pomodoro.relax();
             document.querySelector('#pomodoro-sound').play();
+            if (document.visibilityState !== 'visible' && pomodoro.notificationStatus) {
+                const pomodoroNotif = new Notification(`IT'S TIME TO RELAX!`, {
+                    lang: 'EN',
+                    body: 'Empty your ming',
+                    requireInteraction: false,
+                    icon: `${redirectURI}/img/grinning-face.png`
+                });
+            }
         }, cycleLenght);
     },
 
@@ -52,6 +85,14 @@ var pomodoro = {
         this.timeout = setTimeout(() => {
             pomodoro.start();
             document.querySelector('#pomodoro-sound').play();
+            if (document.visibilityState !== 'visible' && pomodoro.notificationStatus) {
+                const pomodoroNotif = new Notification(`IT'S TIME TO WORK!`, {
+                    lang: 'EN',
+                    body: 'Focus on your tasks',
+                    requireInteraction: false,
+                    icon: `${redirectURI}/img/face-glasses.png`
+                });
+            }
         }, cycleLenght);
     },
 
@@ -64,6 +105,7 @@ var pomodoro = {
         $(pomodoroBox).addClass('force-hide')
         $('#pomodoro-long-box').removeClass('unavailable');
         $('#set-pomodoro-btn').removeClass('btn-dismiss');
+        $('#pomodoro-notif-box').addClass('unavailable');
         changeBtnLable($('#pomodoro-lable'), `Start the timer`);
     }
 }
