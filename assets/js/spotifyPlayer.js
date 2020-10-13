@@ -245,7 +245,7 @@ function initSpotifyPlayer() {
         playerIsReady = false;
 
         let lastSong;
-        const context = currentStateContext.context.uri;
+        const context = currentStateContext.uri;
         /* We will test the context uri against this regex
         to see if is it a valid uris recognised but the 
         web API, if the context is not recognised (fox ex 
