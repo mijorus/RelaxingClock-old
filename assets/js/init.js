@@ -53,6 +53,8 @@ if (localStorage.getItem('logs') === null) {
       localStorage.setItem('logs', 'true');
       $(logSwitch).css('color', 'rgb(245, 245, 245)');
       $(logSwitch).off('click');
+      window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
+      location.reload();
     }
   });
 } else {

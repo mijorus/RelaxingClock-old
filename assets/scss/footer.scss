@@ -26,8 +26,10 @@ footer {
         font-size: $settings-font-size - .1vw;
         text-align: center;
 
-        p {
+        #log-switch {
+            display: block;
             color: $color-white-ss;
+            cursor: pointer;
         }
 
             .fa-heart {
