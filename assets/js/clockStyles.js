@@ -103,7 +103,7 @@ var clockStyles = {
             });
         }
         
-        async function globeClockAnimation() {
+        function globeClockAnimation() {
             const halfCirPath = $('#half-circle-path'),
             bigClockContainer = $('.big-clock-container'),
             clockFormatBtns = [$(format12), $(format24)];
@@ -219,7 +219,7 @@ var clockStyles = {
                             circlePath.animateSkyIcon();
                         }
                     }, `-=${skyItime}`);
-                    circleTl.restart();
+                    if (currentPosition === 4) circleTl.restart();
                 }
             }
             
@@ -229,7 +229,7 @@ var clockStyles = {
                 $('#sky-icon').remove();
             }
             
-            halfCircle = await computeCircleSize();
+            halfCircle = computeCircleSize();
             const animePath = anime.path(halfCircle.path);
             
             if(pathAnimation) {
@@ -240,7 +240,7 @@ var clockStyles = {
             }
             
             //Calculates the size of the half circle
-            async function computeCircleSize() {
+            function computeCircleSize() {
                 const cPathDashed = $('#half-circle-dashed'),
                 cicWidth = clockInnerCont.width(),
                 cicHeight = clockInnerCont.height();
