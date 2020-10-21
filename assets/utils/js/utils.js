@@ -1,3 +1,12 @@
+//Get the URL params
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
 //Handle the settings loader animation
 function handleLoader(target, show, success = true, enabled = true) {
     ($(target).find('.status-icon')).remove();

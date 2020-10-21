@@ -35,6 +35,7 @@ if (localStorage.getItem('cookie') === null) {
   $('#cookie').remove();
 }
 
+var params = getUrlVars();
 //Handle Log switch
 if (localStorage.getItem('logs') === null) {
   console.log = function() {}

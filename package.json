@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "jquery": "^3.5.1",
+    "netlify-lambda": "^2.0.1",
     "postcss-cli": "^8.0.0",
     "tailwindcss": "^1.8.10"
   }
