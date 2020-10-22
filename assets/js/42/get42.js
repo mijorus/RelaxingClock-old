@@ -15,9 +15,20 @@ function get42url() {
 }
 
 if (/^42plugin/.test(params.state) && localStorage.getItem('state42')) {
-    const savedState = localStorage.getItem('state42').toString()
     if (savedState === params.state) {
-        console.log('Login with 42 Success!')
+        console.warn('Login with 42 Success!')
+        fetch('/.netlify/functions/42', {
+            method: 'POST',
+            body: JSON.stringify({ 
+                'code': params.code,
+                'state': params.state
+            })
+        })
+            .then(res => res.json())
+                .then(res => console.log(res))
+            .catch((err) => {
+                console.error(err);
+            })
     } else {
         console.error('Authentication error!')
     }
