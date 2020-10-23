@@ -5,3 +5,4 @@ public
 resources
 relaxing-clock.code-workspace
 ./netlify
+netlify/debug.log

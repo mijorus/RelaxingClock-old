@@ -5,30 +5,39 @@ exports.handler = async (event, context) => {
      if (event.httpMethod !== "POST") {
         return { statusCode: 405, body: JSON.stringify({ message: "Method Not Allowed", event: event }) }
     } else {
-        const bodyParams = jsonQueryParse(event.body);
+        console.log(event);
+        const bodyParams = JSON.parse(event.body);
         const baseURL = 'https://api.intra.42.fr/oauth/token'
         const code = bodyParams.code
         const state = bodyParams.state
-        console.log(bodyParams);
-        var url = baseURL
-        url += '?client_id=78c220293ecfd19a38ca6ce01e1e2f45452148cf98302e5568af77a130714ed8'
-        url += '&grant_type=authorization_code'
-        url += `&client_secret=${process.env.FR_SECRET}`
-        url += `&code=${code}`
-        url += '&redirect_uri=http://localhost:3000'
-        url += `&state=${state}`
-        console.log(url);
-        var api = await axios.post(url)
-        .then((res) => {
-            return res.data
-        })
-        .catch((err) => {
-            return err
-        })
 
-        return {
-            statusCode: 200,
-            body: JSON.stringify({ message: api, url: url })
+        const apiResponse = await axios.post(baseURL, {
+            client_id : '78c220293ecfd19a38ca6ce01e1e2f45452148cf98302e5568af77a130714ed8',
+            grant_type : 'authorization_code',
+            client_secret : `${process.env.FR_SECRET}`,
+            code : `${code}`,
+            redirect_uri : 'http://localhost:3000/',
+            state : `${state}`
+        })
+            .then((res) => {
+                return res
+            })
+            .catch((err) => {
+                return err
+            })
+        
+        console.log(apiResponse.data);
+        
+        if (apiResponse.status === 200) {
+            return {
+                statusCode: 200,
+                body: JSON.stringify(apiResponse.data)
+            }
+        } else {
+            return {
+                statusCode: 401,
+                body: JSON.stringify(apiResponse.data)
+            }
         }
     }
 }
