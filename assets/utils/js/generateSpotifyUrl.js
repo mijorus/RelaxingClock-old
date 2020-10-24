@@ -17,7 +17,7 @@ async function generateUrl() {
   spotifyURL += '&redirect_uri=' + encodeURIComponent(redirectURI);
   spotifyURL += '&code_challenge_method=S256';
   spotifyURL += '&code_challenge=' + encodeURIComponent(challenge);
-  spotifyURL += '&state=spotify' + encodeURIComponent(state);
+  spotifyURL += '&state=' + encodeURIComponent(state);
   spotifyURL += '&scope=' + encodeURIComponent(scopes);
 
   return spotifyURL
