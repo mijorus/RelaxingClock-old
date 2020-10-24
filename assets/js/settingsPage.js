@@ -165,10 +165,6 @@ for (btn of $(btns)) {
                 getRemoteTime(false);
                 localStorage.remoteTime = 'false';
             break;
-
-            case 'login42':
-                window.location.replace(get42url());
-            break;
         }
     });
 }
