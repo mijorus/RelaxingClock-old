@@ -47,15 +47,9 @@ function resizeClock(resizing) {
             }
         },
         targets: targetEl,
-        update: function(anim){
-            if (resizing) {
-                targetEl.style.filter = `blur(${20 * anim.progress / 100}px)`
-            } else {
-                targetEl.style.filter = `blur(${20 - (20 * anim.progress / 100)}px)`
-            }    
-        },
+        opacity: resizing ? 0 : 1,
         easing: 'linear',
-        duration: clockOpAnimation,
+        duration: clockOpAnimation / 1.5,
         complete: function() {
             clockIsResizing = false;
         }

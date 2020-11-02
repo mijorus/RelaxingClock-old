@@ -191,8 +191,6 @@ var clockStyles = {
                         translateX: animePath('x'),
                         translateY: animePath('y'),
                         translateZ: 0,
-                        rotate: (compatibility.firefox) ? [0.02, 0.02] : 0,
-                        rotateZ: 0,
                         easing: getCbCurve(circlePercentage),
                         opacity: {
                             value: [0, 1],
@@ -204,7 +202,7 @@ var clockStyles = {
                     .add({
                         begin: function () { globeInAction = true},
                         targets: [$(bigClockContainer).get(0), $(cityName).get(0), $(skyIcon).get(0)],
-                        opacity: [1, 0,],
+                        opacity: [1, 0],
                         direction: 'alternate',
                         easing: 'easeInOutSine',
                         duration: skyItime,
