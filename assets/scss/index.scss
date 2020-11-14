@@ -4,6 +4,8 @@
 //VARIABLES
 @import 'variables.scss';
 
+// Are you stressed? Check out my new project to relax at relaxingclock.com :)
+
 //ASSETS
 {{ $cities := resources.Get "scss/_cities.scss" | resources.ExecuteAsTemplate "css/cities.css" . | resources.ToCSS}}
 @import 'custom-fonts';
