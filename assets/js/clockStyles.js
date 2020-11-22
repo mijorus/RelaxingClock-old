@@ -165,7 +165,7 @@ var clockStyles = {
                 animateSkyIcon: function() {
                     const skyIconTime = 1500;
                     circleTl = anime.timeline({
-                        duration: (1000 * 20),
+                        duration: (1000 * 60),
                         autoplay: true,
                         loop: false,
                         begin: () => {
