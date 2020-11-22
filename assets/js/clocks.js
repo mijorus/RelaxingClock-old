@@ -166,7 +166,7 @@ function loadTime(timeFormat, zone = localTimezone) { //International or america
 }
 
 function handleSelectedClock(userSelection, transition, resetClock) {
-    (circleTl !== undefined) ? circleTl.pause() : null;
+    if (circleTl !== undefined) circleTl.pause();
 
     if (transition && resetClock) {
         switch (userSelection) {

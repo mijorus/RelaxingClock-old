@@ -125,7 +125,7 @@ function getRandomPlace(getTz = true) {
     }
 }
 
-function getCbCurve(percentage) {
+function getCbCurve() {
     var customCB = {
          0: 'cubicBezier(1,.03,.9,.44)',
         10: 'cubicBezier(.24,.3,.88,-0.31)',
@@ -139,7 +139,7 @@ function getCbCurve(percentage) {
         90: 'cubicBezier(.28,1.3,.82,.67)',
        100: 'cubicBezier(.12,1.12,.74,.93)'
     }
-    return customCB[percentage];
+    return customCB[circlePercentage];
 }
 
 function getPercentage(zero, hundred, x) {

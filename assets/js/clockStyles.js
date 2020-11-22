@@ -111,17 +111,11 @@ var clockStyles = {
                 circleTl.pause();
             }
             
-            var circlePath = {
+            const circlePath = {
                 animateCirclePath: function() {
                     globeInAction = true;
                     
                     circlePathTl = anime.timeline({
-                        duration: 3000,
-                        easing: cbDefault,
-                        autoplay: false,
-                    });
-                    
-                    circlePathTl.add({
                         begin: function() {
                             for (const el of clockFormatBtns) {
                                 $(el).addClass('unfocus');
@@ -129,12 +123,9 @@ var clockStyles = {
                             $(styleSelectorL).addClass('overscroll');
                             $(styleSelectorR).addClass('overscroll');
                         },
-                        targets: $(halfCirPath).get(0),
-                        strokeDashoffset: [anime.setDashoffset, 0],
-                        easing: cbDefault,
                         duration: 3000,
-                        loop: false,
-                        direction: 'normal',
+                        easing: cbDefault,
+                        autoplay: false,
                         complete: function() {
                             globeInAction = false;
                             $(styleSelectorL).removeClass('overscroll');
@@ -142,7 +133,13 @@ var clockStyles = {
                             (clockFormat === '12h') ? $(format12).removeClass('unfocus') : $(format24).removeClass('unfocus');
                             circlePath.createSkyIcon();
                         }
-                    });
+                    })
+                        .add({
+                            targets: $(halfCirPath).get(0),
+                            strokeDashoffset: [anime.setDashoffset, 0],
+                            loop: false,
+                            direction: 'normal',
+                        });
                     
                     circlePathTl.pause();
                     circlePathTl.restart();
@@ -161,59 +158,57 @@ var clockStyles = {
                             'left': skyIconW / (-2)
                         });
                     } 
-                    
-                    $(skyIcon).addClass(function() {
-                        return (isDay) ? 'sun' : 'moon'; 
-                    });
+
                     this.animateSkyIcon();
                 },
                 
                 animateSkyIcon: function() {
-                    loadTime(clockFormat, aRandomPlace.tz);
-                    clockStyles.handleGlobeClock();
-                    if (isDay) {
-                        $(skyIcon).removeClass('moon').addClass('sun');
-                    } else {
-                        $(skyIcon).removeClass('sun').addClass('moon');
-                    }
-
-                    let skyItime = 1500;
+                    const skyIconTime = 1500;
                     circleTl = anime.timeline({
-                        duration: (1000 * 60),
+                        duration: (1000 * 20),
                         autoplay: true,
-                        loop: false
+                        loop: false,
+                        begin: () => {
+                            loadTime(clockFormat, aRandomPlace.tz);
+                            clockStyles.handleGlobeClock();
+                            if (isDay) {
+                                $(skyIcon).removeClass('moon').addClass('sun');
+                            } else {
+                                $(skyIcon).removeClass('sun').addClass('moon');
+                            }
+                        },
+                        complete: () => {
+                            circleTl.pause()
+                            if (currentPosition === 4) this.animateSkyIcon()
+                        }
                     });
                     
-                    circleTl.add({
-                        targets: $(skyIcon).get(0),
-                        translateX: animePath('x'),
-                        translateY: animePath('y'),
-                        translateZ: 0,
-                        easing: getCbCurve(circlePercentage),
-                        opacity: {
-                            value: [0, 1],
-                            duration: 500,
-                            easing: cbDefault,
-                        },
-                        loop: false,
-                    }, 0)
+                    circleTl
+                        .add({
+                            targets: $(skyIcon).get(0),
+                            translateX: animePath('x'),
+                            translateY: animePath('y'),
+                            translateZ: 0,
+                            easing: getCbCurve(),
+                            opacity: {
+                                value: [0, 1],
+                                duration: 500,
+                                easing: cbDefault,
+                            },
+                        }, 0)
                         .add({
                             targets: [$(bigClockContainer).get(0), $(cityName).get(0), $(skyIcon).get(0)],
                             opacity: [1, 0],
                             direction: 'alternate',
                             easing: 'easeInOutSine',
-                            duration: skyItime,
+                            duration: skyIconTime,
                             loopComplete: function() {
                                 $(cityIcon).removeClass();
                                 getRandomPlace();
                                 loadTime(clockFormat, aRandomPlace.tz);
                                 clockStyles.handleGlobeClock();
                             },
-                            complete: function() {
-                                this.animateSkyIcon();
-                            }
-                        }, `-=${skyItime}`);
-                    if (currentPosition === 4) circleTl.restart();
+                        }, `-=${skyIconTime}`);
                 }
             }
             
@@ -239,8 +234,8 @@ var clockStyles = {
                 const cPathDashed = $('#half-circle-dashed'),
                 cicWidth = clockInnerCont.width(),
                 cicHeight = clockInnerCont.height();
-                var halfCircleRadius = cicWidth / 2;
-                var halfCircleSize = `M 0 ${cicHeight} A ${halfCircleRadius} ${halfCircleRadius} 180 0 1 ${cicWidth} ${cicHeight}`;
+                const halfCircleRadius = cicWidth / 2;
+                const halfCircleSize = `M 0 ${cicHeight} A ${halfCircleRadius} ${halfCircleRadius} 180 0 1 ${cicWidth} ${cicHeight}`;
                 $(halfCirPath).attr('d', halfCircleSize);
                 $(cPathDashed).attr('d', halfCircleSize);
                 return {
