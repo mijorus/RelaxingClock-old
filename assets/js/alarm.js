@@ -80,7 +80,7 @@ var alarm = {
             sameDay: `[in ${alarmTime.toNow('mm')}]`,
             nextDay: '[Tomorrow]',
         });
-        return timeLeft
+        return timeLeft;
     },
 
     set: function (when) {
@@ -161,7 +161,7 @@ var alarm = {
 
             if (document.visibilityState !== 'visible' && alarm.notificationStatus) {
                 const alarmFormat = (clockFormat === '24h') ? alarmTime.format('HH:mm') : alarmTime.format('hh:mm');
-                const alarmNotif = new Notification(`IT'S ${alarmFormat} WAKE UP!!!`, {
+                new Notification(`IT'S ${alarmFormat} WAKE UP!!!`, {
                     lang: 'EN',
                     body: 'The alarm is ringing',
                     requireInteraction: true,
