@@ -62,7 +62,7 @@ var pomodoro = {
             pomodoro.relax();
             document.querySelector('#pomodoro-sound').play();
             if (document.visibilityState !== 'visible' && pomodoro.notificationStatus) {
-                const pomodoroNotif = new Notification(`IT'S TIME TO RELAX!`, {
+                new Notification(`IT'S TIME TO RELAX!`, {
                     lang: 'EN',
                     body: 'Empty your ming',
                     requireInteraction: false,
@@ -86,7 +86,7 @@ var pomodoro = {
             pomodoro.start();
             document.querySelector('#pomodoro-sound').play();
             if (document.visibilityState !== 'visible' && pomodoro.notificationStatus) {
-                const pomodoroNotif = new Notification(`IT'S TIME TO WORK!`, {
+                new Notification(`IT'S TIME TO WORK!`, {
                     lang: 'EN',
                     body: 'Focus on your tasks',
                     requireInteraction: false,
@@ -100,6 +100,7 @@ var pomodoro = {
         this.running = false;
         clearTimeout(this.timeout);
         console.log('Dismissed pomodoro timer');
+        
         [$(pomodoroBox), $('#pomodoro-lable-box')].forEach((el) => {
             $(el).removeClass('working relaxing') });
         $(pomodoroBox).addClass('force-hide')

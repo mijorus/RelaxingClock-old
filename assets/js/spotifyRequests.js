@@ -60,12 +60,21 @@ var spotify = {
         });
     },
 
+    findDevices: function() {
+        return $.ajax({
+            method: 'GET',
+            url: 'https://api.spotify.com/v1/me/player/devices',
+            headers: spotify.requestHeader,
+        })
+    },
+
     getUserDetails: function() {
         setTimeout(() => $.ajax({
-            type: "GET", async: true, cache: false, url: "https://api.spotify.com/v1/me", 
+            type: "GET",
+            url: "https://api.spotify.com/v1/me", 
             headers: spotify.requestHeader,
-            success: function (response) {
-                if (response.product == 'premium') {
+            success: function(response) {
+                if (response.product === 'premium') {
                     premium = true;
                     setTimeout(() => spotify.selectSong(), 1000);
                     updateStatusText(`Logged in as ${response.id}`)
@@ -85,7 +94,8 @@ var spotify = {
     selectSong: function() {
         const playlistURL = '4ZTZhFPPyRzpfHZsWEXAW9';
         $.ajax({
-            type: "GET", async: true, cache: false, url: `https://api.spotify.com/v1/playlists/${playlistURL}`,
+            type: "GET",
+            url: `https://api.spotify.com/v1/playlists/${playlistURL}`,
             headers: spotify.requestHeader,
             success: function(response) {
                 const playlistLength = response.tracks.total;
@@ -132,8 +142,7 @@ var spotify = {
             success: (function() {
                 console.log('I AM PLAYING!');
                 playbackStarted = true;
-                $(playbackIcon).removeClass('fa-play');
-                $(playbackIcon).addClass('fa-pause');
+                $(playbackIcon).removeClass('fa-play').addClass('fa-pause');
                 setTimeout(function() {
                     spotify.shuffle(true);
                 }, 2000);
@@ -170,29 +179,10 @@ var spotify = {
             })
         });
     },
-
-    // player: function(device_id, play = true) {
-    //     $.ajax({
-    //         type: "PUT",
-    //         headers: spotify.requestHeader,
-    //         url: "https://api.spotify.com/v1/me/player/play",
-    //         data: JSON.stringify({
-    //             "device_ids": [`${device_id}`],
-    //             "play": play
-    //         }),
-    //         success: (function() {
-    //             console.log(`SWITCHED BACK TO Relaxing Clock`);
-    //         }),
-    //         error: (function(error) {
-    //             spotify.logError(`CAN'T PLAY ON THIS DEVICE RIGHT NOW`, error);
-    //             spotify.throwGenericError(error);
-    //         })
-    //     })
-    // },
     
     shuffle: function(state) {
         $.ajax({
-            type: "PUT", async: true, cache: false,
+            type: "PUT",
             headers: spotify.requestHeader,
             url: `https://api.spotify.com/v1/me/player/shuffle?state=${state}&device_id=${deviceID}`,
             success: function() {
@@ -208,18 +198,16 @@ var spotify = {
     the changes on screen or send an ajax requesto to Spotify */
     isLiked: function(song, changeState) {
         $.ajax({
-            type: "GET", async: true, cache: false,
+            type: "GET",
             headers: spotify.requestHeader,
             url: `https://api.spotify.com/v1/me/tracks/contains?ids=${song}`,
             success: function(response) {
                 if (response[0]) {
-                    //favourite = true;
                     console.log('This song is in your library');
                     /*If we only have to change the color of the heart, it calls the func
                     directly, otherwise will execute an ajax request*/
                     (changeState) ? spotify.likeSong(currentTrackId, false) : handleHeartButton(true);
                 } else {
-                    //favourite =  false;
                     console.log('This song is NOT in your library');
                     (changeState) ? spotify.likeSong(currentTrackId, true) : handleHeartButton(false);
                 }
@@ -233,7 +221,6 @@ var spotify = {
     likeSong: function(song = currentTrackId, toLike = true) {
         $.ajax({
             type: (toLike) ? "PUT" : "DELETE", 
-            async: true, cache: false,
             headers: spotify.requestHeader,
             url: `https://api.spotify.com/v1/me/tracks?ids=${song}`,
             success: function () {
@@ -273,9 +260,8 @@ var spotify = {
 
     //Logs an error to the console
     logError: function(message, error, throwError = true) {
-        const err = error.responseJSON.error.message;
-        if (error) console.error(error);
-        console.error(`${message} ${(err) ? err : ''}`);
+        console.error(`${message}`);
+        console.error(error);
         if (throwError) this.throwGenericError();
     },
 

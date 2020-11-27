@@ -15,10 +15,11 @@
 {{ $playerUtils := resources.Get "utils/js/playerUtils.js" }}
 {{ $clockListeners := resources.Get "js/clockListeners.js" }}
 {{ $spotifyPlayer := resources.Get "js/spotifyPlayer.js" }}
+{{ $spotifyPlayerEvents := resources.Get "js/spotifyPlayerEvents.js" }}
 {{ $spotifyAuth := resources.Get "js/spotifyAuth.js" }}
 {{ $settingsPage := resources.Get "js/settingsPage.js" }}
 
-{{ $assets := slice $compatibilityDetector $init $utils $fullScreenUtils $generateSpotifyUrl $screenSaver $getSettings $internationalClock $spotifyRequests $clockStyles $clocks $alarm $pomodoro $playerUtils $clockListeners $spotifyPlayer $spotifyAuth $settingsPage}}
+{{ $assets := slice $compatibilityDetector $init $utils $fullScreenUtils $generateSpotifyUrl $screenSaver $getSettings $internationalClock $spotifyRequests $clockStyles $clocks $alarm $pomodoro $playerUtils $clockListeners  $spotifyPlayer $spotifyPlayerEvents $spotifyAuth $settingsPage}}
 
 <!-- This is the concatenation of every custom js file -->
 {{ $assetsConcat := $assets | resources.Concat "js/assets.js"}}

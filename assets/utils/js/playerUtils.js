@@ -1,10 +1,10 @@
 function handleHeartButton(songIsLiked) {
     if (songIsLiked) {
-        $(likeBtn).children('#like-icon').removeClass('far');
-        $(likeBtn).children('#like-icon').addClass('fas');
+        $(likeBtn).children('#like-icon').removeClass('far')
+            .addClass('fas');
     } else {
-        $(likeBtn).children('#like-icon').removeClass('fas');
-        $(likeBtn).children('#like-icon').addClass('far');  
+        $(likeBtn).children('#like-icon').removeClass('fas')
+            .addClass('far');  
     }
 }
 

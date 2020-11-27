@@ -122,10 +122,8 @@ function showMouseCursor() {
 
 function setScreenSaverColors() {
     if (localStorage.presentation === 'false') {
-        $(body).removeClass('high-contrast');
-        $(body).addClass('screen-saving-color');
+        $(body).removeClass('high-contrast').addClass('screen-saving-color');
     } else if (localStorage.presentation === 'true') {
-        $(body).removeClass('screen-saving-color');
-        $(body).addClass('high-contrast');
+        $(body).removeClass('screen-saving-color').addClass('high-contrast');
     }
 }
