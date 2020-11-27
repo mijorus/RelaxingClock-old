@@ -3,7 +3,7 @@ const redirectURI = '{{ site.BaseURL }}';
 const scopes = 'user-read-email,user-read-private,user-read-playback-state,user-modify-playback-state,user-read-currently-playing,user-library-modify,user-library-read,streaming';
 var spotifyURL;
 
-async function generateUrl() {
+export default async function generateUrl() {
   state = generateRandomString();
   localStorage.setItem('state', state);
 
@@ -36,11 +36,11 @@ function base64urlencode(str) {
     .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
-function escaper(str) {
-  return str.replace(/\+/g, '-')
-  .replace(/\//g, '_')
-  .replace(/=/g, '')
-}
+// function escaper(str) {
+//   return str.replace(/\+/g, '-')
+//   .replace(/\//g, '_')
+//   .replace(/=/g, '')
+// }
 
 function sha256(plain) {
   const encoder = new TextEncoder();

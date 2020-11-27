@@ -1,4 +1,4 @@
-var compatibility = {
+export const compatibility = {
     login: false,
     isMobile: false,
     urlEncoding: true,
@@ -7,20 +7,22 @@ var compatibility = {
     firefox: typeof InstallTrigger !== 'undefined',
 }
 
-const md = new MobileDetect(window.navigator.userAgent);
+export function getCompatibility() {
+    const md = new MobileDetect(window.navigator.userAgent);
 
-if (md.mobile() === null && window.btoa) {
-    compatibility.login = true;
-}
+    if (md.mobile() === null && window.btoa) {
+        compatibility.login = true;
+    }
 
-if (!window.btoa) {
-    urlEncoding = false;
-}
+    if (!window.btoa) {
+        urlEncoding = false;
+    }
 
-if (md.mobile() !== null) {
-    compatibility.isMobile = true;
-}
+    if (md.mobile() !== null) {
+        compatibility.isMobile = true;
+    }
 
-if ('Notification' in window) {
-    compatibility.notification = true;
+    if ('Notification' in window) {
+        compatibility.notification = true;
+    }
 }

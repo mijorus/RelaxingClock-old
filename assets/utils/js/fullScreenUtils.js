@@ -1,6 +1,6 @@
 //Handle full screen button
 var elem = document.documentElement;
-function openFullscreen() {
+export function openFullscreen() {
     if (elem.requestFullscreen) {
         elem.requestFullscreen();
         $(expandIcon).removeClass('lnr-frame-expand');
@@ -10,7 +10,7 @@ function openFullscreen() {
     }
 }
 
-function closeFullscreen() {
+export function closeFullscreen() {
     if (document.exitFullscreen) {
         document.exitFullscreen();
         $(expandIcon).removeClass('lnr-frame-contract');

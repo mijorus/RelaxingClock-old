@@ -1,4 +1,4 @@
-function handleHeartButton(songIsLiked) {
+export function handleHeartButton(songIsLiked) {
     if (songIsLiked) {
         $(likeBtn).children('#like-icon').removeClass('far')
             .addClass('fas');
@@ -8,19 +8,19 @@ function handleHeartButton(songIsLiked) {
     }
 }
 
-function updateStatusText (message) {
+export function updateStatusText (message) {
     const spotifyStatusText = '#spotify-status-text';
     $(spotifyStatusText).text(message);
 }
 
-function updatePlaceholderText(text, error = false) {
+export function updatePlaceholderText(text, error = false) {
     $(spotifyPlaceholder).html(text);
     if (error) $(musicBox).addClass('error');
 }
 
 var songTl;
 
-var scrollText = {
+export var scrollText = {
 
     scrollDuration: 15000,
 

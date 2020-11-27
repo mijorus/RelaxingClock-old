@@ -12,7 +12,6 @@ currentTrack = {},
 currentStateContext = {},
 currentTrackId = undefined,
 playbackStarted = false;
-//favourite = false;
 
 // *** Spotify Player *** //
 

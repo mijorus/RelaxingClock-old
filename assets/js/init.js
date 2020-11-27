@@ -1,3 +1,5 @@
+import $ from "jquery"
+
 const body = $('body'),
 main = $('main'),
 bigClock = $('#big-clock'),

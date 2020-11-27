@@ -2,7 +2,7 @@ const arrows = $('#alarm-big-clock').find('.arrow'),
     alarmSection = $('#alarm-section');
 var alarmTime, ringTl;
 
-var alarm = {
+export default alarm = {
     
     at: undefined,
 

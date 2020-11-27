@@ -1,4 +1,4 @@
-var aRandomPlace = null, isDay, circlePercentage;
+export var aRandomPlace = null, isDay, circlePercentage;
 //gets a random city from an array
 const cities = [
     {
@@ -125,7 +125,7 @@ function getRandomPlace(getTz = true) {
     }
 }
 
-function getCbCurve() {
+export function getCbCurve() {
     var customCB = {
          0: 'cubicBezier(1,.03,.9,.44)',
         10: 'cubicBezier(.24,.3,.88,-0.31)',
@@ -142,7 +142,7 @@ function getCbCurve() {
     return customCB[circlePercentage];
 }
 
-function getPercentage(zero, hundred, x) {
+export function getPercentage(zero, hundred, x) {
     // console.log(zero, hundred, x);
     hundred = hundred - zero;
     x = x - zero;

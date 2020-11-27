@@ -1,5 +1,5 @@
 //Get the URL params
-function getUrlVars() {
+export function getUrlVars() {
     var vars = {};
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
         vars[key] = value;
@@ -8,7 +8,7 @@ function getUrlVars() {
 }
 
 //Handle the settings loader animation
-function handleLoader(target, show, success = true, enabled = true) {
+export function handleLoader(target, show, success = true, enabled = true) {
     ($(target).find('.status-icon')).remove();
     if (enabled) {
         $(target).removeClass('hide');
@@ -34,14 +34,14 @@ function handleLoader(target, show, success = true, enabled = true) {
 }
 
 //Get a random song position
-function getRandomIntInclusive(min, max) {
+export function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 //Change button lable with animation
-function changeBtnLable(target, nextMessage, dur = 650) {
+export function changeBtnLable(target, nextMessage, dur = 650) {
     anime({
         targets: $(target).get(0),
         direction: 'alternate', duration: dur, 
@@ -58,7 +58,7 @@ let oldPlaybackState = {
     volume: undefined,
 }
 
-function checkNotificationStatus (targetLable) {
+export function checkNotificationStatus (targetLable) {
     return new Promise (function (resolve) {
         const perm = Notification.permission;
 
@@ -79,7 +79,7 @@ function checkNotificationStatus (targetLable) {
     })
 }
 
-function handleMusic (turnDown) {
+export function handleMusic (turnDown) {
     if (player !== undefined) {
         if (!handlingMusic) {
             if (turnDown) {
