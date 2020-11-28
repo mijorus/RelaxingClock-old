@@ -22,7 +22,7 @@ clockOpAnimation = 350 //timing of the clock opacity animation
 displayDefaultClock();
 handleMouseCursor('watch');
 
-function displayDefaultClock() {
+export default function displayDefaultClock() {
     enableScreenSaver(15000);
     if(clockFormat === '24h') {
         $('#format-12').addClass('unfocus');

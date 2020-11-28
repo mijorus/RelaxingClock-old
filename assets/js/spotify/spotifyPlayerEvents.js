@@ -1,5 +1,6 @@
-function initPlayerEvents() {
+export function initPlayerEvents() {
     const likeBtn = $('.like-btn'),
+    playBtn = $('.play-btn'),
     songInfo = $('#song-info');
     //Listeners
     $(playBtn).on('click', function (event) {
@@ -85,14 +86,14 @@ function initPlayerEvents() {
 
     }, { passive: false });
 
-    $(spotifyIcon).hover(function () {
+    $(spotifyIcon).hover(() => {
         $(songInfo).removeClass('hide');
-    }, function () {
+    }, () => {
         $(songInfo).addClass('hide');
     });
 }
 
-function playIcon(showPlay) {
+export function playIcon(showPlay) {
     if (showPlay) {
         $(playbackIcon).removeClass('fa-pause').addClass('fa-play');
     } else {
@@ -135,5 +136,5 @@ function reconnect(play = false) {
         })
         .fail(function (error) {
             spotify.logError('CANNOT GET DEVICES LIST', error);
-        })
+        });
 }

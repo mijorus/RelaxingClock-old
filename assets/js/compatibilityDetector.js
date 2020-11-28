@@ -7,7 +7,7 @@ export const compatibility = {
     firefox: typeof InstallTrigger !== 'undefined',
 }
 
-export function getCompatibility() {
+export function runCompatibilityDetector() {
     const md = new MobileDetect(window.navigator.userAgent);
 
     if (md.mobile() === null && window.btoa) {

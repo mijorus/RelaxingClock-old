@@ -1,5 +1,6 @@
 // *** Ajax **
-requestHeader = undefined;
+var requestHeader = undefined;
+const spotifyBaseURL = 'https://api.spotify.com/v1/'
 
 export default spotify = {
 
@@ -48,7 +49,7 @@ export default spotify = {
             error: function (error) {
                 switch (error.status) {
                     case 400:
-                        spotify.throwTokenError();
+                        throwTokenError();
                     break;
                 
                     default:
@@ -64,7 +65,7 @@ export default spotify = {
     findDevices: function() {
         return $.ajax({
             method: 'GET',
-            url: 'https://api.spotify.com/v1/me/player/devices',
+            url: spotifyBaseURL + '/player/devices',
             headers: requestHeader,
         })
     },
@@ -72,7 +73,7 @@ export default spotify = {
     getUserDetails: function() {
         setTimeout(() => $.ajax({
             type: "GET",
-            url: "https://api.spotify.com/v1/me", 
+            url: spotifyBaseURL, 
             headers: requestHeader,
             success: function(response) {
                 if (response.product === 'premium') {
@@ -96,9 +97,10 @@ export default spotify = {
         const playlistURL = '4ZTZhFPPyRzpfHZsWEXAW9';
         $.ajax({
             type: "GET",
-            url: `https://api.spotify.com/v1/playlists/${playlistURL}`,
-            headers: requestHeader,
-            success: function(response) {
+            url: spotifyBaseURL + `/playlists/${playlistURL}`,
+            headers: requestHeader
+        })
+            .done(function(response) {
                 const playlistLength = response.tracks.total;
                 randomPosition = getRandomIntInclusive(0, playlistLength);
                 $(musicBox).addClass('loaded');
@@ -126,11 +128,10 @@ export default spotify = {
                 }
                 
                 console.log(`There are ${response.tracks.total} songs in the playlist, I have selected the #${randomPosition}`);
-            },
-            error: function(error) {
+            })
+            .fail(function(error) {
                 spotify.logError('CANNOT SELECT A SONG TO PLAY:', error);
-            }
-        }); 
+            });
     },
     
     play: function(device_id, song) {
@@ -138,23 +139,21 @@ export default spotify = {
         $.ajax({
             type: "PUT",
             headers: requestHeader,
-            url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
-            data: JSON.stringify(song),
-            success: (function() {
+            url: spotifyBaseURL + '/player/play?device_id=' + device_id,
+            data: JSON.stringify(song)
+        })
+            .done(function() {
                 console.log('I AM PLAYING!');
                 playbackStarted = true;
                 $(playbackIcon).removeClass('fa-play').addClass('fa-pause');
                 setTimeout(function() {
                     spotify.shuffle(true);
                 }, 2000);
-
-            }),
-            error: (function(error) {
+            })
+            .fail(function(error) {
                 spotify.logError('PLAYBACK ERROR!', error);
                 switch (error.status) {
-                    case 500:
-                    case 502:
-                    case 503:
+                    case 500 || 502 || 503:
                         $(spotifyPlaceholder).text('Server Error :(');
                     break;
 
@@ -178,21 +177,20 @@ export default spotify = {
                     break;
                 }
             })
-        });
     },
     
     shuffle: function(state) {
         $.ajax({
             type: "PUT",
             headers: requestHeader,
-            url: `https://api.spotify.com/v1/me/player/shuffle?state=${state}&device_id=${deviceID}`,
-            success: function() {
+            url: spotifyBaseURL + `/player/shuffle?state=${state}&device_id=${deviceID}`,
+        })
+            .done(function() {
                 console.log('SHUFFLE IS ENABLED!');
-            },
-            error: function(error) {
+            })
+            .fail(function(error) {
                 spotify.logError('ERROR WHILE ENABLING SHUFFLE MODE:', error, false);
-            }
-        });
+            })
     },
 
     /*The changeState parameter specifies if we have to display only
@@ -201,8 +199,9 @@ export default spotify = {
         $.ajax({
             type: "GET",
             headers: requestHeader,
-            url: `https://api.spotify.com/v1/me/tracks/contains?ids=${song}`,
-            success: function(response) {
+            url: spotifyBaseURL + `/tracks/contains?ids=${song}`,
+        })
+            .done(function(response) {
                 if (response[0]) {
                     console.log('This song is in your library');
                     /*If we only have to change the color of the heart, it calls the func
@@ -212,19 +211,19 @@ export default spotify = {
                     console.log('This song is NOT in your library');
                     (changeState) ? spotify.likeSong(currentTrackId, true) : handleHeartButton(false);
                 }
-            },
-            error: function(error) {
+            })
+            .fail(function(error) {
                 spotify.logError('CANNOT CHECK IF THIS SONG IS ALREADY IN YOUR LIBRARY:', error)
-            }
-        });
+            })
     },
 
     likeSong: function(song = currentTrackId, toLike = true) {
         $.ajax({
             type: (toLike) ? "PUT" : "DELETE", 
             headers: requestHeader,
-            url: `https://api.spotify.com/v1/me/tracks?ids=${song}`,
-            success: function () {
+            url: spotifyBaseURL + `/tracks?ids=${song}`,
+        })
+            .done(function () {
                 if (toLike) {
                     console.log('ADDED TO FAV!');
                     handleHeartButton(true);
@@ -232,69 +231,15 @@ export default spotify = {
                     console.log('REMOVED FROM FAV!');
                     handleHeartButton(false);
                 }
-            },
-            error: function (error) {
+            })
+            .fail(function (error) {
                 if (toLike) {
                     spotify.logError('CANNOT ADD TO FAV:', error, false);
                 } else {
                     spotify.logError('CANNOT REMOVE FROM FAV:', error, false);
                 }
-            }
-        });
+            })
     },
-
-    throwTokenError: function () {
-        this.removeLoader();
-        updateStatusText(`Sorry, but you need to login again`);
-        updatePlaceholderText(
-            `Please <button id="toker-err-msg" class="transp-btn">login</button> again`, 
-            true);
-        $('#toker-err-msg').on('click', async function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            logout(false);
-            url = await generateUrl();
-            window.location.replace(url);
-        });
-    },
-
-    //Logs an error to the console
-    logError: function(message, error, throwError = true) {
-        console.error(`${message}`);
-        console.error(error);
-        if (throwError) this.throwGenericError();
-    },
-
-    throwGenericError: function(message = 'default') {
-        player.disconnect();
-        this.removeLoader();
-        $(musicBox).addClass('error');
-        
-        if (message === 'default') {
-            updatePlaceholderText(
-                `Something went<br>wrong :( <a href="${redirectURI}">Try again</a>`, true);
-        } else {
-            updatePlaceholderText(message, true);
-        }
-    },
-
-    throwPremiumError: function (username) {
-        this.removeLoader();
-        localStorage.setItem('premium', 'false');
-        updateStatusText(`Sorry ${username}, but you need a premium account`);
-        updatePlaceholderText(`Sorry, you must be <br>a premium user :(`, true);
-    },
-
-    removeLoader: function(remove = true) {
-        if (remove) {
-            $(playbackIcon).removeClass('hide');
-            handleLoader($('#spotify-loader'), false, null);
-        } else {
-            $(playbackIcon).addClass('hide');
-            handleLoader($('#spotify-loader'), true, null);
-        }
-    }
 }
 
 function saveLoginResponse(response) {
@@ -308,3 +253,4 @@ function saveLoginResponse(response) {
     const loginCompleted = new Event('loginCompleted');
     document.dispatchEvent(loginCompleted);
 }
+

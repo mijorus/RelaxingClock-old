@@ -1,9 +1,17 @@
 var screenSaverTimeout;
 
-function enableScreenSaver(timeout) {
+export function enableScreenSaver(timeout) {
     console.log(`Screen saver timeout set to ${timeout}`);
     clearTimeout(screenSaverTimeout);
     if (!screenSaverIsActive) screenSaverTimeout = setTimeout(() => {setScreenSaver()}, timeout);
+}
+
+export function setScreenSaverColors() {
+    if (localStorage.presentation === 'false') {
+        $(body).removeClass('high-contrast').addClass('screen-saving-color');
+    } else if (localStorage.presentation === 'true') {
+        $(body).removeClass('screen-saving-color').addClass('high-contrast');
+    }
 }
 
 function setScreenSaver() {
@@ -120,10 +128,3 @@ function showMouseCursor() {
     });
 }
 
-function setScreenSaverColors() {
-    if (localStorage.presentation === 'false') {
-        $(body).removeClass('high-contrast').addClass('screen-saving-color');
-    } else if (localStorage.presentation === 'true') {
-        $(body).removeClass('screen-saving-color').addClass('high-contrast');
-    }
-}

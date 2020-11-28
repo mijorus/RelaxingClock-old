@@ -1,6 +1,10 @@
-import $ from "jquery"
+import $ from 'jquery';
+import runCompatibilityDetector from './compatibilityDetector';
+import settingsPageHandler from './settingsPageHandler';
+import displayDefaultClock from './clocks';
+import { openFullscreen, closeFullscreen } from '../utils/js/fullScreenUtils'
 
-const body = $('body'),
+export const body = $('body'),
 main = $('main'),
 bigClock = $('#big-clock'),
 expandIcon = $('.expand-icon'),
@@ -12,7 +16,7 @@ cbDefault = 'cubicBezier(0.37, 0, 0.63, 1)',
 eaElasticDefault = 'easeOutElastic(1, 1)',
 clockInnerCont = $('#clock-inner-container'),
 clockContainer = $('#clock-container');
-var hours,min,sec,
+export var hours,min,sec,
 inSettings = false, //if the user is currently in the settings page
 logged = false, accessDenied = false, premium = false, //if the user has succesfully logged to spotify
 settingsIsAnimating = false,
@@ -20,116 +24,105 @@ player = undefined, paused = true, //the music state
 screenSaverIsActive = false, //whether or not the screen saver is active
 screenSaverisAnimating = false, //whether or not the screen saver is animating
 isFullScreen = false, //whether or not the clock is in fullscreen
-logs = true, //whether of not activate logs in the console
 clock, //THE Clock
 noSleep = new NoSleep();
 aRandomPlace; //a Random place in the array of cities, is a function;
 
-//Cookie Banner
-if (localStorage.getItem('cookie') === null) {
-  $('#cookie').show();
-  $('#cookie-dismiss').on('click', () => {
+$(function() {
+  //Cookie Banner
+  cockieBanner();
+
+  //Handle Log switch
+  handleLogSwitch();
+  
+  //Create loaders effects
+  $('.loader').loaders();
+
+  //Handle expand icon
+  handleExpandIcon();
+
+  //Handle settings page button
+  handleSettingsPageBtn();
+
+  //Handle window scrolling
+  handleWindowScrolling();
+
+  runCompatibilityDetector();
+  displayDefaultClock();
+})
+
+function cockieBanner() {
+  if (localStorage.getItem('cookie') === null) {
+    $('#cookie').show();
+    $('#cookie-dismiss').on('click', () => {
+      $('#cookie').remove();
+      localStorage.setItem('cookie', '1');
+      $('#cookie-dismiss').off('click');
+    });
+  } else {
     $('#cookie').remove();
-    localStorage.setItem('cookie', '1');
-    $('#cookie-dismiss').off('click');
-  });
-} else {
-  $('#cookie').remove();
-}
-
-var params = getUrlVars();
-//Handle Log switch
-if (localStorage.getItem('logs') === null) {
-  console.log = function() {}
-
-  let logsClickCounter = 0;
-  let logsTimeout;
-  const logSwitch = $('#log-switch');
-  $(logSwitch).on('click', () => {
-    clearTimeout(logsTimeout);
-    logsClickCounter++
-    if (logsClickCounter < 5) {
-      logsTimeout = setTimeout(() => {
-        logsClickCounter = 0;
-      }, 250)
-    } else {
-      localStorage.setItem('logs', 'true');
-      $(logSwitch).css('color', 'rgb(245, 245, 245)');
-      $(logSwitch).off('click');
-      window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
-      location.reload();
-    }
-  });
-} else {
-  $('#log-switch').css('color', 'rgb(245, 245, 245)');
-}
-
-$('.loader').loaders();
-
-$(expandIcon).on('click', function(event) {
-  event.stopPropagation(); //avoid bubbling of the event
-  (document.fullscreenElement === null) ? openFullscreen() : closeFullscreen();
-});
-
-//Handle settings page button
-var settingsPage = {
-  openSettings: function(moveDown) {
-    settingsIsAnimating = true;
-    anime({
-      targets: 'html, body',
-      duration: 1250,
-      scrollTop: (moveDown) ? (($(window).height()) * 0.7) : 0,
-      easing: (moveDown) ? eaElasticDefault : 'easeOutExpo',
-      complete: function() {
-        inSettings = (moveDown) ? true : false;
-        settingsIsAnimating = false;
-      }
-    });
-  },
-
-  arrow: function(pointUp) {
-    anime({
-      targets: $(settingsArrow).get(0),
-      duration: 650,
-      easing: 'easeOutBack',
-      rotate: (pointUp) ? 0 : 180,
-      translateX: '-50%',
-      complete: function() {
-        if (pointUp) {
-          $(settingsArrow).find('#open-settings-arrow').removeClass('in-settings');
-        } else {
-          $(settingsArrow).find('#open-settings-arrow').addClass('in-settings');
-        }
-      }
-    });
-  },
-}
-
-$(settingsArrow).on('click', function(event) {
-  event.stopPropagation();
-  if (!inSettings && !settingsIsAnimating) {
-    settingsPage.openSettings(true)
-  } else if (settingsPage && !settingsIsAnimating) {
-    settingsPage.openSettings(false)
   }
-});
+}
 
-//Handle window scrolling
-let waitScroll;
-$(window).on('scroll', function(event) {
-  event.stopPropagation()
-  clearTimeout(waitScroll);
+function handleLogSwitch() {
+  if (localStorage.getItem('logs') === null) {
+    console.log = function () { };
+    const logSwitch = $('#log-switch');
 
-  waitScroll = setTimeout(function() {
-    if ($(window).scrollTop() === 0 ) {
-      inSettings = false;
-      settingsPage.arrow(true);
-      [$(musicBox), $(pomodoroBox)].forEach((el) => $(el).removeClass('hide'));
-    } else {
-      inSettings = true;
-      settingsPage.arrow(false);
-      [$(musicBox), $(pomodoroBox)].forEach((el) => $(el).addClass('hide'));
+    let logsClickCounter = 0, logsTimeout;
+    $(logSwitch).on('click', () => {
+      clearTimeout(logsTimeout);
+      logsClickCounter++
+      if (logsClickCounter < 5) {
+        logsTimeout = setTimeout(() => {
+          logsClickCounter = 0;
+        }, 250)
+      } else {
+        localStorage.setItem('logs', 'true');
+        $(logSwitch).css('color', 'rgb(245, 245, 245)').off('click');
+        window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
+        location.reload();
+      }
+    });
+  } else {
+    $('#log-switch').css('color', 'rgb(245, 245, 245)');
+  }
+}
+
+function handleSettingsPageBtn() {
+  $(settingsArrow).on('click', function (event) {
+    event.stopPropagation();
+    if (!inSettings && !settingsIsAnimating) {
+      settingsPageHandler.openSettings(true);
+    } else if (settingsPageHandler && !settingsIsAnimating) {
+      settingsPageHandler.openSettings(false);
     }
-  }, 250)
-});
+  });
+}
 
+function handleWindowScrolling() {
+  let waitScroll;
+  $(window).on('scroll', function (event) {
+    event.stopPropagation()
+    clearTimeout(waitScroll);
+
+    waitScroll = setTimeout(function () {
+      if ($(window).scrollTop() === 0) {
+        inSettings = false;
+        settingsPageHandler.arrow(true);
+        [$(musicBox), $(pomodoroBox)].forEach((el) => $(el).removeClass('hide'));
+      } else {
+        inSettings = true;
+        settingsPageHandler.arrow(false);
+        [$(musicBox), $(pomodoroBox)].forEach((el) => $(el).addClass('hide'));
+      }
+    }, 250)
+  });
+}
+
+function handleExpandIcon() {
+  $(expandIcon).on('click', function (event) {
+    event.stopPropagation(); //avoid bubbling of the event
+    (document.fullscreenElement === null) ? openFullscreen() : closeFullscreen();
+  });
+}

@@ -1,5 +1,4 @@
 const likeBtn = $('.like-btn'),
-playBtn = $('.play-btn'),
 spotifyIcon = $('#spotify-icon'),
 playbackIcon = $('#playback-icon');
 
@@ -14,6 +13,13 @@ currentTrackId = undefined,
 playbackStarted = false;
 
 // *** Spotify Player *** //
+export function playerIsBusy() {
+    if (playerIsReady && songIsSelected && premium) {
+        return false
+    } else {
+        return true
+    }
+}
 
 if (localStorage.userHasLogged === 'true' && compatibility.login) {
     window.onSpotifyWebPlaybackSDKReady = () => {
@@ -145,11 +151,5 @@ function initSpotifyPlayer() {
 }
 // *** END OF Spotify Player *** //
 
-function playerIsBusy() {
-    if (playerIsReady && songIsSelected && premium) {
-        return false
-    } else {
-        return true
-    }
-}
+
  

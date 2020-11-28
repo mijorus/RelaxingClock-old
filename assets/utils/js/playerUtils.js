@@ -20,7 +20,7 @@ export function updatePlaceholderText(text, error = false) {
 
 var songTl;
 
-export var scrollText = {
+export const scrollText = {
 
     scrollDuration: 15000,
 
