@@ -1,5 +1,5 @@
 //User settings
-var clockFormat, currentPosition; 
+export var clockFormat, currentPosition; 
 
 //Set or get default values from local storage
 export default function getSettings() {

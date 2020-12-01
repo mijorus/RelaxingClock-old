@@ -1,15 +1,25 @@
-export function handleHeartButton(songIsLiked) {
-    if (songIsLiked) {
-        $(likeBtn).children('#like-icon').removeClass('far')
-            .addClass('fas');
+import { likeBtn } from "../../js/spotify/spotifyPlayerEvents";
+
+export function playIcon(showPlay) {
+    if (showPlay) {
+        $(playbackIcon).removeClass('fa-pause').addClass('fa-play');
     } else {
-        $(likeBtn).children('#like-icon').removeClass('fas')
-            .addClass('far');  
+        $(playbackIcon).removeClass('fa-play').addClass('fa-pause');
     }
 }
 
+export function handleHeartButton(songIsLiked) {
+    if (songIsLiked) {
+        $(likeBtn).children('#like-icon')
+            .removeClass('far').addClass('fas');
+    } else {
+        $(likeBtn).children('#like-icon')
+            .removeClass('fas').addClass('far');  
+    }
+}
+
+const spotifyStatusText = $('#spotify-status-text');
 export function updateStatusText (message) {
-    const spotifyStatusText = '#spotify-status-text';
     $(spotifyStatusText).text(message);
 }
 
@@ -19,7 +29,6 @@ export function updatePlaceholderText(text, error = false) {
 }
 
 var songTl;
-
 export const scrollText = {
 
     scrollDuration: 15000,
@@ -34,8 +43,7 @@ export const scrollText = {
                 target.style.translateX = 0;
             }
         }, '+=50')
-        .add({
-            targets: target,
+        .add({,
             translateX: [vpWidth + 10, 0],
             duration: this.scrollDuration
         });

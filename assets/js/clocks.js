@@ -1,29 +1,34 @@
+import moment from 'moment'
+import { enableClockListeners } from "./clockListeners";
+import { handleMouseCursor, enableScreenSaver } from "./screenSaver";
+
 var clockInAction = false,
 formatIsAnimating = false,
-globeInAction = false,
-optionsName = $('.option-name'),
-clockIsResizing = false,
-localTimezone = moment.tz.guess(),
-remoteUnix = false,
-circleTl;
-const ampmIcon = $('#ampm'),
-styleList = 'classic focused metro globe analog',
-format12 = $('#format-12'),
-format24 = $('#format-24'),
-options = $(optionsName).length,
-centerContainer = $('.center-container'),
-styleSelectorL = $('#style-selector-l'),
-styleSelectorR = $('#style-selector-r'),
-ssTimeout = 5000, //timeout after which the screen saver is engaged
-clockOpAnimation = 350 //timing of the clock opacity animation
-;
+globeInAction     = false,
+optionsName       = $('.option-name'),
+clockIsResizing   = false,
+localTimezone     = moment.tz.guess(),
+remoteUnix        = false,
+circleTl          = undefined;
+
+export const ampmIcon = $('#ampm'),
+styleList             = 'classic focused metro globe analog',
+options               = $(optionsName).length,
+format12              = $('#format-12'),
+format24              = $('#format-24'),
+centerContainer       = $('.center-container'),
+styleSelectorL        = $('#style-selector-l'),
+styleSelectorR        = $('#style-selector-r'),
+ssTimeout             = 5000, //timeout after which the screen saver is engaged
+clockOpAnimation      = 350; //timing of the clock opacity animation
 
 //currentPosition = 0; //hardcoded position during development
-displayDefaultClock();
-handleMouseCursor('watch');
 
 export default function displayDefaultClock() {
+    enableClockListeners();
+    handleMouseCursor('watch');
     enableScreenSaver(15000);
+
     if(clockFormat === '24h') {
         $('#format-12').addClass('unfocus');
         showAMPM(false);
@@ -36,7 +41,7 @@ export default function displayDefaultClock() {
     handleSelectedClock(currentPosition, false, true); //memo for development: change the default clock style
 }
 
-function resizeClock(resizing) {
+export function resizeClock(resizing) {
     const targetEl = clockContainer.get(0);
     anime({
         begin: function() {
@@ -56,7 +61,7 @@ function resizeClock(resizing) {
     });
 }
 
-function clockIsStale() {
+export function clockIsStale() {
     if (!screenSaverIsActive && 
         !formatIsAnimating && 
         !screenSaverisAnimating &&
@@ -68,7 +73,7 @@ function clockIsStale() {
     }
 }
 
-function changeFormat(selectedFormat, fromFormat, toFormat) { 
+export function changeFormat(selectedFormat, fromFormat, toFormat) { 
     formatIsAnimating = true;
     var firstLoop = true;
     clearTimeout(screenSaverTimeout);
@@ -165,7 +170,7 @@ function loadTime(timeFormat, zone = localTimezone) { //International or america
     sec = now.format('ss'); 
 }
 
-function handleSelectedClock(userSelection, transition, resetClock) {
+export function handleSelectedClock(userSelection, transition, resetClock) {
     if (circleTl !== undefined) circleTl.pause();
 
     if (transition && resetClock) {
@@ -314,7 +319,7 @@ function startClockInterval(userSelection) {
 }
 
 var offset;
-function getRemoteTime(status = true) {
+export function getRemoteTime(status = true) {
     const rtLoader = $('.remote-time-loader');
     if (status) {
         $(rtLoader.get(0).nextElementSibling).addClass('unavailable');

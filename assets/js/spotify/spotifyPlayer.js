@@ -2,7 +2,8 @@ const likeBtn = $('.like-btn'),
 spotifyIcon = $('#spotify-icon'),
 playbackIcon = $('#playback-icon');
 
-var deviceID = undefined,
+export var player = undefined,
+deviceID = undefined,
 randomSong = undefined,
 currentTrackId = undefined,
 playerIsReady = false,

@@ -12,6 +12,7 @@ export default async function generateUrl() {
 
   challenge = await generateChallenge(verifier);
   localStorage.setItem('state', state);
+
   spotifyURL  = 'https://accounts.spotify.com/authorize?&client_id=' + encodeURIComponent(clientId);
   spotifyURL += '&response_type=code';
   spotifyURL += '&redirect_uri=' + encodeURIComponent(redirectURI);
@@ -20,7 +21,7 @@ export default async function generateUrl() {
   spotifyURL += '&state=' + encodeURIComponent(state);
   spotifyURL += '&scope=' + encodeURIComponent(scopes);
 
-  return spotifyURL
+  return spotifyURL;
 }
 
 function generateRandomString() {
@@ -49,6 +50,6 @@ function sha256(plain) {
 }
 
 async function generateChallenge(verifier) {
-  const hashedVerifier = await sha256(verifier)
-  return base64urlencode(hashedVerifier)
+  const hashedVerifier = await sha256(verifier);
+  return base64urlencode(hashedVerifier);
 }

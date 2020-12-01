@@ -1,4 +1,6 @@
-var circlePathTl, 
+export var globeInAction;
+
+var circlePathTl,
     halfCirPath,
     bigClockContainer,
     animePath,

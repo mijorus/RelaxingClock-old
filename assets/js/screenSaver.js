@@ -6,6 +6,10 @@ export function enableScreenSaver(timeout) {
     if (!screenSaverIsActive) screenSaverTimeout = setTimeout(() => {setScreenSaver()}, timeout);
 }
 
+export function disableScreenSaver() {
+    clearTimeout(screenSaverTimeout);
+}
+
 export function setScreenSaverColors() {
     if (localStorage.presentation === 'false') {
         $(body).removeClass('high-contrast').addClass('screen-saving-color');
@@ -85,7 +89,7 @@ function leaveScreenSaver() {
 }
 
 var cursorTimeout;
-function handleMouseCursor(setState) {     
+export function handleMouseCursor(setState) {     
     switch (setState) {
         case 'watch':
             var watchMouse;

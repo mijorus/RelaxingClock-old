@@ -1,17 +1,29 @@
-$(function() {
+import { format12, 
+        format24, 
+        styleSelectorL, 
+        styleSelectorR, 
+        handleSelectedClock, 
+        resizeClock,
+        changeFormat } from "./clocks";
+import { disableScreenSaver } from "./screenSaver";
+import { globeInAction } from "./clockStyles/globeClock";
+import { currentPosition } from "./getSettings";
+import { compatibility } from "./compatibilityDetector";
+
+export function enableClockListeners() {
     //Clock selection 
     $(styleSelectorL).on('click', function() {
         if (clockIsStale()) {
             changeOption(0);
         }
-        clearTimeout(screenSaverTimeout);
+        disableScreenSaver();
     }); // 0 moves to the left
 
     $(styleSelectorR).on('click', function() {
         if (clockIsStale()) {
             changeOption(1);
         }
-        clearTimeout(screenSaverTimeout);
+        disableScreenSaver();
     }); // 1 moves to the right
 
     $(window).on('keydown', function(event) {
@@ -21,7 +33,6 @@ $(function() {
                 if (clockIsStale() && currentPosition !== 0) {
                     changeOption(0);
                     enableScreenSaver(t);
-                    clearTimeout(screenSaverTimeout);
                 }
             break;
         
@@ -29,7 +40,6 @@ $(function() {
                 if (clockIsStale() && currentPosition !== (options - 1)) {
                     changeOption(1);
                     enableScreenSaver(t);
-                    clearTimeout(screenSaverTimeout);
                 }
             break;
         }

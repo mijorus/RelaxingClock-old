@@ -1,7 +1,9 @@
+export const likeBtn, playBtn, songInfo;
+
 export function initPlayerEvents() {
     const likeBtn = $('.like-btn'),
-    playBtn = $('.play-btn'),
-    songInfo = $('#song-info');
+    playBtn       = $('.play-btn'),
+    songInfo      = $('#song-info');
     //Listeners
     $(playBtn).on('click', function (event) {
         event.preventDefault(); event.stopPropagation();
@@ -91,14 +93,6 @@ export function initPlayerEvents() {
     }, () => {
         $(songInfo).addClass('hide');
     });
-}
-
-export function playIcon(showPlay) {
-    if (showPlay) {
-        $(playbackIcon).removeClass('fa-pause').addClass('fa-play');
-    } else {
-        $(playbackIcon).removeClass('fa-play').addClass('fa-pause');
-    }
 }
 
 function reconnect(play = false) {

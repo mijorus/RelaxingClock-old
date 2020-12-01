@@ -1,3 +1,5 @@
+import MobileDetect from "mobile-detect";
+
 export const compatibility = {
     login: false,
     isMobile: false,

@@ -1,3 +1,5 @@
+import { settingsIsAnimating, settingsArrow, eaElasticDefault, inSettings } from "./init";
+
 export const settingsPageHandler = {
     openSettings: function (moveDown) {
         settingsIsAnimating = true;

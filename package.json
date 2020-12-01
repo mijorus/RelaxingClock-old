@@ -12,6 +12,8 @@
     "animejs": "^3.2.1",
     "jquery": "^3.5.1",
     "json-query-string": "^1.0.0",
+    "loaders.css": "^0.1.2",
+    "mobile-detect": "^1.4.4",
     "moment": "^2.29.1",
     "netlify-lambda": "^2.0.1",
     "postcss-cli": "^8.0.0",

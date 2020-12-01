@@ -1,7 +1,10 @@
+import { cbDefault } from "../../js/init";
+import { player } from "../../js/spotify/spotifyPlayer";
+
 //Get the URL params
 export function getUrlVars() {
     var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
         vars[key] = value;
     });
     return vars;
