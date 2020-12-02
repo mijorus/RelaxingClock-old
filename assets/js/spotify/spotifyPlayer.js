@@ -1,17 +1,18 @@
-const likeBtn = $('.like-btn'),
-spotifyIcon = $('#spotify-icon'),
-playbackIcon = $('#playback-icon');
+import { spotifyPlaceholder } from "./init";
+import { spotify } from "./spotifyRequests";
+import { initPlayerEvents } from "./spotifyPlayerEvents";
 
 export var player = undefined,
-deviceID = undefined,
-randomSong = undefined,
-currentTrackId = undefined,
-playerIsReady = false,
-songIsSelected = false,
-currentTrack = {},
-currentStateContext = {},
-currentTrackId = undefined,
-playbackStarted = false;
+deviceID          = undefined,
+randomSong        = undefined,
+currentTrackId    = undefined,
+playerIsReady     = false,
+songIsSelected    = false,
+currentTrack      = {},
+//currentStateContext = {},
+currentTrackId    = undefined;
+
+const spotifyIcon = $('#spotify-icon');
 
 // *** Spotify Player *** //
 export function playerIsBusy() {
@@ -22,16 +23,10 @@ export function playerIsBusy() {
     }
 }
 
-if (localStorage.userHasLogged === 'true' && compatibility.login) {
-    window.onSpotifyWebPlaybackSDKReady = () => {
-        createNewSpotifyPlayer();
-    }
-}
-
-function createNewSpotifyPlayer() {
+export function createNewSpotifyPlayer() {
     player = new Spotify.Player({
         name: 'Relaxing Clocks',
-        getOAuthToken: function (callback) {
+        getOAuthToken: function(callback) {
             if (localStorage.code !== undefined) {
                 //We request a token for the first time
                 spotify.requestToken();

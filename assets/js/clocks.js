@@ -1,15 +1,20 @@
 import moment from 'moment'
 import { enableClockListeners } from "./clockListeners";
 import { handleMouseCursor, enableScreenSaver } from "./screenSaver";
+import { disableScreenSaver } from "./screenSaver";
+import { getRandomPlace, aRandomPlace } from '../utils/js/internationalClock';
+import { handleLoader } from "../utils/js/utils";
+import { clockStyles } from "./clockStyles";
 
 var clockInAction = false,
 formatIsAnimating = false,
 globeInAction     = false,
-optionsName       = $('.option-name'),
 clockIsResizing   = false,
+clock             = undefined,
 localTimezone     = moment.tz.guess(),
-remoteUnix        = false,
-circleTl          = undefined;
+remoteUnix        = false;
+
+const optionsName = $('.option-name');
 
 export const ampmIcon = $('#ampm'),
 styleList             = 'classic focused metro globe analog',
@@ -106,15 +111,18 @@ function showAMPM(shown) {
     (shown) ? $(ampmIcon).removeClass('disp-none') : $(ampmIcon).addClass('disp-none');
 }
 
-function changeOption (direction) {
-    var selectedOption = $(optionsName).filter('.selected');
+export function changeOption (direction) {
+    const selectedOption = $(optionsName).filter('.selected');
     currentPosition = $(selectedOption).data('selection');
+
+    var nextPosition, nextSelection;
+
     switch (direction) {
         case 0:
             $(styleSelectorR).removeClass('overscroll')
             if (currentPosition != 0) {
-                var nextPosition = currentPosition - 1;
-                var nextSelection = $(optionsName).filter(`[data-selection=${nextPosition}]`);
+                nextPosition = currentPosition - 1;
+                nextSelection = $(optionsName).filter(`[data-selection=${nextPosition}]`);
                 goToNextSelection(nextPosition);
             } else {
                 $(styleSelectorL).addClass('overscroll')
@@ -124,8 +132,8 @@ function changeOption (direction) {
         case 1:
             $(styleSelectorL).removeClass('overscroll');
             if (currentPosition !== (options - 1) ) {
-                var nextPosition = currentPosition + 1;
-                var nextSelection = $(optionsName).filter(`[data-selection=${nextPosition}]`);
+                nextPosition = currentPosition + 1;
+                nextSelection = $(optionsName).filter(`[data-selection=${nextPosition}]`);
                 goToNextSelection(nextPosition);
             } else {
                 $(styleSelectorR).addClass('overscroll')
@@ -137,43 +145,23 @@ function changeOption (direction) {
         $(selectedOption).removeClass('selected');
         $(nextSelection).addClass('selected');
         currentPosition = nextPosition;
-        if (localStorage) { localStorage.defaultPosition = currentPosition; }
+        localStorage.defaultPosition = currentPosition;
 
         handleSelectedClock(currentPosition, true, true);
     }
 }
 
-function loadTime(timeFormat, zone = localTimezone) { //International or american, called every second 
-    let now;
-        if (!remoteUnix) {
-            now = moment.tz(zone);
-        } else {
-            now = moment.tz(getAccurateUnix(), "X", zone);
-        }
-
-    switch (timeFormat) {
-        case '12h':
-            hours   = now.format('hh');
-            if ((now.format('HH') <= 12)) {
-                $(ampmIcon).text('AM');
-            } else {
-                $(ampmIcon).text('PM');
-            }
-        break;
-    
-        case '24h':
-            hours   = now.format('HH');
-        break;
-    }
-
-    min = now.format('mm');
-    sec = now.format('ss'); 
-}
-
 export function handleSelectedClock(userSelection, transition, resetClock) {
+    const circleTl = clockStyles.globeClock.circleTl;
     if (circleTl !== undefined) circleTl.pause();
 
     if (transition && resetClock) {
+        const animationProps = {
+            targets: clockContainer.get(0),
+            duration: clockOpAnimation,
+            easing: 'linear',
+        }
+
         switch (userSelection) {
             case 2:
                 const metroBg = $('#metro-background');
@@ -189,11 +177,9 @@ export function handleSelectedClock(userSelection, transition, resetClock) {
         
         clockInAction = true;
         clearInterval(clock);
-        clearTimeout(screenSaverTimeout);
+        disableScreenSaver();
         anime({
-            targets: clockContainer.get(0),
-            duration: clockOpAnimation,
-            easing: 'linear',
+            ...animationProps,
             opacity: 0,
             complete: function() {
                 //remove classes for specific clock styles on style change
@@ -204,9 +190,7 @@ export function handleSelectedClock(userSelection, transition, resetClock) {
                 handleSelection(userSelection);
                 handleClockProgression(userSelection);
                 anime({
-                    targets: clockContainer.get(0),
-                    duration: clockOpAnimation,
-                    easing: 'linear',
+                    ...animationProps,
                     opacity: 1,
                     complete: function() {
                         clockInAction = false;
@@ -252,10 +236,36 @@ export function handleSelectedClock(userSelection, transition, resetClock) {
     }
 }
 
-//this function is called once every second by startClockInterval, just before the handleClockProgression
+function loadTime(timeFormat, zone = localTimezone) { //International or american, called every second 
+    let now;
+    if (!remoteUnix) {
+        now = moment.tz(zone);
+    } else {
+        now = moment.tz(getAccurateUnix(), "X", zone);
+    }
+
+    switch (timeFormat) {
+        case '12h':
+            hours = now.format('hh');
+            if ((now.format('HH') <= 12)) {
+                $(ampmIcon).text('AM');
+            } else {
+                $(ampmIcon).text('PM');
+            }
+            break;
+
+        case '24h':
+            hours = now.format('HH');
+            break;
+    }
+
+    min = now.format('mm');
+    sec = now.format('ss');
+}
+
+//This function is called once every second by startClockInterval, just before the handleClockProgression
 //and selects the style of the clock
 function handleSelection(userSelection) {
-    
     switch (userSelection) {
         case 4:
             loadTime(clockFormat, aRandomPlace.tz);
@@ -328,8 +338,9 @@ export function getRemoteTime(status = true) {
             method: "GET", cache: false, url: "https://worldtimeapi.org/api/ip",
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            success: function(result) {
+            }
+        })
+            .done(function(result) {
                 localTimezone = result.timezone;
                 offset = moment().unix() - result.unixtime;
                 remoteUnix = true;
@@ -338,15 +349,14 @@ export function getRemoteTime(status = true) {
                     $(rtLoader.get(0).nextElementSibling).removeClass('unavailable');
                 }, 1500);
                 console.log(`The clock of your pc is ${offset} seconds behind`);
-            },
-            error: function(error) {
+            })
+            .fail(function(error) {
                 console.error(error);
                 setTimeout(function () {
                     handleLoader($(rtLoader), false, false);
                     $(rtLoader.get(0).nextElementSibling).removeClass('unavailable');
                 }, 1500);
-            }
-        });
+            })
     } else {
         remoteUnix = false;
         handleLoader($(rtLoader), false, false, false);

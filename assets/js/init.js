@@ -9,7 +9,6 @@ main              = $('main'),
 bigClock          = $('#big-clock'),
 expandIcon        = $('.expand-icon'),
 toScreenSave      = $('.toscreensave'),
-musicBox          = $('#music-box'),
 pomodoroBox       = $('#pomodoro-feature-box'),
 settingsArrow     = $('#open-settings-container'),
 clockInnerCont    = $('#clock-inner-container'),
@@ -17,16 +16,13 @@ clockContainer    = $('#clock-container'),
 cbDefault         = 'cubicBezier(0.37, 0, 0.63, 1)',
 eaElasticDefault  = 'easeOutElastic(1, 1)';
 export var hours,min,sec,
-inSettings = false, //if the user is currently in the settings page
-logged = false, accessDenied = false, premium = false, //if the user has succesfully logged to spotify
-settingsIsAnimating = false,
-paused = true, //the music state
-screenSaverIsActive = false, //whether or not the screen saver is active
+inSettings             = false, //if the user is currently in the settings page
+settingsIsAnimating    = false,
+paused                 = true, //the music state
+screenSaverIsActive    = false, //whether or not the screen saver is active
 screenSaverisAnimating = false, //whether or not the screen saver is animating
-isFullScreen = false, //whether or not the clock is in fullscreen
-clock, //THE Clock
-noSleep = new NoSleep();
-aRandomPlace; //a Random place in the array of cities, is a function;
+isFullScreen           = false, //whether or not the clock is in fullscreen
+noSleep                = new NoSleep();
 
 $(function() {
   runCompatibilityDetector();

@@ -2,7 +2,7 @@
 var requestHeader = undefined;
 const spotifyBaseURL = 'https://api.spotify.com/v1/'
 
-export default spotify = {
+export const spotify = {
 
     requestToken: function() {
         $.ajax({
@@ -14,18 +14,17 @@ export default spotify = {
                 code: localStorage.code,
                 redirect_uri: redirectURI,
                 code_verifier: localStorage.verifier
-            },
-            success: function (response) {
+            }
+        })
+            .done(function (response) {
                 localStorage.removeItem('code');
                 localStorage.removeItem('verifier');
                 saveLoginResponse(response);
-                spotify.getUserDetails();
-            },
-
-            error: function (error) {
-                spotify.logError("Can't get token from Spotify", error);
-            }
-        });
+                this.getUserDetails();
+            })
+            .fail(function (error) {
+                this.logError("Can't get token from Spotify", error);
+            })
     },
 
     refreshToken: function(play = false) {
@@ -37,16 +36,17 @@ export default spotify = {
                 grant_type: 'refresh_token',
                 refresh_token: localStorage.refreshToken
             },
-            success: function (response) {
+        })
+            .done(function (response) {
                 console.warn(`Token refreshed`);
 
                 localStorage.removeItem('code');
                 saveLoginResponse(response);
                 if (!premium) spotify.getUserDetails();
                 if (play) spotify.play();
-            },
+            })
 
-            error: function (error) {
+            .fail(function (error) {
                 switch (error.status) {
                     case 400:
                         throwTokenError();
@@ -58,8 +58,7 @@ export default spotify = {
                     break;
                 }
 
-            }
-        });
+            })
     },
 
     findDevices: function() {
@@ -160,7 +159,6 @@ export default spotify = {
                     case 401:
                         if (error.responseJSON.error.message === 'The access token expired') {
                             spotify.refreshToken(true);
-                            //spotify.throwGenericError('It has been a long <br>time, please <a href="${redirectURI}">Reload</a>')
                         }
                     break;
                 

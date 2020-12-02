@@ -14,6 +14,7 @@ export function handleAnalogClock() {
             computeAnalogSize();
         } else {
             $(window).on('load', function () {
+                $(window).off('load');
                 computeAnalogSize();
             });
         }
@@ -27,12 +28,11 @@ export function randomHandColor() {
 }
 
 function computeAnalogSize() {
-    $(window).off('load');
-    var ccMargin = parseInt($(clockContainer).css('margin-bottom'))
-    var cicHeight = $(clockContainer).height();
-    var circle = $('#circle');
-    var circleRadius = ((ccMargin) + cicHeight / 2);
-    var circleDiameter = circleRadius * 2;
+    const ccMargin = parseInt($(clockContainer).css('margin-bottom'))
+    const cicHeight = $(clockContainer).height();
+    const circle = $('#circle');
+    const circleRadius = ((ccMargin) + cicHeight / 2);
+    const circleDiameter = circleRadius * 2;
     $(circle).width(circleDiameter);
     $(circle).height(circleDiameter);
 

@@ -1,10 +1,4 @@
-import { format12, 
-        format24, 
-        styleSelectorL, 
-        styleSelectorR, 
-        handleSelectedClock, 
-        resizeClock,
-        changeFormat } from "./clocks";
+import * as clocks from "./clocks";
 import { disableScreenSaver } from "./screenSaver";
 import { globeInAction } from "./clockStyles/globeClock";
 import { currentPosition } from "./getSettings";
@@ -12,16 +6,16 @@ import { compatibility } from "./compatibilityDetector";
 
 export function enableClockListeners() {
     //Clock selection 
-    $(styleSelectorL).on('click', function() {
-        if (clockIsStale()) {
-            changeOption(0);
+    $(clocks.styleSelectorL).on('click', function() {
+        if (clocks.clockIsStale()) {
+            clocks.changeOption(0);
         }
         disableScreenSaver();
     }); // 0 moves to the left
 
-    $(styleSelectorR).on('click', function() {
-        if (clockIsStale()) {
-            changeOption(1);
+    $(clocks.styleSelectorR).on('click', function() {
+        if (clocks.clockIsStale()) {
+            clocks.changeOption(1);
         }
         disableScreenSaver();
     }); // 1 moves to the right
@@ -30,30 +24,30 @@ export function enableClockListeners() {
         const t = 15000
         switch (event.which) {
             case 37:
-                if (clockIsStale() && currentPosition !== 0) {
-                    changeOption(0);
+                if (clocks.clockIsStale() && currentPosition !== 0) {
+                    clocks.changeOption(0);
                     enableScreenSaver(t);
                 }
             break;
         
             case 39:
-                if (clockIsStale() && currentPosition !== (options - 1)) {
-                    changeOption(1);
+                if (clocks.clockIsStale() && currentPosition !== (options - 1)) {
+                    clocks.changeOption(1);
                     enableScreenSaver(t);
                 }
             break;
         }
     });
 
-    $(format12).on('click', function() {
-        if (clockIsStale() && !globeInAction) {
-            changeFormat('12h', $(format12), $(format24));
+    $(clocks.format12).on('click', function() {
+        if (clocks.clockIsStale() && !globeInAction) {
+            clocks.changeFormat('12h', $(clocks.format12), $(clocks.format24));
         }
     });
 
-    $(format24).on('click', function() {
-        if (clockIsStale() && !globeInAction) {
-            changeFormat('24h', $(format24), $(format12));
+    $(clocks.format24).on('click', function() {
+        if (clocks.clockIsStale() && !globeInAction) {
+            clocks.changeFormat('24h', $(clocks.format24), $(clocks.format12));
         }
     });
 
@@ -63,11 +57,11 @@ export function enableClockListeners() {
         
         if(!clockIsResizing && 
             !compatibility.isMobile) {
-            resizeClock(true);
+            clocks.resizeClock(true);
         }
 
         waitResize = setTimeout(function() {
-            (compatibility.isMobile) ? handleSelectedClock(currentPosition, false, false) : resizeClock(false)
+            (compatibility.isMobile) ? handleSelectedClock(currentPosition, false, false) : clocks.resizeClock(false)
         }, 1000)
     });
 });

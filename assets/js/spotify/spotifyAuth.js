@@ -1,60 +1,51 @@
-const spotifyPlaceholder = $('#spotify-placeholder');
+import { params, spotifyPlaceholder, musicBox } from "./init";
+import { compatibility } from "../compatibilityDetector";
+import { updateStatusText } from "../../utils/js/playerUtils";
+import { createNewSpotifyPlayer, player } from "./spotifyPlayer";
 
-//Extract params from the hashedURL into the params array
-var params = getUrlVars();
-if (compatibility.login) {
-    if (localStorage.userHasLogged === 'false') {
-        if (params.state === undefined) {
-            //The user has never logged before to the app
-            putURL();
-            $(spotifyPlaceholder).html('Login with <br> Spotify');
-            updateStatusText('Login with Spotify to listen some relaxing beats');
-        } else if (params.state && params.error === undefined) {
-            //The user comes from the Spotify's authentication page
-            //without errors
-            console.log(params);
-            if (params.state === localStorage.state) {
-                //The state variables match, the authentication is completed,
-                //the app will reload the page to clean the address bar
-                localStorage.userHasLogged = 'true';
-                localStorage.removeItem('state');
-                localStorage.setItem('code', params.code);
-                window.location.replace(redirectURI);
-            } else {
-                //The states don't match, the authentication failed
-                throwAuthError('States do not match');
+export var logged = false,
+accessDenied      = false,
+premium           = false;
+
+export function login () {
+    if (compatibility.login) {
+        if (localStorage.userHasLogged === 'false') {
+            if (params.state === undefined) {
+                //The user has never logged before to the app
+                putURL();
+                $(spotifyPlaceholder).html('Login with <br> Spotify');
+                updateStatusText('Login with Spotify to listen some relaxing beats');
+            } else if (params.state && params.error === undefined) {
+                //The user comes from the Spotify's authentication page
+                //without errors
+                console.log(params);
+                if (params.state === localStorage.state) {
+                    //The state variables match, the authentication is completed,
+                    //the app will reload the page to clean the address bar
+                    localStorage.userHasLogged = 'true';
+                    localStorage.removeItem('state');
+                    localStorage.setItem('code', params.code);
+                    window.location.replace(redirectURI);
+                } else {
+                    //The states don't match, the authentication failed
+                    throwAuthError('States do not match');
+                }
+            } else if (params.error) {
+                //Spotify responded with an error during the authentication process
+                throwAuthError(params.error);
             }
-        } else if (params.error) {
-            //Spotify responded with an error during the authentication process
-            throwAuthError(params.error);
+        } else if (localStorage.userHasLogged === 'true' && compatibility.login) {
+            $(musicBox).removeClass('unlogged').addClass('logged');
+            window.onSpotifyWebPlaybackSDKReady = () => {
+                createNewSpotifyPlayer();
+            }
         }
-    } else if (localStorage.userHasLogged === 'true') {
-        $(musicBox).removeClass('unlogged');
-        $(musicBox).addClass('logged');
+    } else {
+        throwUncompatibilityErr();
     }
-} else {
-    throwUncompatibilityErr();
 }
 
-function throwAuthError(error) {
-    console.error(`Authentication Error, ${error}!`);
-
-    accessDenied = true;
-    $(spotifyPlaceholder).html('Authentication<br>Error');
-    $(spotifyPlaceholder).addClass('error');
-    (error === 'access_denied') ? updateStatusText(`Access denied! :(`)
-        : updateStatusText(`Authentication Error :(`);
-}
-
-function getUrlVars() {
-    var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-        vars[key] = value;
-    });
-    return vars;
-}
-
-function logout(redirect = true) {
+export function logout(redirect = true) {
     if (player) player.disconnect();
     localStorage.userHasLogged = 'false';
     if (sessionStorage.accessToken) sessionStorage.removeItem('accessToken');
@@ -63,6 +54,15 @@ function logout(redirect = true) {
     localStorage.removeItem('verifier');
     localStorage.removeItem('state');
     if (redirect) window.location.replace(redirectURI);
+}
+
+function throwAuthError(error) {
+    console.error(`Authentication Error, ${error}!`);
+
+    accessDenied = true;
+    $(spotifyPlaceholder).html('Authentication<br>Error').addClass('error');
+    (error === 'access_denied') ? updateStatusText(`Access denied! :(`)
+        : updateStatusText(`Authentication Error :(`);
 }
 
 function throwUncompatibilityErr() {
@@ -79,6 +79,6 @@ function throwUncompatibilityErr() {
 }
 
 async function putURL() {
-    url = await generateUrl();
+    const url = await generateUrl();
     $('#spotify-link').attr('href', url);
 }

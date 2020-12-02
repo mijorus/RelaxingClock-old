@@ -1,10 +1,8 @@
-export var globeInAction;
+import { cbDefault, clockInnerCont, centerContainer } from "../init";
+import { format12, format24 } from "../clocks";
+import { isDay, getCbCurve,  } from "../../utils/js/internationalClock";
 
-var circlePathTl,
-    halfCirPath,
-    bigClockContainer,
-    animePath,
-    clockFormatBtns;
+export var globeInAction, circleTl = undefined;
 
 export function handleGlobeClock() {
     $(cityIcon).addClass(aRandomPlace.class);
@@ -20,11 +18,18 @@ export function handleGlobeAnimation(pathAnimation = true) {
         globeClockAnimation(pathAnimation);
     } else {
         $(window).on('load', function () {
+            $(window).off('load');
             $(centerContainer).addClass('globe');
             globeClockAnimation(pathAnimation)
         });
     }
 }
+
+var circlePathTl,
+    halfCirPath,
+    bigClockContainer,
+    animePath,
+    clockFormatBtns;
 
 function globeClockAnimation(pathAnimation) {
     halfCirPath = $('#half-circle-path');
@@ -35,10 +40,9 @@ function globeClockAnimation(pathAnimation) {
         circleTl.pause();
     }
 
-    $(window).off('load');
-    var skyIcon = '#sky-icon';
+    const skyIcon = $('#sky-icon');
     if ($(skyIcon).length) {
-        $('#sky-icon').remove();
+        $(skyIcon).remove();
     }
 
     halfCircle = computeCircleSize();
@@ -82,8 +86,7 @@ function animateCirclePath() {
             direction: 'normal',
         });
 
-    circlePathTl.pause();
-    circlePathTl.restart();
+    circlePathTl.pause().restart();
 }
 
 function createSkyIcon() {
