@@ -64,4 +64,4 @@ export function enableClockListeners() {
             (compatibility.isMobile) ? handleSelectedClock(currentPosition, false, false) : clocks.resizeClock(false)
         }, 1000)
     });
-});
+};

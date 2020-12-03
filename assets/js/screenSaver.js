@@ -1,3 +1,9 @@
+import { body, cbDefault, bigClock, toScreenSave, eaElasticDefault, main, clockInnerCont } from "./init";
+import { currentPosition } from "./getSettings";
+
+export var screenSaverIsActive = false, //whether or not the screen saver is active
+    screenSaverisAnimating     = false; //whether or not the screen saver is animating
+
 var screenSaverTimeout;
 
 export function enableScreenSaver(timeout) {
@@ -39,9 +45,7 @@ function setScreenSaver() {
                 duration: 2000,
                 delay: 50,
                 scale: function(){
-                    const clockY = $(bigClock).height();
-                    const windowY = $(window).height();
-                    return ((windowY * 0.85) / clockY);
+                    return (($(window).height() * 0.85) / $(bigClock).height());
                 },
                 complete: function() {
                     screenSaverisAnimating = false;
@@ -103,7 +107,7 @@ export function handleMouseCursor(setState) {
             break;
 
         case 'hide':
-            if (!inSettings) $('main').css('cursor', 'none');
+            if (!inSettings) $(main).css('cursor', 'none');
             $(expandIcon).addClass('hide');
             $(window).on('mousemove', function() {
                 $(window).off('mousemove');
@@ -113,7 +117,7 @@ export function handleMouseCursor(setState) {
         
         case 'leave':
             clearTimeout(cursorTimeout);
-            $('main').css('cursor', 'auto');
+            $(main).css('cursor', 'auto');
             $(expandIcon).removeClass('hide');
             $(window).off('mousemove');
             break;
@@ -121,7 +125,7 @@ export function handleMouseCursor(setState) {
 }
 
 function showMouseCursor() {
-    $('main').css('cursor', 'auto');
+    $(main).css('cursor', 'auto');
     $(expandIcon).removeClass('hide');
     $(window).on('mousemove', function() {
         clearTimeout(cursorTimeout);

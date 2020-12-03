@@ -1,5 +1,5 @@
 export default function handleClassicClock() {
-    const mySec = sec;
+    let mySec = sec;
     if (hours == '04' && min == '20' && clockFormat === '12h') {
         mySec = '69';
     }

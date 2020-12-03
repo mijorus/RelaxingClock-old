@@ -1,4 +1,11 @@
-import { settingsIsAnimating, settingsArrow, eaElasticDefault, inSettings } from "./init";
+import { settingsArrow, eaElasticDefault } from "./init";
+
+export var settingsIsAnimating = false,
+    inSettings = false; //if the user is currently in the settings page
+
+export function userInSettings(status) {
+    inSettings = status;
+}
 
 export const settingsPageHandler = {
     openSettings: function (moveDown) {

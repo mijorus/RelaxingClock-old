@@ -1,10 +1,10 @@
 import moment from 'moment'
 import { enableClockListeners } from "./clockListeners";
-import { handleMouseCursor, enableScreenSaver } from "./screenSaver";
-import { disableScreenSaver } from "./screenSaver";
-import { getRandomPlace, aRandomPlace } from '../utils/js/internationalClock';
+import { handleMouseCursor, enableScreenSaver, 
+    disableScreenSaver, screenSaverIsActive, screenSaverisAnimating } from "./screenSaver";
+import { getRandomPlace, aRandomPlace } from '../utils/js/internationalClock/internationalClock';
 import { handleLoader } from "../utils/js/utils";
-import { clockStyles } from "./clockStyles";
+import { clockStyles } from "./clockStyles/styles"
 
 var clockInAction = false,
 formatIsAnimating = false,
@@ -167,7 +167,7 @@ export function handleSelectedClock(userSelection, transition, resetClock) {
                 const metroBg = $('#metro-background');
                 $(metroBg).removeClass();
                 getRandomPlace(false);
-                $(metroBg).addClass(aRandomPlace.class);
+                $(metroBg).addClass(aRandomPlace.city.class);
             break;
             case 4:
                 $(cityIcon).removeClass();
@@ -223,7 +223,7 @@ export function handleSelectedClock(userSelection, transition, resetClock) {
         switch (userSelection) {
             case 2: 
                 getRandomPlace(false);
-                $('#metro-background').addClass(aRandomPlace.class);
+                $('#metro-background').addClass(aRandomPlace.city.class);
             break;
             case 4:
                 getRandomPlace();
@@ -236,7 +236,7 @@ export function handleSelectedClock(userSelection, transition, resetClock) {
     }
 }
 
-function loadTime(timeFormat, zone = localTimezone) { //International or american, called every second 
+export function loadTime(timeFormat, zone = localTimezone) { //International or american, called every second 
     let now;
     if (!remoteUnix) {
         now = moment.tz(zone);
@@ -268,7 +268,7 @@ function loadTime(timeFormat, zone = localTimezone) { //International or america
 function handleSelection(userSelection) {
     switch (userSelection) {
         case 4:
-            loadTime(clockFormat, aRandomPlace.tz);
+            loadTime(clockFormat, aRandomPlace.city.tz);
         break;
     
         default:

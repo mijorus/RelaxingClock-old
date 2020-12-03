@@ -30,7 +30,6 @@ export function updatePlaceholderText(text, error = false) {
 
 var songTl;
 export const scrollText = {
-
     scrollDuration: 15000,
 
     scroll: function(target, scrollWidth, vpWidth, delay) {
@@ -43,7 +42,7 @@ export const scrollText = {
                 target.style.translateX = 0;
             }
         }, '+=50')
-        .add({,
+        .add({
             translateX: [vpWidth + 10, 0],
             duration: this.scrollDuration
         });

@@ -1,6 +1,7 @@
 import { cbDefault, clockInnerCont, centerContainer } from "../init";
-import { format12, format24 } from "../clocks";
-import { isDay, getCbCurve,  } from "../../utils/js/internationalClock";
+import { clockFormat } from "../getSettings";
+import { format12, format24, loadTime } from "../clocks";
+import { aRandomPlace  } from "../../utils/js/internationalClock/internationalClock";
 
 export var globeInAction, circleTl = undefined;
 
@@ -113,7 +114,7 @@ function animateSkyIcon() {
         autoplay: true,
         loop: false,
         begin: () => {
-            loadTime(clockFormat, aRandomPlace.tz);
+            loadTime(clockFormat, aRandomPlace.city.tz);
             clockStyles.handleGlobeClock();
             if (isDay) {
                 $(skyIcon).removeClass('moon').addClass('sun');
@@ -133,7 +134,7 @@ function animateSkyIcon() {
             translateX: animePath('x'),
             translateY: animePath('y'),
             translateZ: 0,
-            easing: getCbCurve(),
+            easing: aRandomPlace.day.cbCurve,
             opacity: {
                 value: [0, 1],
                 duration: 500,
