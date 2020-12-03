@@ -1,4 +1,4 @@
-export default pomodoro = {
+export pomodoro = {
 
     running: false,
 

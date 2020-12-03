@@ -1,5 +1,12 @@
-import { body, cbDefault, bigClock, toScreenSave, eaElasticDefault, main, clockInnerCont } from "./init";
-import { currentPosition } from "./getSettings";
+import { body,
+        cbDefault, 
+        bigClock, 
+        toScreenSave, 
+        eaElasticDefault, 
+        main, 
+        clockInnerCont }    from "./init";
+import { currentPosition }  from "./getSettings";
+import { inSettings }       from "./settingsPageHandler";
 
 export var screenSaverIsActive = false, //whether or not the screen saver is active
     screenSaverisAnimating     = false; //whether or not the screen saver is animating

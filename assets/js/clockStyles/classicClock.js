@@ -1,4 +1,6 @@
-export default function handleClassicClock() {
+import { bigClock } from "../init";
+
+export function handleClassicClock() {
     let mySec = sec;
     if (hours == '04' && min == '20' && clockFormat === '12h') {
         mySec = '69';

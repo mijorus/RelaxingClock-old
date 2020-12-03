@@ -55,13 +55,13 @@ export function enableClockListeners() {
     $(window).on('resize', function() {
         clearTimeout(waitResize);
         
-        if(!clockIsResizing && 
+        if( !clocks.clockIsResizing && 
             !compatibility.isMobile) {
             clocks.resizeClock(true);
         }
 
         waitResize = setTimeout(function() {
-            (compatibility.isMobile) ? handleSelectedClock(currentPosition, false, false) : clocks.resizeClock(false)
+            (compatibility.isMobile) ? clocks.handleSelectedClock(currentPosition, false, false) : clocks.resizeClock(false)
         }, 1000)
     });
 };

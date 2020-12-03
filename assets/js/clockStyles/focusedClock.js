@@ -1,4 +1,4 @@
-export default function handleFocusedClock() {
+export function handleFocusedClock() {
     if (sec % 2 == 0) {
         $(bigClock).text(hours + ':' + min);
     } else {

@@ -5,7 +5,6 @@ import { initPlayerEvents } from "./spotifyPlayerEvents";
 export var player = undefined,
 deviceID          = undefined,
 randomSong        = undefined,
-currentTrackId    = undefined,
 playerIsReady     = false,
 songIsSelected    = false,
 currentTrack      = {},

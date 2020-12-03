@@ -1,4 +1,4 @@
-export default spotifyError = {
+export spotifyError = {
      throwTokenError: function() {
         this.removeLoader();
         updateStatusText(`Sorry, but you need to login again`);

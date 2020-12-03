@@ -5657,4 +5657,4 @@ hooks.HTML5_FMT = {
     MONTH: 'YYYY-MM', // <input type="month" />
 };
 
-export default hooks;
+export hooks;

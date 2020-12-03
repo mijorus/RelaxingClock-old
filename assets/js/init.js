@@ -1,11 +1,12 @@
 import $                                   from 'jquery';
-import runCompatibilityDetector            from './compatibilityDetector';
-import {settingsPageHandler, 
+import { runCompatibilityDetector }        from './compatibilityDetector';
+import { settingsPageHandler, 
       settingsIsAnimating, 
       userInSettings,
       inSettings }                         from './settingsPageHandler';
-import displayDefaultClock                 from './clocks';
+import { displayDefaultClock }             from "./clocks";
 import { openFullscreen, closeFullscreen } from '../utils/js/fullScreenUtils';
+import { getSettings }                     from "./getSettings";
 
 export const body = $('body'),
 main              = $('main'),
@@ -19,8 +20,8 @@ clockContainer    = $('#clock-container'),
 cbDefault         = 'cubicBezier(0.37, 0, 0.63, 1)',
 eaElasticDefault  = 'easeOutElastic(1, 1)';
 export var hours,min,sec,
-paused                 = true, //the music state
-noSleep                = new NoSleep();
+paused            = true, //the music state
+noSleep           = new NoSleep();
 
 $(function() {
   runCompatibilityDetector();
@@ -32,7 +33,7 @@ $(function() {
   handleLogSwitch();
   
   //Create loaders effects
-  $('.loader').loaders();
+  //$('.loader').loaders();
 
   //Handle expand icon
   handleExpandIcon();
@@ -43,7 +44,10 @@ $(function() {
   //Handle window scrolling
   handleWindowScrolling();
 
-  //initialize the clock
+  //Get user settings
+  getSettings();
+
+  //Initialize the clock
   displayDefaultClock();
 })
 
@@ -62,7 +66,7 @@ function cookieBanner() {
 
 function handleLogSwitch() {
   if (localStorage.getItem('logs') === null) {
-    console.log = function () { };
+    //console.log = function () { };
     const logSwitch = $('#log-switch');
 
     let logsClickCounter = 0, logsTimeout;

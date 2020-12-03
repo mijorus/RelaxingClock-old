@@ -1,6 +1,6 @@
-import { cbDefault, clockInnerCont, centerContainer } from "../init";
+import { cbDefault, clockInnerCont } from "../init";
 import { clockFormat } from "../getSettings";
-import { format12, format24, loadTime } from "../clocks";
+import { format12, format24, loadTime, centerContainer } from "../clocks";
 import { aRandomPlace  } from "../../utils/js/internationalClock/internationalClock";
 
 export var globeInAction, circleTl = undefined;

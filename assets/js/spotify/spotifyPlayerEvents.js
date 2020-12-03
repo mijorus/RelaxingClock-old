@@ -1,11 +1,9 @@
-export var playbackStarted = false;
-
-export const likeBtn, playBtn, songInfo;
+export var playbackStarted = false, likeBtn, playBtn, songInfo;
 
 export function initPlayerEvents() {
-    const likeBtn = $('.like-btn'),
-    playBtn       = $('.play-btn'),
-    songInfo      = $('#song-info');
+    likeBtn  = $('.like-btn');
+    playBtn  = $('.play-btn');
+    songInfo = $('#song-info');
     //Listeners
     $(playBtn).on('click', function (event) {
         event.preventDefault(); event.stopPropagation();

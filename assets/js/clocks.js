@@ -1,10 +1,20 @@
-import moment from 'moment'
+import moment                   from 'moment-timezone';
+import { clockContainer }       from "./init";
 import { enableClockListeners } from "./clockListeners";
-import { handleMouseCursor, enableScreenSaver, 
-    disableScreenSaver, screenSaverIsActive, screenSaverisAnimating } from "./screenSaver";
-import { getRandomPlace, aRandomPlace } from '../utils/js/internationalClock/internationalClock';
-import { handleLoader } from "../utils/js/utils";
-import { clockStyles } from "./clockStyles/styles"
+import { handleMouseCursor, 
+        enableScreenSaver, 
+        disableScreenSaver, 
+        screenSaverIsActive, 
+        screenSaverisAnimating } from "./screenSaver";
+import { getRandomPlace, 
+        aRandomPlace }           from '../utils/js/internationalClock/internationalClock';
+import { handleLoader }          from "../utils/js/utils";
+import { clockStyles }           from "./clockStyles/styles";
+import { clockFormat, 
+        setClockFormat,
+        currentPosition,
+        setPosition }            from "./getSettings";
+
 
 var clockInAction = false,
 formatIsAnimating = false,
@@ -29,7 +39,7 @@ clockOpAnimation      = 350; //timing of the clock opacity animation
 
 //currentPosition = 0; //hardcoded position during development
 
-export default function displayDefaultClock() {
+export function displayDefaultClock() {
     enableClockListeners();
     handleMouseCursor('watch');
     enableScreenSaver(15000);
@@ -92,8 +102,7 @@ export function changeFormat(selectedFormat, fromFormat, toFormat) {
         duration: clockOpAnimation,
         loopComplete: function() {
             if (firstLoop) {
-                clockFormat = selectedFormat;
-                if (localStorage) { localStorage.defaultClockFormat = selectedFormat; }
+                setClockFormat(selectedFormat);
                 (selectedFormat === '12h') ? showAMPM(true) : showAMPM (false);
                 firstLoop = false;
 
@@ -113,7 +122,7 @@ function showAMPM(shown) {
 
 export function changeOption (direction) {
     const selectedOption = $(optionsName).filter('.selected');
-    currentPosition = $(selectedOption).data('selection');
+    setPosition($(selectedOption).data('selection')); 
 
     var nextPosition, nextSelection;
 
@@ -144,9 +153,7 @@ export function changeOption (direction) {
     function goToNextSelection(nextPosition) {
         $(selectedOption).removeClass('selected');
         $(nextSelection).addClass('selected');
-        currentPosition = nextPosition;
-        localStorage.defaultPosition = currentPosition;
-
+        setPosition(nextPosition);
         handleSelectedClock(currentPosition, true, true);
     }
 }
@@ -279,7 +286,7 @@ function handleSelection(userSelection) {
     switch (userSelection) {
         case 0:
             $(centerContainer).addClass('classic');
-            clockStyles.handleClassicClock();
+            clockStyles.classicClock.handleClassicClock();
         break;
     
         case 1:

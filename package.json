@@ -15,6 +15,7 @@
     "loaders.css": "^0.1.2",
     "mobile-detect": "^1.4.4",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.32",
     "netlify-lambda": "^2.0.1",
     "postcss-cli": "^8.0.0",
     "querystring": "^0.2.0",

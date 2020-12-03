@@ -2,7 +2,7 @@
 export var clockFormat, currentPosition; 
 
 //Set or get default values from local storage
-export default function getSettings() {
+export function getSettings() {
     if (localStorage) {
 
         if (localStorage.getItem('defaultPosition') === null) {
@@ -25,4 +25,14 @@ export default function getSettings() {
             }
         });
     }
+}
+
+export function setClockFormat(newFormat) {
+    clockFormat = newFormat;
+    localStorage.defaultClockFormat = newFormat;
+}
+
+export function setPosition(newPosition) {
+    currentPosition = newPosition;
+    localStorage.defaultPosition = newPosition;
 }
