@@ -9,17 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "animejs": "^3.2.1",
-    "jquery": "^3.5.1",
-    "json-query-string": "^1.0.0",
-    "loaders.css": "^0.1.2",
-    "mobile-detect": "^1.4.4",
-    "moment": "^2.29.1",
-    "moment-timezone": "^0.5.32",
-    "netlify-lambda": "^2.0.1",
     "postcss-cli": "^8.0.0",
-    "querystring": "^0.2.0",
-    "randomcolor": "^0.6.2",
-    "tailwindcss": "^1.8.10"
+    "querystring": "^0.2.0"
   }
 }

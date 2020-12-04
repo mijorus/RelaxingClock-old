@@ -1,3 +1,5 @@
+import { clockContainer }   from "../init";
+
 var handColor,
     handhours,
     handmin,
@@ -5,19 +7,12 @@ var handColor,
     circleIsdrawn = false;
 
 export function handleAnalogClock() {
-    if (!handhours) $('#hand-hours');
-    if (!handmin) $('#hand-min');
-    if (!handsec) $('#hand-seconds');
+    if (!handhours) handhours = $('#hand-hours');
+    if (!handmin)   handmin   = $('#hand-min');
+    if (!handsec)   handsec   = $('#hand-seconds');
 
     if (!circleIsdrawn) {
-        if (document.readyState === 'complete') {
-            computeAnalogSize();
-        } else {
-            $(window).on('load', function () {
-                $(window).off('load');
-                computeAnalogSize();
-            });
-        }
+        computeAnalogSize();
     } else {
         fullHandMovement();
     }

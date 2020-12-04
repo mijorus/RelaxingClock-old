@@ -13,4 +13,4 @@
 <!-- This is the concat of every vendor js file -->
 {{ $vendorsBundle := slice $jquery $loader $randomColor $anime $moment $momentDuration $momentTimezone $suncalc $noSleep $mobileDetect | resources.Concat "js/vendors.js" | minify | fingerprint}}
 
-<script src="{{ $vendorsBundle.RelPermalink }}"></script>
+<script src="{{ $vendorsBundle.RelPermalink }}" crossorigin="anonymous"></script>

@@ -1,12 +1,15 @@
-import moment                   from 'moment-timezone';
-import { clockContainer }       from "./init";
+//import moment                   from 'moment-timezone';
+import { clockContainer,
+        main, 
+        bigClock, 
+        cbDefault }             from "./init";
 import { enableClockListeners } from "./clockListeners";
 import { handleMouseCursor, 
         enableScreenSaver, 
         disableScreenSaver, 
         screenSaverIsActive, 
         screenSaverisAnimating } from "./screenSaver";
-import { getRandomPlace, 
+import { newRandomPlace, 
         aRandomPlace }           from '../utils/js/internationalClock/internationalClock';
 import { handleLoader }          from "../utils/js/utils";
 import { clockStyles }           from "./clockStyles/styles";
@@ -91,7 +94,7 @@ export function clockIsStale() {
 export function changeFormat(selectedFormat, fromFormat, toFormat) { 
     formatIsAnimating = true;
     var firstLoop = true;
-    clearTimeout(screenSaverTimeout);
+    disableScreenSaver();
     fromFormat.removeClass('unfocus');
     toFormat.addClass('unfocus');
     anime({
@@ -173,12 +176,12 @@ export function handleSelectedClock(userSelection, transition, resetClock) {
             case 2:
                 const metroBg = $('#metro-background');
                 $(metroBg).removeClass();
-                getRandomPlace(false);
+                newRandomPlace(false);
                 $(metroBg).addClass(aRandomPlace.city.class);
             break;
             case 4:
-                $(cityIcon).removeClass();
-                getRandomPlace();
+                $(clockStyles.globeClock.cityIcon).removeClass();
+                newRandomPlace();
             break;
         }
         
@@ -212,12 +215,12 @@ export function handleSelectedClock(userSelection, transition, resetClock) {
         switch (currentPosition) {
             case 3:
                 circleIsdrawn = false;
-                clockStyles.handleAnalogClock();
+                clockStyles.analogClock.handleAnalogClock();
             break;
 
             case 4:
                 handleSelection(userSelection);
-                clockStyles.handleGlobeAnimation(false);
+                clockStyles.globeClock.handleGlobeAnimation(false);
             break;
 
             default:
@@ -229,11 +232,11 @@ export function handleSelectedClock(userSelection, transition, resetClock) {
     else if (!transition && resetClock) {
         switch (userSelection) {
             case 2: 
-                getRandomPlace(false);
+                newRandomPlace(false);
                 $('#metro-background').addClass(aRandomPlace.city.class);
             break;
             case 4:
-                getRandomPlace();
+                newRandomPlace();
             break;
         }
 
@@ -291,22 +294,22 @@ function handleSelection(userSelection) {
     
         case 1:
             $(centerContainer).addClass('focused');
-            clockStyles.handleFocusedClock();
+            clockStyles.focusedClock.handleFocusedClock();
         break;
 
         case 2:
             $(main).addClass('metro');
             $(centerContainer).addClass('metro');
-            clockStyles.handleMetroClock();
+            clockStyles.metroClock.handleMetroClock();
         break;
         
         case 3:
             $(centerContainer).addClass('analog')
-            clockStyles.handleAnalogClock();
+            clockStyles.analogClock.handleAnalogClock();
         break;
 
         case 4:
-            clockStyles.handleGlobeClock();
+            clockStyles.globeClock.handleGlobeClock();
         break;
     }
 }
@@ -315,13 +318,13 @@ function handleClockProgression(userSelection) {
     console.log(`Clock #${userSelection} is running`);
     switch (currentPosition) {
         case 3:
-            clockStyles.randomHandColor();
+            clockStyles.analogClock.randomHandColor();
             handleSelection(userSelection);
         break;
 
         case 4:
             $(centerContainer).addClass('globe');
-            clockStyles.handleGlobeAnimation(true);
+            clockStyles.globeClock.handleGlobeAnimation(true);
         break;
     
     }

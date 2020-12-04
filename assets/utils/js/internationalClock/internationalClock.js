@@ -4,14 +4,14 @@ export var aRandomPlace = {
     city: undefined,
     day: function() {
         return getDayStatus()
-    }
+    },
 }
 //Gets a random city from an array
 const firstCity = (Math.floor(Math.random() * (cities.length)));
 var currentCity;
 
 //Saves a random place in a variable
-export function getRandomPlace() {
+export function newRandomPlace() {
     if (aRandomPlace.city === undefined) {
         currentCity = firstCity;
     } else {
@@ -39,19 +39,55 @@ function getCbCurve(percentage) {
         90: 'cubicBezier(.28,1.3,.82,.67)',
        100: 'cubicBezier(.12,1.12,.74,.93)'
     }
+
     return customCB[percentage];
 }
 
-function getPercentage(zero, hundred, x) {
+function getDayPercentage(zero, hundred, x) {
     hundred = hundred - zero;
     x = x - zero;
     const h = hundred / 100;
     return Math.round((x / h) / 10) * 10;
 }
 
+function getDayStatus() {
+    const sunc = SunCalc.getTimes(new Date(), aRandomPlace.city.lat, aRandomPlace.city.long);
+    const now = moment().valueOf();
+    const millsecInDay = moment.duration(24, 'hours').asMilliseconds();
+
+    const sunrise = sunc.sunrise.getTime();
+    const sunset = sunc.sunset.getTime();
+
+    let isDay, circlePercentage;
+    if (now > sunrise && now >= sunset) {
+        circlePercentage = getDayPercentage(sunset, sunrise + millsecInDay, now)
+        isDay = false
+
+    } else if (sunset <= now && sunrise > now) {
+        circlePercentage = getDayPercentage(sunset, sunrise, now);
+        isDay = false
+
+    } else if (sunrise >= now && sunset > now) {
+        circlePercentage = getDayPercentage((sunset - millsecInDay), sunrise, now)
+        isDay = false
+
+    } else if (sunrise <= now && sunset > now) {
+        circlePercentage = getDayPercentage(sunrise, sunset, now)
+        isDay = true
+    }
+
+    return { 
+        isDay: isDay,
+        percentage: circlePercentage,
+        cbCurve: function() {
+            return getCbCurve(circlePercentage)
+        }
+    }
+}
+
 // function getDayPercentage() {
 //     console.log(aRandomPlace.city, moment.tz(aRandomPlace.tz).format('HH mm ss'));
-    
+
 
 //     console.log(sunc.sunrise, sunc.sunset, now);
 
@@ -62,38 +98,3 @@ function getPercentage(zero, hundred, x) {
 
 //     // }
 // }
-
-function getDayStatus() {
-    const sunc = SunCalc.getTimes(new Date(), aRandomPlace.lat, aRandomPlace.long);
-    const now = moment().valueOf();
-    const millsecInDay = moment.duration(24, 'hours').asMilliseconds();
-
-    const sunrise = sunc.sunrise.getTime();
-    const sunset = sunc.sunset.getTime();
-
-    let isDay, circlePercentage;
-    if (now > sunrise && now >= sunset) {
-        circlePercentage = getPercentage(sunset, sunrise + millsecInDay, now)
-        isDay = false
-
-    } else if (sunset <= now && sunrise > now) {
-        circlePercentage = getPercentage(sunset, sunrise, now);
-        isDay = false
-
-    } else if (sunrise >= now && sunset > now) {
-        circlePercentage = getPercentage((sunset - millsecInDay), sunrise, now)
-        isDay = false
-
-    } else if (sunrise <= now && sunset > now) {
-        circlePercentage = getPercentage(sunrise, sunset, now)
-        isDay = true
-    }
-
-    return { 
-        isDay: isDay,
-        percentage: circlePercentage,
-        cbCurve: function() {
-            return getCbCurve(this.percentage)
-        }
-    }
-}

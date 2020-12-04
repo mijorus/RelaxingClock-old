@@ -1,10 +1,13 @@
-{{ $assetsConcat := resources.Get "js/init.js" | js.Build}}
 
 {{ if site.IsServer }}
-{{ $assetsBundle := $assetsConcat | fingerprint}}
+{{ $jsBundleOpt := (dict "target" "esnext" "minify" true "avoidTDZ" true) }}
+{{ $bundle := resources.Get "js/init.js" | js.Build $jsBundleOpt}}
+{{ $assetsBundle := $bundle | fingerprint}}
 <script src="{{ $assetsBundle.RelPermalink }}" crossorigin="anonymous"></script>
+
 {{ else }}
-{{ $jsBundleOpt := dict "targetPath" "js/assets.js" "minify" true }}
-{{ $assetsBundle := $assetsConcat | js.Build $jsBundleOpt | fingerprint}}
+{{ $jsBundleOpt := (dict "target" "esnext" "minify" true "avoidTDZ" true) }}
+{{ $bundle := resources.Get "js/init.js" | js.Build $jsBundleOpt}}
+{{ $assetsBundle := $bundle | fingerprint}}
 <script src="{{ $assetsBundle.RelPermalink }}" crossorigin="anonymous"></script>
 {{ end }}

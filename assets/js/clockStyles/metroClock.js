@@ -1,3 +1,5 @@
+import { bigClock } from "../init";
+
 export function handleMetroClock() {
     if (sec % 2 == 0) {
         $(bigClock).html(hours + '<br>' + '·' + '<br>' + min);

@@ -1,28 +1,26 @@
-import { cbDefault, clockInnerCont } from "../init";
-import { clockFormat } from "../getSettings";
-import { format12, format24, loadTime, centerContainer } from "../clocks";
-import { aRandomPlace  } from "../../utils/js/internationalClock/internationalClock";
+import { cbDefault, 
+        clockInnerCont,
+        bigClock }          from "../init";
+import { clockFormat,
+        currentPosition }   from "../getSettings";
+import { format12, 
+        format24, 
+        loadTime, 
+        styleSelectorL,
+        styleSelectorR }    from "../clocks";
+import { aRandomPlace, 
+        newRandomPlace  }   from "../../utils/js/internationalClock/internationalClock";
 
+export const cityName = $('.city-name'), cityIcon = $('#city-icon');
 export var globeInAction, circleTl = undefined;
 
 export function handleGlobeClock() {
-    $(cityIcon).addClass(aRandomPlace.class);
-    $(cityName).text(aRandomPlace.city);
+    $(cityIcon).addClass(aRandomPlace.city.class);
+    $(cityName).text(aRandomPlace.city.name);
     if (sec % 2 == 0) {
         $(bigClock).text(hours + ':' + min + ':' + sec);
     } else {
         $(bigClock).text(hours + ' ' + min + ' ' + sec);
-    }
-}
-export function handleGlobeAnimation(pathAnimation = true) {
-    if (document.readyState === 'complete') {
-        globeClockAnimation(pathAnimation);
-    } else {
-        $(window).on('load', function () {
-            $(window).off('load');
-            $(centerContainer).addClass('globe');
-            globeClockAnimation(pathAnimation)
-        });
     }
 }
 
@@ -30,31 +28,31 @@ var circlePathTl,
     halfCirPath,
     bigClockContainer,
     animePath,
+    skyIcon,
     clockFormatBtns;
 
-function globeClockAnimation(pathAnimation) {
-    halfCirPath = $('#half-circle-path');
-    bigClockContainer = $('.big-clock-container');
-    clockFormatBtns = [$(format12), $(format24)];
+export function handleGlobeAnimation(pathAnimation) {
+    if (!halfCirPath) halfCirPath = $('#half-circle-path');
+    if (!bigClockContainer) bigClockContainer = $('.big-clock-container');
+    if (!clockFormatBtns) clockFormatBtns = [$(format12), $(format24)];
 
     if (circleTl !== undefined) {
         circleTl.pause();
     }
 
-    const skyIcon = $('#sky-icon');
-    if ($(skyIcon).length) {
-        $(skyIcon).remove();
-    }
-
     halfCircle = computeCircleSize();
     animePath = anime.path(halfCircle.path);
-
+    
+    if (!$(skyIcon).length) {
+        createSkyIcon();
+    }
+    
     if (pathAnimation) {
         animateCirclePath();
     } else {
         halfCirPath.get(0).setAttribute('stroke-dasharray', 10000);
         if (circlePathTl) circlePathTl.pause();
-        createSkyIcon();
+        //animateSkyIcon();
     }
 }
 
@@ -62,7 +60,7 @@ function animateCirclePath() {
     globeInAction = true;
 
     circlePathTl = anime.timeline({
-        begin: function () {
+        begin: () => {
             for (const el of clockFormatBtns) {
                 $(el).addClass('unfocus');
             }
@@ -72,12 +70,15 @@ function animateCirclePath() {
         duration: 3000,
         easing: cbDefault,
         autoplay: false,
-        complete: function () {
+        complete: () => {
             globeInAction = false;
             $(styleSelectorL).removeClass('overscroll');
             $(styleSelectorR).removeClass('overscroll');
-            (clockFormat === '12h') ? $(format12).removeClass('unfocus') : $(format24).removeClass('unfocus');
-            createSkyIcon();
+            (clockFormat === '12h')
+                ? $(format12).removeClass('unfocus') 
+                : $(format24).removeClass('unfocus');
+            
+            animateSkyIcon();
         }
     })
         .add({
@@ -87,36 +88,34 @@ function animateCirclePath() {
             direction: 'normal',
         });
 
-    circlePathTl.pause().restart();
+    circlePathTl.pause();
+    circlePathTl.restart();
 }
 
 function createSkyIcon() {
-    if (!$(skyIcon).length) {
-        //use the .length property to check if the element already exists, return false if it doesn't
-        $('<span />', {
-            id: 'sky-icon',
-        }).appendTo(clockInnerCont);
-        var skyIconH = $(skyIcon).height();
-        var skyIconW = $(skyIcon).width();
-        $(skyIcon).css({
-            'bottom': halfCircle.height + 50 - (skyIconH / 2),
-            'left': skyIconW / (-2)
-        });
-    }
-
-    animateSkyIcon();
+    skyIcon = $('<span />', {
+        id: 'sky-icon',
+    }).appendTo($(clockInnerCont));
+    var skyIconH = $(skyIcon).height();
+    var skyIconW = $(skyIcon).width();
+    $(skyIcon).css({
+        'bottom': halfCircle.height + 50 - (skyIconH / 2),
+        'left': skyIconW / (-2)
+    });
 }
 
 function animateSkyIcon() {
     const skyIconTime = 1500;
+    const cityDay = aRandomPlace.day();
+
     circleTl = anime.timeline({
         duration: (1000 * 60),
         autoplay: true,
         loop: false,
         begin: () => {
             loadTime(clockFormat, aRandomPlace.city.tz);
-            clockStyles.handleGlobeClock();
-            if (isDay) {
+            handleGlobeClock();
+            if (cityDay.isDay) {
                 $(skyIcon).removeClass('moon').addClass('sun');
             } else {
                 $(skyIcon).removeClass('sun').addClass('moon');
@@ -124,7 +123,7 @@ function animateSkyIcon() {
         },
         complete: () => {
             circleTl.pause()
-            if (currentPosition === 4) this.animateSkyIcon()
+            if (currentPosition === 4) animateSkyIcon()
         }
     });
 
@@ -134,7 +133,7 @@ function animateSkyIcon() {
             translateX: animePath('x'),
             translateY: animePath('y'),
             translateZ: 0,
-            easing: aRandomPlace.day.cbCurve,
+            easing: cityDay.cbCurve(),
             opacity: {
                 value: [0, 1],
                 duration: 500,
@@ -149,9 +148,9 @@ function animateSkyIcon() {
             duration: skyIconTime,
             loopComplete: function () {
                 $(cityIcon).removeClass();
-                getRandomPlace();
+                newRandomPlace();
                 loadTime(clockFormat, aRandomPlace.tz);
-                clockStyles.handleGlobeClock();
+                handleGlobeClock();
             },
         }, `-=${skyIconTime}`);
 }

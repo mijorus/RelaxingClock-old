@@ -4,7 +4,8 @@ import { body,
         toScreenSave, 
         eaElasticDefault, 
         main, 
-        clockInnerCont }    from "./init";
+        clockInnerCont,
+        expandIcon }        from "./init";
 import { currentPosition }  from "./getSettings";
 import { inSettings }       from "./settingsPageHandler";
 
@@ -107,8 +108,8 @@ export function handleMouseCursor(setState) {
             $(window).on('mousemove', function() {
                 clearTimeout(watchMouse);
                 watchMouse = setTimeout(function() {
-                    enableScreenSaver(1);
                     $(window).off('mousemove');
+                    enableScreenSaver(1);
                 }, 15000)
             }); 
             break;
