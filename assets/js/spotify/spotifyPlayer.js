@@ -1,4 +1,4 @@
-import { spotifyPlaceholder } from "./init";
+import { spotifyPlaceholder } from "./playerInit";
 import { spotify } from "./spotifyRequests";
 import { initPlayerEvents } from "./spotifyPlayerEvents";
 

@@ -43,6 +43,7 @@ clockOpAnimation      = 350; //timing of the clock opacity animation
 //currentPosition = 0; //hardcoded position during development
 
 export function displayDefaultClock() {
+    
     enableClockListeners();
     handleMouseCursor('watch');
     enableScreenSaver(15000);
@@ -60,7 +61,6 @@ export function displayDefaultClock() {
 }
 
 export function resizeClock(resizing) {
-    const targetEl = clockContainer.get(0);
     anime({
         begin: function() {
             clockIsResizing = true;
@@ -69,7 +69,7 @@ export function resizeClock(resizing) {
                 handleSelectedClock(currentPosition, false, false);
             }
         },
-        targets: targetEl,
+        targets: clockContainer.get(0),
         opacity: resizing ? 0 : 1,
         easing: 'linear',
         duration: clockOpAnimation / 1.5,

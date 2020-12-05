@@ -43,16 +43,19 @@ export function handleGlobeAnimation(pathAnimation) {
     halfCircle = computeCircleSize();
     animePath = anime.path(halfCircle.path);
     
-    if (!$(skyIcon).length) {
-        createSkyIcon();
+    if ($(skyIcon).length) {
+        $('#sky-icon').remove();
     }
+
+    createSkyIcon();
     
     if (pathAnimation) {
         animateCirclePath();
     } else {
         halfCirPath.get(0).setAttribute('stroke-dasharray', 10000);
         if (circlePathTl) circlePathTl.pause();
-        //animateSkyIcon();
+        if (circleTl) circleTl.pause();
+        animateSkyIcon();
     }
 }
 

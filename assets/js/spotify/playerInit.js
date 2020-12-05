@@ -1,4 +1,3 @@
-import $                 from 'jquery';
 import { getUrlVars }    from "../../utils/js/utils";
 import { login }         from "./spotifyAuth";
 
@@ -7,7 +6,7 @@ export const params = getUrlVars(),
 spotifyPlaceholder  = $('#spotify-placeholder'),
 musicBox            = $('#music-box');
 
-$(function() {
-    //Attempts the login
-    login();
-})
+// $(function() {
+//     //Attempts the login
+//     login();
+// })

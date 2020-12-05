@@ -1,4 +1,3 @@
-//import $                                   from 'jquery';
 import { runCompatibilityDetector }        from './compatibilityDetector';
 import { settingsPageHandler, 
       settingsIsAnimating, 
@@ -22,7 +21,7 @@ eaElasticDefault  = 'easeOutElastic(1, 1)';
 export var hours,min,sec,
 paused            = true; //the music state
 
-$(function() {
+export function init() {
   runCompatibilityDetector();
 
   //Cookie Banner
@@ -48,7 +47,7 @@ $(function() {
 
   //Initialize the clock
   displayDefaultClock();
-})
+}
 
 function cookieBanner() {
   if (localStorage.getItem('cookie') === null) {

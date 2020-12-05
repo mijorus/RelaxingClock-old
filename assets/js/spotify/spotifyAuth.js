@@ -1,4 +1,4 @@
-import { params, spotifyPlaceholder, musicBox } from "./init";
+import { params, spotifyPlaceholder, musicBox } from "./playerInit";
 import { compatibility } from "../compatibilityDetector";
 import { updateStatusText } from "../../utils/js/playerUtils";
 import { createNewSpotifyPlayer, player } from "./spotifyPlayer";

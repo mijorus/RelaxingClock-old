@@ -20,6 +20,7 @@ export function enableClockListeners() {
         disableScreenSaver();
     }); // 1 moves to the right
 
+    //Clock selection with arrow keys
     $(window).on('keydown', function(event) {
         const t = 15000
         switch (event.which) {
@@ -39,6 +40,7 @@ export function enableClockListeners() {
         }
     });
 
+    //Change clock format
     $(clocks.format12).on('click', function() {
         if (clocks.clockIsStale() && !globeInAction) {
             clocks.changeFormat('12h', $(clocks.format12), $(clocks.format24));
@@ -51,17 +53,19 @@ export function enableClockListeners() {
         }
     });
 
+    //Handle window resize
     var waitResize;
     $(window).on('resize', function() {
         clearTimeout(waitResize);
-        
         if( !clocks.clockIsResizing && 
             !compatibility.isMobile) {
             clocks.resizeClock(true);
         }
 
         waitResize = setTimeout(function() {
-            (compatibility.isMobile) ? clocks.handleSelectedClock(currentPosition, false, false) : clocks.resizeClock(false)
+            (compatibility.isMobile) 
+                ? clocks.handleSelectedClock(currentPosition, false, false) 
+                : clocks.resizeClock(false)
         }, 1000)
     });
 };
