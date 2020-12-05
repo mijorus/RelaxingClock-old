@@ -1,4 +1,14 @@
-var settingsSection = $('#settings-section');
+import { accessDenied }         from './spotify/spotifyAuth';
+import { setScreenSaverColors } from './screenSaver';
+import { pomodoro }             from './pomodoro';
+import { alarm }                from './alarm';
+import { getRemoteTime }        from "./clocks";
+import { compatibility }        from "./compatibilityDetector";
+import { logout }               from "./spotify/spotifyAuth";
+import { generateUrl, 
+        redirectURI }           from "../utils/js/generateSpotifyUrl";
+
+const settingsSection = $('#settings-section');
 var btns = settingsSection.find('button');
 
 setSpotifyLoginButton();
@@ -62,109 +72,114 @@ function setButtonSelection(target, callback) {
 }
 
 //Actions to be executed on button click
-for (btn of $(btns)) {
-    $(btn).on('click', function(event) {
-        //console.log(event);
-        event.stopPropagation();
-        setButtonSelection(event.target);
+export function handleSettingButtons() {
+    for (btn of $(btns)) {
+        $(btn).on('click', function(event) {
+            //console.log(event);
+            event.stopPropagation();
+            setButtonSelection(event.target);
 
-        switch (event.target.id) {
-            case 'spotify-logout-btn':
-                if (localStorage.userHasLogged === 'true') {
-                    logout();
-                } else if (localStorage.userHasLogged === 'false' && compatibility.login) {
-                    if (!accessDenied) {
-                        window.location.replace(spotifyURL);
-                    } else {
+            switch (event.target.id) {
+                case 'spotify-logout-btn':
+                    if (localStorage.userHasLogged === 'true') {
                         logout();
-                        window.location.replace(redirectURI);
+                    } else if (localStorage.userHasLogged === 'false' && compatibility.login) {
+                        if (!accessDenied) {
+                            generateUrl()
+                                .then((url) => {
+                                    window.location.replace(url);
+                                })
+                        } else {
+                            logout();
+                            window.location.replace(redirectURI);
+                        }
                     }
-                }
-            break;
+                break;
 
-            case 'autoplay-on':
-                localStorage.autoplay = 'true';
-            break;
-            
-            case 'autoplay-off':
-                localStorage.autoplay = 'false';
-            break;
+                case 'autoplay-on':
+                    localStorage.autoplay = 'true';
+                break;
+                
+                case 'autoplay-off':
+                    localStorage.autoplay = 'false';
+                break;
 
-            case 'presentation-on':
-                localStorage.presentation = 'true';
-                setScreenSaverColors();
-            break;
+                case 'presentation-on':
+                    localStorage.presentation = 'true';
+                    setScreenSaverColors();
+                break;
 
-            case 'presentation-off':
-                localStorage.presentation = 'false';
-                setScreenSaverColors();
-            break;
+                case 'presentation-off':
+                    localStorage.presentation = 'false';
+                    setScreenSaverColors();
+                break;
 
-            case 'set-alarm-btn':
-                if (!alarm.enabled) {
-                    alarm.openPage();
-                } else {
-                    alarm.dismiss(false);
-                }
-            break;
-
-            case 'set-pomodoro-btn':
-                if (!pomodoro.running) {
-                    pomodoro.start();
-                } else {
-                    pomodoro.stop();
-                }
-            break;
-
-            case 'pom-long-on':
-                localStorage.longPomodoro = 'true';
-            break;
-
-            case 'pom-long-off':
-                localStorage.longPomodoro = 'false';
-            break;
-
-            case 'pom-notif-on':
-                if (compatibility.notification) {
-                    if (pomodoro.running) {
-                        pomodoro.notifications(true);
+                case 'set-alarm-btn':
+                    if (!alarm.enabled) {
+                        alarm.openPage();
+                    } else {
+                        alarm.dismiss(false);
                     }
-                }
-            break;
+                break;
 
-            case 'pom-notif-off':
-                if (compatibility.notification) {
-                    if (pomodoro.running) {
-                        pomodoro.notifications(false);
+                case 'set-pomodoro-btn':
+                    if (!pomodoro.running) {
+                        pomodoro.start();
+                    } else {
+                        pomodoro.stop();
                     }
-                }
-            break;
+                break;
 
-            case 'alarm-notif-on':
-                if (compatibility.notification) {
-                    if (alarm.enabled) {
-                        alarm.notifications(true);
-                    } 
-                }
-            break;
+                case 'pom-long-on':
+                    localStorage.longPomodoro = 'true';
+                break;
 
-            case 'alarm-notif-off':
-                if (compatibility.notification) {
-                    if (alarm.enabled) {
-                        alarm.notifications(false);
+                case 'pom-long-off':
+                    localStorage.longPomodoro = 'false';
+                break;
+
+                case 'pom-notif-on':
+                    if (compatibility.notification) {
+                        if (pomodoro.running) {
+                            pomodoro.notifications(true);
+                        }
                     }
-                }
-            break;
+                break;
 
-            case 'remote-time-on':
-                getRemoteTime(true);
-                localStorage.remoteTime = 'true';
-            break;
+                case 'pom-notif-off':
+                    if (compatibility.notification) {
+                        if (pomodoro.running) {
+                            pomodoro.notifications(false);
+                        }
+                    }
+                break;
 
-            case 'remote-time-off':
-                getRemoteTime(false);
-                localStorage.remoteTime = 'false';
-            break;
-        }
-    });
+                case 'alarm-notif-on':
+                    if (compatibility.notification) {
+                        if (alarm.enabled) {
+                            alarm.notifications(true);
+                        } 
+                    }
+                break;
+
+                case 'alarm-notif-off':
+                    if (compatibility.notification) {
+                        if (alarm.enabled) {
+                            alarm.notifications(false);
+                        }
+                    }
+                break;
+
+                case 'remote-time-on':
+                    getRemoteTime(true);
+                    localStorage.remoteTime = 'true';
+                break;
+
+                case 'remote-time-off':
+                    getRemoteTime(false);
+                    localStorage.remoteTime = 'false';
+                break;
+            }
+        });
+    }
 }

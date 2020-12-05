@@ -54,7 +54,6 @@ export function handleGlobeAnimation(pathAnimation) {
     } else {
         halfCirPath.get(0).setAttribute('stroke-dasharray', 10000);
         if (circlePathTl) circlePathTl.pause();
-        if (circleTl) circleTl.pause();
         animateSkyIcon();
     }
 }

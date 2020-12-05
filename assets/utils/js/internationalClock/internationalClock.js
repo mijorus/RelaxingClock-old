@@ -76,6 +76,10 @@ function getDayStatus() {
         isDay = true
     }
 
+    (isDay)
+        ? console.log(`We are at about ${circlePercentage}% of the day in ${aRandomPlace.city.name}`)
+        : console.log(`We are at about ${circlePercentage}% of the night in ${aRandomPlace.city.name}`);
+
     return { 
         isDay: isDay,
         percentage: circlePercentage,

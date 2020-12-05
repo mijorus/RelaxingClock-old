@@ -1,11 +1,13 @@
 import { runCompatibilityDetector }        from './compatibilityDetector';
 import { settingsPageHandler, 
-      settingsIsAnimating, 
-      userInSettings,
-      inSettings }                         from './settingsPageHandler';
+        settingsIsAnimating, 
+        userInSettings,
+        inSettings }                       from './settingsPageHandler';
 import { displayDefaultClock }             from "./clocks";
-import { handleExpandIcon } from '../utils/js/fullScreenUtils';
+import { handleExpandIcon }                from '../utils/js/fullScreenUtils';
 import { getSettings }                     from "./getSettings";
+import { musicBox,
+        initSpotifyAuthProcess }           from "./spotify/playerInit";
 
 export const body = $('body'),
 main              = $('main'),
@@ -22,6 +24,7 @@ export var hours,min,sec,
 paused            = true; //the music state
 
 export function init() {
+  //Test if all the features are supported
   runCompatibilityDetector();
 
   //Cookie Banner
@@ -47,6 +50,9 @@ export function init() {
 
   //Initialize the clock
   displayDefaultClock();
+  
+  //Initialize spotify's authorization process
+  initSpotifyAuthProcess();
 }
 
 function cookieBanner() {
@@ -62,6 +68,7 @@ function cookieBanner() {
   }
 }
 
+const bgColor = 'rgb(245, 245, 245)';
 function handleLogSwitch() {
   if (localStorage.getItem('logs') === null) {
     //console.log = function () { };
@@ -77,13 +84,13 @@ function handleLogSwitch() {
         }, 250)
       } else {
         localStorage.setItem('logs', 'true');
-        $(logSwitch).css('color', 'rgb(245, 245, 245)').off('click');
+        $(logSwitch).css('color', bgColor).off('click');
         window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
         location.reload();
       }
     });
   } else {
-    $('#log-switch').css('color', 'rgb(245, 245, 245)');
+    $('#log-switch').css('color', bgColor);
   }
 }
 

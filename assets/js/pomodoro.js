@@ -1,4 +1,9 @@
-export pomodoro = {
+import { checkNotificationStatus,
+        changeBtnLable }            from "../utils/js/utils";
+import { pomodoroBox }              from "./init";
+import { compatibility }            from "./compatibilityDetector";
+
+export const pomodoro = {
 
     running: false,
 

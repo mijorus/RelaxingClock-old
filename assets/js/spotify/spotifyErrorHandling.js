@@ -1,3 +1,10 @@
+import { player, 
+        playbackIcon }           from "./spotifyPlayer";
+import { musicBox }              from "./playerInit";
+import { handleLoader }          from "../../utils/js/utils";
+import { updatePlaceholderText } from "../../utils/js/playerUtils";
+import { redirectURI }           from "../../utils/js/generateSpotifyUrl";
+
 export const spotifyError = {
      throwTokenError: function() {
         this.removeLoader();

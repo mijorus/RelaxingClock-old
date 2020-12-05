@@ -1,10 +1,24 @@
+import { musicBox }     from "./playerInit";
+import { spotifyIcon }  from "./spotifyPlayer";
+
 export var playbackStarted = false, likeBtn, playBtn, songInfo;
 
 export function initPlayerEvents() {
     likeBtn  = $('.like-btn');
     playBtn  = $('.play-btn');
     songInfo = $('#song-info');
+    
     //Listeners
+    playBtnListener();
+
+    likeBtnListener();
+
+    volumeScrollListener();
+
+    albumHoverLister();
+}
+
+function playBtnListener() {
     $(playBtn).on('click', function (event) {
         event.preventDefault(); event.stopPropagation();
         if (!playerIsBusy()) {
@@ -30,14 +44,6 @@ export function initPlayerEvents() {
         }
     });
 
-    $(likeBtn).on('click', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        if (!playerIsBusy() && playbackStarted) {
-            spotify.isLiked(currentTrackId, true);
-        }
-    });
-
     $(playBtn).on('contextmenu', function (event) {
         event.preventDefault();
         event.stopPropagation();
@@ -49,8 +55,22 @@ export function initPlayerEvents() {
             }
         }
     });
+}
 
+function likeBtnListener() {
+    $(likeBtn).on('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (!playerIsBusy() && playbackStarted) {
+            spotify.isLiked(currentTrackId, true);
+        }
+    });
+}
+
+function volumeScrollListener() {
     let volTimeout;
+    const muteWarning = $('#mute-warning');
+
     $(musicBox).get(0).addEventListener('wheel', (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -59,7 +79,10 @@ export function initPlayerEvents() {
             player.getVolume().then((volume) => {
                 const volumeStep = 0.05;
                 let newVolume;
-                (volume !== null) ? volume = parseFloat(volume.toFixed(2)) : volume = 0;
+                (volume !== null) 
+                    ? volume = parseFloat(volume.toFixed(2)) 
+                    : volume = 0;
+
                 console.log(volume);
                 if (event.deltaY > 0) {
                     //Volume DOWN
@@ -75,11 +98,11 @@ export function initPlayerEvents() {
                 if (roundVolume > 0) {
                     clearTimeout(volTimeout);
                     if (roundVolume > 100) roundVolume = 100;
-                    $('#mute-warning').removeClass('hide').html(`${roundVolume}%`);
-                    volTimeout = setTimeout(() => $('#mute-warning').addClass('hide'), 750);
+                    $(muteWarning).removeClass('hide').html(`${roundVolume}%`);
+                    volTimeout = setTimeout(() => $(muteWarning).addClass('hide'), 750);
                 } else if (roundVolume <= 0) {
                     clearTimeout(volTimeout);
-                    $('#mute-warning').removeClass('hide').html(`<i id="volume-mute" class="fas fa-volume-mute"></i>`);
+                    $(muteWarning).removeClass('hide').html(`<i id="volume-mute" class="fas fa-volume-mute"></i>`);
                 }
 
                 console.log(`Volume set to ${roundVolume}%`);
@@ -87,7 +110,9 @@ export function initPlayerEvents() {
         }
 
     }, { passive: false });
+}
 
+function albumHoverLister() {
     $(spotifyIcon).hover(() => {
         $(songInfo).removeClass('hide');
     }, () => {

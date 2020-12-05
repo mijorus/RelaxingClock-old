@@ -1,6 +1,9 @@
-import { spotifyPlaceholder } from "./playerInit";
-import { spotify } from "./spotifyRequests";
-import { initPlayerEvents } from "./spotifyPlayerEvents";
+import { spotifyPlaceholder }   from "./playerInit";
+import { spotify }              from "./spotifyRequests";
+import { initPlayerEvents }     from "./spotifyPlayerEvents";
+
+export const spotifyIcon = $('#spotify-icon'),
+playbackIcon             =    $('#playback-icon');
 
 export var player = undefined,
 deviceID          = undefined,
@@ -8,10 +11,8 @@ randomSong        = undefined,
 playerIsReady     = false,
 songIsSelected    = false,
 currentTrack      = {},
-//currentStateContext = {},
 currentTrackId    = undefined;
 
-const spotifyIcon = $('#spotify-icon');
 
 // *** Spotify Player *** //
 export function playerIsBusy() {
@@ -26,33 +27,46 @@ export function createNewSpotifyPlayer() {
     player = new Spotify.Player({
         name: 'Relaxing Clocks',
         getOAuthToken: function(callback) {
-            if (localStorage.code !== undefined) {
+            if (localStorage.code || localStorage.refreshToken) {
                 //We request a token for the first time
-                spotify.requestToken();
+                //or need to request a new token using the refresh_token
+                if (localStorage.code !== undefined) {
+                    //We request a token for the first time
+                    spotify.requestToken();
+                }
+
+                else if (localStorage.refreshToken) {
+                    //We need to request a new token using the refresh_token
+                    spotify.refreshToken();
+                }
+                spotify.requestToken()
+                    .then(() => {
+                        spotify.getUserDetails();
+                        callback(sessionStorage.accessToken);
+                    })
             }
 
-            else if (localStorage.refreshToken) {
-                //We need to request a new token using the refresh_token
-                spotify.refreshToken();
-            }
-
-            $(document).on('loginCompleted', function () {
-                console.info(`Login Completed!`);
-                $(document).off('loginCompleted');
-                callback(sessionStorage.accessToken);
-            });
+            // $(document).on('loginCompleted', function () {
+            //     console.info(`Login Completed!`);
+            //     $(document).off('loginCompleted');
+                
+            // });
         }
     });
 
-    player.connect();
-    initSpotifyPlayer();
+    player.connect()
+        .then((success) => {
+            if (success) {
+                initSpotifyPlayer();
+            }
+        })
 }
 
 function initSpotifyPlayer() {
     initPlayerEvents();
 
-    const trackName = $('#track-name'),
-    artistName = $('#artist-name'),
+    const trackName  = $('#track-name'),
+    artistName       = $('#artist-name'),
     spotifyTrackInfo = $('#spotify-track-info');
 
     // Error handling
@@ -69,9 +83,9 @@ function initSpotifyPlayer() {
     // Playback status updates
     player.addListener('player_state_changed', function (state) {
         if (state) {
-            const thisTrack = state.track_window.current_track;
+            const thisTrack     = state.track_window.current_track;
             currentStateContext = state.context;
-            currentTrack = (thisTrack) ? thisTrack : currentTrack;
+            currentTrack        = (thisTrack) ? thisTrack : currentTrack;
 
             if (state.paused) {
                 paused = true;

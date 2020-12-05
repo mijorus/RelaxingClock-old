@@ -1,10 +1,17 @@
+import { handleHeartButton, 
+        updatePlaceholderText,
+        updateStatusText }   from '../../utils/js/playerUtils';
+import { spotifyError }      from "../spotify/spotifyErrorHandling";
+import { clientId,
+        redirectURI }        from '../../utils/js/generateSpotifyUrl';
+import { playbackIcon }      from "./spotifyPlayer";
+
 // *** Ajax **
 var requestHeader = undefined;
-const spotifyBaseURL = 'https://api.spotify.com/v1/'
+const spotifyBaseURL = 'https://api.spotify.com/v1'
 
 export const spotify = {
-
-    requestToken: function() {
+    requestToken: async function() {
         $.ajax({
             method: 'POST',
             url: 'https://accounts.spotify.com/api/token',
@@ -20,10 +27,11 @@ export const spotify = {
                 localStorage.removeItem('code');
                 localStorage.removeItem('verifier');
                 saveLoginResponse(response);
-                this.getUserDetails();
+                
+                return true;
             })
             .fail(function (error) {
-                this.logError("Can't get token from Spotify", error);
+                spotifyError.logError("Cannot get token from Spotify", error);
             })
     },
 
@@ -42,8 +50,8 @@ export const spotify = {
 
                 localStorage.removeItem('code');
                 saveLoginResponse(response);
-                if (!premium) spotify.getUserDetails();
-                if (play) spotify.play();
+                if (!premium) this.getUserDetails();
+                if (play) this.play();
             })
 
             .fail(function (error) {
@@ -53,8 +61,8 @@ export const spotify = {
                     break;
                 
                     default:
-                        spotify.throwGenericError();
-                        spotify.logError("Can't refresh token from Spotify", error);
+                        spotifyError.throwGenericError();
+                        spotifyError.logError("Can't refresh token from Spotify", error);
                     break;
                 }
 
@@ -70,26 +78,29 @@ export const spotify = {
     },
 
     getUserDetails: function() {
-        setTimeout(() => $.ajax({
+        setTimeout(() => {
+            $.ajax({
             type: "GET",
-            url: spotifyBaseURL, 
+            url: spotifyBaseURL + '/me', 
             headers: requestHeader,
-            success: function(response) {
-                if (response.product === 'premium') {
-                    premium = true;
-                    setTimeout(() => spotify.selectSong(), 1000);
-                    updateStatusText(`Logged in as ${response.id}`)
-                    $('#autoplay-box').removeClass('unavailable');
-                } else {
-                    spotify.throwPremiumError(response.id);
-                }
-            },
-            error: function(error) {
-                spotify.logError('CANNOT GET YOUR USERNAME:', error);
-                updateStatusText(`Can't get your username, are you on PC?`);
-                spotify.throwGenericError();
-            }
-        }), 1000);
+            })
+                .done(function(response) {
+                    if (response.product === 'premium') {
+                        premium = true;
+                        setTimeout(() => spotify.selectSong(), 1000);
+                        updateStatusText(`Logged in as ${response.id}`)
+                        $('#autoplay-box').removeClass('unavailable');
+                    } else {
+                        spotifyError.throwPremiumError(response.id);
+                    }
+                })
+                .fail(function(error) {
+                    spotifyError.logError('CANNOT GET YOUR USERNAME:', error);
+                    updateStatusText(`Can't get your username, are you on PC?`);
+                    spotifyError.throwGenericError();
+                })
+
+        }, 1000);
     },
 
     selectSong: function() {
@@ -117,19 +128,19 @@ export const spotify = {
                     updatePlaceholderText('Music will<br>start soon...');
                     setTimeout(function() {
                         if (paused) {
-                            spotify.removeLoader();
-                            spotify.play(deviceID, randomSong);
+                            spotifyError.removeLoader();
+                            this.play(deviceID, randomSong);
                         }
                     }, wait);
                 } else if (localStorage.autoplay === 'false') {
-                    spotify.removeLoader(); 
+                    spotifyError.removeLoader(); 
                     updatePlaceholderText('Ready to<br>play!');
                 }
                 
                 console.log(`There are ${response.tracks.total} songs in the playlist, I have selected the #${randomPosition}`);
             })
             .fail(function(error) {
-                spotify.logError('CANNOT SELECT A SONG TO PLAY:', error);
+                spotifyError.logError('CANNOT SELECT A SONG TO PLAY:', error);
             });
     },
     
@@ -146,11 +157,11 @@ export const spotify = {
                 playbackStarted = true;
                 $(playbackIcon).removeClass('fa-play').addClass('fa-pause');
                 setTimeout(function() {
-                    spotify.shuffle(true);
+                    this.shuffle(true);
                 }, 2000);
             })
             .fail(function(error) {
-                spotify.logError('PLAYBACK ERROR!', error);
+                spotifyError.logError('PLAYBACK ERROR!', error);
                 switch (error.status) {
                     case 500 || 502 || 503:
                         $(spotifyPlaceholder).text('Server Error :(');
@@ -164,14 +175,14 @@ export const spotify = {
                 
                     case 403:
                         if (error.reason === 'PREMIUM_REQUIRED') {
-                            spotify.throwPremiumError();
+                            spotifyError.throwPremiumError();
                         } else {
-                            spotify.throwGenericError();
+                            spotifyError.throwGenericError();
                         }
                     break;
 
                     default:
-                        spotify.throwGenericError();
+                        spotifyError.throwGenericError();
                     break;
                 }
             })
@@ -187,7 +198,7 @@ export const spotify = {
                 console.log('SHUFFLE IS ENABLED!');
             })
             .fail(function(error) {
-                spotify.logError('ERROR WHILE ENABLING SHUFFLE MODE:', error, false);
+                spotifyError.logError('ERROR WHILE ENABLING SHUFFLE MODE:', error, false);
             })
     },
 
@@ -204,14 +215,18 @@ export const spotify = {
                     console.log('This song is in your library');
                     /*If we only have to change the color of the heart, it calls the func
                     directly, otherwise will execute an ajax request*/
-                    (changeState) ? spotify.likeSong(currentTrackId, false) : handleHeartButton(true);
+                    (changeState) 
+                        ? this.likeSong(currentTrackId, false) 
+                        : handleHeartButton(true);
                 } else {
                     console.log('This song is NOT in your library');
-                    (changeState) ? spotify.likeSong(currentTrackId, true) : handleHeartButton(false);
+                    (changeState) 
+                        ? this.likeSong(currentTrackId, true) 
+                        : handleHeartButton(false);
                 }
             })
             .fail(function(error) {
-                spotify.logError('CANNOT CHECK IF THIS SONG IS ALREADY IN YOUR LIBRARY:', error)
+                spotifyError.logError('CANNOT CHECK IF THIS SONG IS ALREADY IN YOUR LIBRARY:', error)
             })
     },
 
@@ -231,11 +246,9 @@ export const spotify = {
                 }
             })
             .fail(function (error) {
-                if (toLike) {
-                    spotify.logError('CANNOT ADD TO FAV:', error, false);
-                } else {
-                    spotify.logError('CANNOT REMOVE FROM FAV:', error, false);
-                }
+                (toLike)
+                    ? spotifyError.logError('CANNOT ADD TO FAV:', error, false)
+                    : spotifyError.logError('CANNOT REMOVE FROM FAV:', error, false);
             })
     },
 }
@@ -248,7 +261,6 @@ function saveLoginResponse(response) {
     requestHeader = { 'Authorization': `Bearer ${sessionStorage.accessToken}` };
     localStorage.setItem('refreshToken', response.refresh_token);
 
-    const loginCompleted = new Event('loginCompleted');
-    document.dispatchEvent(loginCompleted);
+    //document.dispatchEvent(new Event('loginCompleted'));
 }
 

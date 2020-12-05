@@ -1,8 +1,16 @@
+import { checkNotificationStatus,
+        changeBtnLable,
+        handleMusic }             from "../utils/js/utils";
+import { clockFormat }            from "./getSettings";
+import { body,
+        cbDefault }               from "./init";
+import { compatibility }          from "./compatibilityDetector";
+
 const arrows = $('#alarm-big-clock').find('.arrow'),
     alarmSection = $('#alarm-section');
 var alarmTime, ringTl;
 
-export alarm = {
+export const alarm = {
     
     at: undefined,
 

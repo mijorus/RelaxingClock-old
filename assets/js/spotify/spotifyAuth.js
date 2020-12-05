@@ -1,7 +1,12 @@
-import { params, spotifyPlaceholder, musicBox } from "./playerInit";
-import { compatibility } from "../compatibilityDetector";
-import { updateStatusText } from "../../utils/js/playerUtils";
-import { createNewSpotifyPlayer, player } from "./spotifyPlayer";
+import { spotifyPlaceholder, 
+        musicBox }              from "./playerInit";
+import { compatibility }        from "../compatibilityDetector";
+import { updateStatusText }     from "../../utils/js/playerUtils";
+import { createNewSpotifyPlayer, 
+        player }                from "./spotifyPlayer";
+import { generateUrl, 
+        redirectURI }           from '../../utils/js/generateSpotifyUrl';
+import { getUrlVars }           from "../../utils/js/utils";
 
 export var logged = false,
 accessDenied      = false,
@@ -10,22 +15,25 @@ premium           = false;
 export function login () {
     if (compatibility.login) {
         if (localStorage.userHasLogged === 'false') {
+            const params = getUrlVars();
             if (params.state === undefined) {
                 //The user has never logged before to the app
-                putURL();
-                $(spotifyPlaceholder).html('Login with <br> Spotify');
-                updateStatusText('Login with Spotify to listen some relaxing beats');
+                putURL()
+                    .then(() => {
+                        $(spotifyPlaceholder).html('Login with <br> Spotify');
+                        updateStatusText('Login with Spotify to listen some relaxing beats');
+                    })
             } else if (params.state && params.error === undefined) {
                 //The user comes from the Spotify's authentication page
                 //without errors
-                console.log(params);
                 if (params.state === localStorage.state) {
+                    console.log(params)
                     //The state variables match, the authentication is completed,
                     //the app will reload the page to clean the address bar
                     localStorage.userHasLogged = 'true';
                     localStorage.removeItem('state');
                     localStorage.setItem('code', params.code);
-                    window.location.replace(redirectURI);
+                    //window.location.replace(redirectURI);
                 } else {
                     //The states don't match, the authentication failed
                     throwAuthError('States do not match');
@@ -81,4 +89,5 @@ function throwUncompatibilityErr() {
 async function putURL() {
     const url = await generateUrl();
     $('#spotify-link').attr('href', url);
+    return true;
 }

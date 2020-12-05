@@ -1,4 +1,8 @@
-import { likeBtn } from "../../js/spotify/spotifyPlayerEvents";
+import { likeBtn }            from "../../js/spotify/spotifyPlayerEvents";
+import { playbackIcon }       from "../../js/spotify/spotifyPlayer";
+import { spotifyPlaceholder, 
+        musicBox }            from "../../js/spotify/playerInit";
+
 
 export function playIcon(showPlay) {
     if (showPlay) {

@@ -1,3 +1,5 @@
+import { handleSettingButtons } from "./settingsPage";
+
 //User settings
 export var clockFormat, currentPosition; 
 
@@ -25,6 +27,8 @@ export function getSettings() {
             }
         });
     }
+
+    handleSettingButtons();
 }
 
 export function setClockFormat(newFormat) {
