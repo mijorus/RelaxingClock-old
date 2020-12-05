@@ -1,9 +1,10 @@
 import { spotifyPlaceholder }   from "./playerInit";
-import { spotify }              from "./spotifyRequests";
+import { spotify, 
+        premium }               from "./spotifyRequests";
 import { initPlayerEvents }     from "./spotifyPlayerEvents";
 
 export const spotifyIcon = $('#spotify-icon'),
-playbackIcon             =    $('#playback-icon');
+playbackIcon             = $('#playback-icon');
 
 export var player = undefined,
 deviceID          = undefined,
@@ -27,30 +28,23 @@ export function createNewSpotifyPlayer() {
     player = new Spotify.Player({
         name: 'Relaxing Clocks',
         getOAuthToken: function(callback) {
-            if (localStorage.code || localStorage.refreshToken) {
+            //We request a token for the first time
+            //or need to request a new token using the refresh_token
+            if (localStorage.code !== undefined) {
                 //We request a token for the first time
-                //or need to request a new token using the refresh_token
-                if (localStorage.code !== undefined) {
-                    //We request a token for the first time
-                    spotify.requestToken();
-                }
-
-                else if (localStorage.refreshToken) {
-                    //We need to request a new token using the refresh_token
-                    spotify.refreshToken();
-                }
-                spotify.requestToken()
-                    .then(() => {
-                        spotify.getUserDetails();
-                        callback(sessionStorage.accessToken);
-                    })
+                spotify.requestToken();
             }
 
-            // $(document).on('loginCompleted', function () {
-            //     console.info(`Login Completed!`);
-            //     $(document).off('loginCompleted');
-                
-            // });
+            else if (localStorage.refreshToken) {
+                //We need to request a new token using the refresh_token
+                spotify.refreshToken();
+            }
+
+            $(document).on('spotifyLoginCompleted', function () {
+                console.info(`Login Completed!`);
+                $(document).off('loginCompleted');
+                callback(sessionStorage.accessToken);
+            });
         }
     });
 

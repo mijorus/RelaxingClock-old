@@ -1,17 +1,21 @@
 import { handleHeartButton, 
         updatePlaceholderText,
-        updateStatusText }   from '../../utils/js/playerUtils';
-import { spotifyError }      from "../spotify/spotifyErrorHandling";
-import { clientId,
-        redirectURI }        from '../../utils/js/generateSpotifyUrl';
-import { playbackIcon }      from "./spotifyPlayer";
+        updateStatusText }        from '../../utils/js/playerUtils';
+import { spotifyError }           from "../spotify/spotifyErrorHandling";
+import { clientId,    
+        redirectURI }             from '../../utils/js/generateSpotifyUrl';
+import { playbackIcon }           from "./spotifyPlayer";
+import { paused, 
+        musicBox }                from "./playerInit";
+import { getRandomIntInclusive }  from '../../utils/js/utils';
 
+export var premium   = false;
 // *** Ajax **
-var requestHeader = undefined;
+var requestHeader    = undefined;
 const spotifyBaseURL = 'https://api.spotify.com/v1'
 
 export const spotify = {
-    requestToken: async function() {
+    requestToken: function() {
         $.ajax({
             method: 'POST',
             url: 'https://accounts.spotify.com/api/token',
@@ -27,8 +31,6 @@ export const spotify = {
                 localStorage.removeItem('code');
                 localStorage.removeItem('verifier');
                 saveLoginResponse(response);
-                
-                return true;
             })
             .fail(function (error) {
                 spotifyError.logError("Cannot get token from Spotify", error);
@@ -50,8 +52,8 @@ export const spotify = {
 
                 localStorage.removeItem('code');
                 saveLoginResponse(response);
-                if (!premium) this.getUserDetails();
-                if (play) this.play();
+                if (!premium) spotify.getUserDetails();
+                if (play) spotify.play();
             })
 
             .fail(function (error) {
@@ -129,7 +131,7 @@ export const spotify = {
                     setTimeout(function() {
                         if (paused) {
                             spotifyError.removeLoader();
-                            this.play(deviceID, randomSong);
+                            spotify.play(deviceID, randomSong);
                         }
                     }, wait);
                 } else if (localStorage.autoplay === 'false') {
@@ -157,7 +159,7 @@ export const spotify = {
                 playbackStarted = true;
                 $(playbackIcon).removeClass('fa-play').addClass('fa-pause');
                 setTimeout(function() {
-                    this.shuffle(true);
+                    spotify.shuffle(true);
                 }, 2000);
             })
             .fail(function(error) {
@@ -216,12 +218,12 @@ export const spotify = {
                     /*If we only have to change the color of the heart, it calls the func
                     directly, otherwise will execute an ajax request*/
                     (changeState) 
-                        ? this.likeSong(currentTrackId, false) 
+                        ? spotify.likeSong(currentTrackId, false) 
                         : handleHeartButton(true);
                 } else {
                     console.log('This song is NOT in your library');
                     (changeState) 
-                        ? this.likeSong(currentTrackId, true) 
+                        ? spotify.likeSong(currentTrackId, true) 
                         : handleHeartButton(false);
                 }
             })
@@ -261,6 +263,6 @@ function saveLoginResponse(response) {
     requestHeader = { 'Authorization': `Bearer ${sessionStorage.accessToken}` };
     localStorage.setItem('refreshToken', response.refresh_token);
 
-    //document.dispatchEvent(new Event('loginCompleted'));
+    document.dispatchEvent(new Event('spotifyLoginCompleted'));
 }
 

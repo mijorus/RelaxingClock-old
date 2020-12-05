@@ -9,8 +9,7 @@ import { generateUrl,
 import { getUrlVars }           from "../../utils/js/utils";
 
 export var logged = false,
-accessDenied      = false,
-premium           = false;
+accessDenied      = false;
 
 export function login () {
     if (compatibility.login) {
