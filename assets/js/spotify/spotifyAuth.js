@@ -32,7 +32,7 @@ export function login () {
                     localStorage.userHasLogged = 'true';
                     localStorage.removeItem('state');
                     localStorage.setItem('code', params.code);
-                    //window.location.replace(redirectURI);
+                    window.location.replace(redirectURI);
                 } else {
                     //The states don't match, the authentication failed
                     throwAuthError('States do not match');

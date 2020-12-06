@@ -1,9 +1,12 @@
-import { player, 
-        playbackIcon }           from "./spotifyPlayer";
+import { player }                from "./spotifyPlayer";
+import { playbackIcon }          from "./spotifyPlayerListeners";
 import { musicBox }              from "./playerInit";
 import { handleLoader }          from "../../utils/js/utils";
-import { updatePlaceholderText } from "../../utils/js/playerUtils";
-import { redirectURI }           from "../../utils/js/generateSpotifyUrl";
+import { updatePlaceholderText, 
+        updateStatusText }       from "../../utils/js/playerUtils";
+import { redirectURI, 
+        generateUrl }            from "../../utils/js/generateSpotifyUrl";
+import { logout }                from "./spotifyAuth";
 
 export const spotifyError = {
      throwTokenError: function() {

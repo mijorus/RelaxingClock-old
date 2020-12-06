@@ -1,14 +1,36 @@
-import { likeBtn }            from "../../js/spotify/spotifyPlayerEvents";
-import { playbackIcon }       from "../../js/spotify/spotifyPlayer";
+import { likeBtn }               from "../../js/spotify/spotifyPlayerEvents";
+import { playbackIcon }          from "../../js/spotify/spotifyPlayerListeners";
+import { playlistURL }           from "../../js/spotify/spotifyPlayer";
 import { spotifyPlaceholder, 
-        musicBox }            from "../../js/spotify/playerInit";
+        musicBox }               from "../../js/spotify/playerInit";
+import { getRandomIntInclusive } from "./utils";
 
+export var songIsSelected = false;
+export function songSelected(status) {
+    songIsSelected = status; 
+}
 
 export function playIcon(showPlay) {
     if (showPlay) {
         $(playbackIcon).removeClass('fa-pause').addClass('fa-play');
     } else {
         $(playbackIcon).removeClass('fa-play').addClass('fa-pause');
+    }
+}
+
+export function songSelection(playlist, random = true) {
+    const playlistLength = playlist.tracks.total;
+    const playlistOffset = (random)
+        ? getRandomIntInclusive(0, playlistLength)
+        : 0
+    
+    console.log(`There are ${playlistLength} songs in the playlist, I have selected the #${playlistOffset}`);
+
+    return {
+        'context_uri': `spotify:playlist:${playlistURL}`,
+        'offset': {
+            'position': playlistOffset
+        }
     }
 }
 

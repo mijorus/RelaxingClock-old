@@ -1,15 +1,13 @@
 import { handleHeartButton, 
-        updatePlaceholderText,
         updateStatusText }        from '../../utils/js/playerUtils';
 import { spotifyError }           from "../spotify/spotifyErrorHandling";
 import { clientId,    
         redirectURI }             from '../../utils/js/generateSpotifyUrl';
-import { playbackIcon }           from "./spotifyPlayer";
-import { paused, 
-        musicBox }                from "./playerInit";
-import { getRandomIntInclusive }  from '../../utils/js/utils';
+import { playbackIcon,
+        deviceID }                from "./spotifyPlayerListeners";
 
-export var premium   = false;
+export var playbackStarted = false;
+
 // *** Ajax **
 var requestHeader    = undefined;
 const spotifyBaseURL = 'https://api.spotify.com/v1'
@@ -37,8 +35,8 @@ export const spotify = {
             })
     },
 
-    refreshToken: function(play = false) {
-        $.ajax({
+    refreshToken: function() {
+        return $.ajax({
             method: 'POST',
             url: 'https://accounts.spotify.com/api/token',
             data: {
@@ -49,17 +47,14 @@ export const spotify = {
         })
             .done(function (response) {
                 console.warn(`Token refreshed`);
-
                 localStorage.removeItem('code');
                 saveLoginResponse(response);
-                if (!premium) spotify.getUserDetails();
-                if (play) spotify.play();
             })
 
             .fail(function (error) {
                 switch (error.status) {
                     case 400:
-                        throwTokenError();
+                        spotifyError.throwTokenError();
                     break;
                 
                     default:
@@ -80,67 +75,25 @@ export const spotify = {
     },
 
     getUserDetails: function() {
-        setTimeout(() => {
-            $.ajax({
-            type: "GET",
-            url: spotifyBaseURL + '/me', 
-            headers: requestHeader,
+            return $.ajax({
+                type: "GET",
+                url: spotifyBaseURL + '/me', 
+                headers: requestHeader,
             })
-                .done(function(response) {
-                    if (response.product === 'premium') {
-                        premium = true;
-                        setTimeout(() => spotify.selectSong(), 1000);
-                        updateStatusText(`Logged in as ${response.id}`)
-                        $('#autoplay-box').removeClass('unavailable');
-                    } else {
-                        spotifyError.throwPremiumError(response.id);
-                    }
-                })
                 .fail(function(error) {
                     spotifyError.logError('CANNOT GET YOUR USERNAME:', error);
-                    updateStatusText(`Can't get your username, are you on PC?`);
+                    updateStatusText(`Cannot get your your profile infos :(`);
                     spotifyError.throwGenericError();
+                    console.log(requestHeader)
                 })
-
-        }, 1000);
     },
 
-    selectSong: function() {
-        const playlistURL = '4ZTZhFPPyRzpfHZsWEXAW9';
-        $.ajax({
+    getPlaylistData: function(playlistURL) {
+        return $.ajax({
             type: "GET",
             url: spotifyBaseURL + `/playlists/${playlistURL}`,
             headers: requestHeader
         })
-            .done(function(response) {
-                const playlistLength = response.tracks.total;
-                randomPosition = getRandomIntInclusive(0, playlistLength);
-                $(musicBox).addClass('loaded');
-                songIsSelected = true;
-                randomSong = {
-                    'context_uri' : `spotify:playlist:${playlistURL}`,
-                    'offset': {
-                        'position' : randomPosition
-                    }
-                }
-                
-                if (localStorage.autoplay === 'true') {
-                    const wait = getRandomIntInclusive(4000, 7500);
-                    console.log(`Autoplay is enabled, starting in ${wait / 1000} seconds`);
-                    updatePlaceholderText('Music will<br>start soon...');
-                    setTimeout(function() {
-                        if (paused) {
-                            spotifyError.removeLoader();
-                            spotify.play(deviceID, randomSong);
-                        }
-                    }, wait);
-                } else if (localStorage.autoplay === 'false') {
-                    spotifyError.removeLoader(); 
-                    updatePlaceholderText('Ready to<br>play!');
-                }
-                
-                console.log(`There are ${response.tracks.total} songs in the playlist, I have selected the #${randomPosition}`);
-            })
             .fail(function(error) {
                 spotifyError.logError('CANNOT SELECT A SONG TO PLAY:', error);
             });
@@ -151,7 +104,7 @@ export const spotify = {
         $.ajax({
             type: "PUT",
             headers: requestHeader,
-            url: spotifyBaseURL + '/player/play?device_id=' + device_id,
+            url: spotifyBaseURL + '/me/player/play?device_id=' + device_id,
             data: JSON.stringify(song)
         })
             .done(function() {
@@ -171,7 +124,10 @@ export const spotify = {
 
                     case 401:
                         if (error.responseJSON.error.message === 'The access token expired') {
-                            spotify.refreshToken(true);
+                            spotify.refreshToken()
+                                .then(() => {
+                                   spotify.play();
+                                })
                         }
                     break;
                 
@@ -262,7 +218,6 @@ function saveLoginResponse(response) {
     sessionStorage.setItem('accessToken', response.access_token);
     requestHeader = { 'Authorization': `Bearer ${sessionStorage.accessToken}` };
     localStorage.setItem('refreshToken', response.refresh_token);
-
     document.dispatchEvent(new Event('spotifyLoginCompleted'));
 }
 

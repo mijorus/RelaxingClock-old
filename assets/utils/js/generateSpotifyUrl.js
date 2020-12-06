@@ -4,6 +4,7 @@ export const clientId = siteParams.client_id,
 redirectURI           = siteParams.base_url;
 
 const scopes          = 'user-read-email,user-read-private,user-read-playback-state,user-modify-playback-state,user-read-currently-playing,user-library-modify,user-library-read,streaming';
+
 export async function generateUrl() {
   state = generateRandomString();
   localStorage.setItem('state', state);

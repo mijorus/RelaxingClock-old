@@ -1,7 +1,13 @@
-import { musicBox }     from "./playerInit";
-import { spotifyIcon }  from "./spotifyPlayer";
+import { musicBox }       from "./playerInit";
+import { spotifyIcon }    from "./spotifyPlayerListeners";
+import { playerIsBusy, 
+        player,
+        song }            from "./spotifyPlayer";
+import { spotify,
+        playbackStarted } from "./spotifyRequests";
+import { deviceID }       from "./spotifyPlayerListeners";
 
-export var playbackStarted = false, likeBtn, playBtn, songInfo;
+export var likeBtn, playBtn, songInfo;
 
 export function initPlayerEvents() {
     likeBtn  = $('.like-btn');
@@ -23,7 +29,7 @@ function playBtnListener() {
         event.preventDefault(); event.stopPropagation();
         if (!playerIsBusy()) {
             if (!playbackStarted) {
-                spotify.play(deviceID, randomSong);
+                spotify.play(deviceID, song);
             } else {
                 player.getCurrentState().then((state) => {
                     if (state) {
