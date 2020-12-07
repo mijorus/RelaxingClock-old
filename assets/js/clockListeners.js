@@ -1,8 +1,9 @@
-import * as clocks from "./clocks";
-import { disableScreenSaver } from "./screenSaver";
-import { globeInAction } from "./clockStyles/globeClock";
-import { currentPosition } from "./getSettings";
-import { compatibility } from "./compatibilityDetector";
+import * as clocks              from "./clocks";
+import { disableScreenSaver }   from "./screenSaver";
+import { globeInAction }        from "./clockStyles/globeClock";
+import { currentPosition }      from "./getSettings";
+import { compatibility }        from "./compatibilityDetector";
+import { enableScreenSaver }    from "./screenSaver";
 
 export function enableClockListeners() {
     //Clock selection 
@@ -32,7 +33,7 @@ export function enableClockListeners() {
             break;
         
             case 39:
-                if (clocks.clockIsStale() && currentPosition !== (options - 1)) {
+                if (clocks.clockIsStale() && currentPosition !== (clocks.options - 1)) {
                     clocks.changeOption(1);
                     enableScreenSaver(t);
                 }

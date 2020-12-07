@@ -1,4 +1,5 @@
 import { clockContainer }   from "../init";
+import { centerContainer }  from "../clocks";
 
 var handColor,
     handhours,
@@ -6,7 +7,35 @@ var handColor,
     handsec,
     circleIsdrawn = false;
 
-export function handleAnalogClock() {
+export function loadStyle() {
+    $(centerContainer).addClass('analog');
+    handleAnalogClock();
+}
+
+export function beforeLoad() {}
+
+export function unloadStyle() { }
+
+export function startProgression() {
+    randomHandColor();
+    loadStyle();
+}
+
+export function skipInit() { 
+    circleIsdrawn = false;
+    handleAnalogClock();
+}
+
+export function resetStyle() { }
+
+//Screen Saver actions
+// export function goFullScreen() {}
+
+// export function leaveFullScreen() {}
+
+//
+
+function handleAnalogClock() {
     if (!handhours) handhours = $('#hand-hours');
     if (!handmin)   handmin   = $('#hand-min');
     if (!handsec)   handsec   = $('#hand-seconds');
@@ -18,7 +47,7 @@ export function handleAnalogClock() {
     }
 }
 
-export function randomHandColor() {
+function randomHandColor() {
     handColor = randomColor({ luminosity: 'light' });
 }
 

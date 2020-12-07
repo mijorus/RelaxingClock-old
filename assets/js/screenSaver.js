@@ -1,12 +1,9 @@
 import { body,
-        cbDefault, 
-        bigClock, 
         toScreenSave, 
-        eaElasticDefault, 
         main, 
-        clockInnerCont,
         expandIcon }        from "./init";
 import { currentPosition }  from "./getSettings";
+import { clockStyles }      from "./clockStyles/styles";
 import { inSettings }       from "./settingsPageHandler";
 
 export var screenSaverIsActive = false, //whether or not the screen saver is active
@@ -42,29 +39,16 @@ function setScreenSaver() {
     $(window).on('click', function() {
         leaveScreenSaver();
     });
-    switch (currentPosition) {
-        case 2:
-            $(clockInnerCont).addClass('metro-margin');
-            anime({
-                begin: function() {
-                },
-                targets: $(bigClock).get(0),
-                easing: cbDefault,
-                duration: 2000,
-                delay: 50,
-                scale: function(){
-                    return (($(window).height() * 0.85) / $(bigClock).height());
-                },
-                complete: function() {
-                    screenSaverisAnimating = false;
-                    $(clockInnerCont).removeClass('metro-margin');
-                }
-            });
-            break;
-    
-        default:
-            setTimeout(function() {screenSaverisAnimating = false}, 1700);
-            break;
+
+    if (clockStyles[currentPosition].goFullScreen) {
+        clockStyles[currentPosition].goFullScreen()
+            .finished.then(() => {
+                screenSaverisAnimating = false;
+            })
+    } else {
+        setTimeout(() => { 
+            screenSaverisAnimating = false 
+        }, 1700);
     }
 }
 
@@ -76,26 +60,15 @@ function leaveScreenSaver() {
         handleMouseCursor('leave');
         $(body).removeClass('screen-saving-color high-contrast');
         $(toScreenSave).removeClass('screen-saving');
-        switch (currentPosition) {
-            case 2:
-                anime({
-                    targets: $(bigClock).get(0),
-                    scale: [1.8, 1],
-                    easing: eaElasticDefault,
-                    duration: 2500,
-                    complete: function() {
-                        screenSaverisAnimating = false;
-                        handleMouseCursor('watch');
-                    }
-                });
-                break;
-            
-            default:
-                setTimeout(function() {
+        if (clockStyles[currentPosition].leaveFullScreen) {
+            clockStyles[currentPosition].leaveFullScreen()
+                .finished.then(() => {
                     screenSaverisAnimating = false;
-                    handleMouseCursor('watch');
-                }, 750);
-            break;
+                })
+        } else {
+            setTimeout(() => { 
+                screenSaverisAnimating = false 
+            }, 750);
         }
     }
 }

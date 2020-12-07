@@ -9,8 +9,7 @@ import { handleMouseCursor,
         disableScreenSaver, 
         screenSaverIsActive, 
         screenSaverisAnimating } from "./screenSaver";
-import { newRandomPlace, 
-        aRandomPlace }           from '../utils/js/internationalClock/internationalClock';
+import { aRandomPlace }           from '../utils/js/internationalClock/internationalClock';
 import { handleLoader }          from "../utils/js/utils";
 import { clockStyles }           from "./clockStyles/styles";
 import { clockFormat, 
@@ -57,7 +56,8 @@ export function displayDefaultClock() {
     }
 
     $(optionsName).filter(`[data-selection=${currentPosition}]`).addClass('selected')
-    handleSelectedClock(currentPosition, false, true); //memo for development: change the default clock style
+    handleSelectedClock(currentPosition, false, true); 
+    //memo for development: change the default clock style
 }
 
 export function resizeClock(resizing) {
@@ -123,7 +123,8 @@ function showAMPM(shown) {
     (shown) ? $(ampmIcon).removeClass('disp-none') : $(ampmIcon).addClass('disp-none');
 }
 
-export function changeOption (direction) {
+export function changeOption(direction) {
+    const oldPosition = currentPosition;
     const selectedOption = $(optionsName).filter('.selected');
     setPosition($(selectedOption).data('selection')); 
 
@@ -157,13 +158,15 @@ export function changeOption (direction) {
         $(selectedOption).removeClass('selected');
         $(nextSelection).addClass('selected');
         setPosition(nextPosition);
-        handleSelectedClock(currentPosition, true, true);
+        handleSelectedClock(currentPosition, true, true, oldPosition);
     }
 }
 
-export function handleSelectedClock(userSelection, transition, resetClock) {
-    const circleTl = clockStyles.globeClock.circleTl;
-    if (circleTl !== undefined) circleTl.pause();
+export function handleSelectedClock(userSelection, transition, resetClock, oldPosition = undefined) {
+
+    if (oldPosition !== undefined) {
+        clockStyles[oldPosition].unloadStyle();
+    }
 
     if (transition && resetClock) {
         const animationProps = {
@@ -172,18 +175,7 @@ export function handleSelectedClock(userSelection, transition, resetClock) {
             easing: 'linear',
         }
 
-        switch (userSelection) {
-            case 2:
-                const metroBg = $('#metro-background');
-                $(metroBg).removeClass();
-                newRandomPlace(false);
-                $(metroBg).addClass(aRandomPlace.city.class);
-            break;
-            case 4:
-                $(clockStyles.globeClock.cityIcon).removeClass();
-                newRandomPlace();
-            break;
-        }
+        clockStyles[userSelection].beforeLoad();
         
         clockInAction = true;
         clearInterval(clock);
@@ -192,7 +184,7 @@ export function handleSelectedClock(userSelection, transition, resetClock) {
             ...animationProps,
             opacity: 0,
             complete: function() {
-                //remove classes for specific clock styles on style change
+                //Remove classes for specific clock styles on style change
                 $(bigClock).empty();
                 [$(main), $(centerContainer)].forEach((el) => {
                     $(el).removeClass(styleList);
@@ -210,35 +202,14 @@ export function handleSelectedClock(userSelection, transition, resetClock) {
         });
     }
 
-    //launches the clock directly, skips the initiation of the interval
+    //Launches the clock directly, skips the initiation of the interval
     else if (!transition && !resetClock) {
-        switch (currentPosition) {
-            case 3:
-                circleIsdrawn = false;
-                clockStyles.analogClock.handleAnalogClock();
-            break;
-
-            case 4:
-                handleSelection(userSelection);
-                clockStyles.globeClock.handleGlobeAnimation(false);
-            break;
-
-            default:
-                handleSelection(userSelection);
-            break;
-        }
+        clockStyles[userSelection].skipInit();
+        handleSelection(userSelection);
     }
 
     else if (!transition && resetClock) {
-        switch (userSelection) {
-            case 2: 
-                newRandomPlace(false);
-                $('#metro-background').addClass(aRandomPlace.city.class);
-            break;
-            case 4:
-                newRandomPlace();
-            break;
-        }
+        clockStyles[userSelection].resetStyle();
 
         clearInterval(clock);
         handleSelection(userSelection);
@@ -246,7 +217,8 @@ export function handleSelectedClock(userSelection, transition, resetClock) {
     }
 }
 
-export function loadTime(timeFormat, zone = localTimezone) { //International or american, called every second 
+//International or american, called every second 
+export function loadTime(timeFormat, zone = localTimezone) { 
     let now;
     if (!remoteUnix) {
         now = moment.tz(zone);
@@ -286,48 +258,12 @@ function handleSelection(userSelection) {
         break;
     }
 
-    switch (userSelection) {
-        case 0:
-            $(centerContainer).addClass('classic');
-            clockStyles.classicClock.handleClassicClock();
-        break;
-    
-        case 1:
-            $(centerContainer).addClass('focused');
-            clockStyles.focusedClock.handleFocusedClock();
-        break;
-
-        case 2:
-            $(main).addClass('metro');
-            $(centerContainer).addClass('metro');
-            clockStyles.metroClock.handleMetroClock();
-        break;
-        
-        case 3:
-            $(centerContainer).addClass('analog')
-            clockStyles.analogClock.handleAnalogClock();
-        break;
-
-        case 4:
-            clockStyles.globeClock.handleGlobeClock();
-        break;
-    }
+    clockStyles[userSelection].loadStyle();
 }
 
 function handleClockProgression(userSelection) {
     console.log(`Clock #${userSelection} is running`);
-    switch (currentPosition) {
-        case 3:
-            clockStyles.analogClock.randomHandColor();
-            handleSelection(userSelection);
-        break;
-
-        case 4:
-            $(centerContainer).addClass('globe');
-            clockStyles.globeClock.handleGlobeAnimation(true);
-        break;
-    
-    }
+    clockStyles[userSelection].startProgression();
 
     startClockInterval(userSelection);
 }

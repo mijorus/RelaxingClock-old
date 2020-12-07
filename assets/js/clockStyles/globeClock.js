@@ -7,14 +7,49 @@ import { format12,
         format24, 
         loadTime, 
         styleSelectorL,
-        styleSelectorR }    from "../clocks";
+        styleSelectorR,
+        centerContainer }   from "../clocks";
 import { aRandomPlace, 
         newRandomPlace  }   from "../../utils/js/internationalClock/internationalClock";
 
 export const cityName = $('.city-name'), cityIcon = $('#city-icon');
 export var globeInAction, circleTl = undefined;
 
-export function handleGlobeClock() {
+export function loadStyle() {
+    handleGlobeClock();
+}
+
+export function beforeLoad() {
+    cityIcon.removeClass();
+    newRandomPlace();
+}
+
+export function startProgression() {
+    $(centerContainer).addClass('globe');
+    handleGlobeAnimation(true);
+}
+
+export function unloadStyle() {
+    if (circleTl !== undefined) { 
+        circleTl.pause();
+    }
+}
+
+export function skipInit() { 
+    handleGlobeAnimation();
+}
+
+export function resetStyle() {
+    newRandomPlace(true);
+}
+
+//Screen Saver actions
+//export function goFullScreen() { }
+
+//export function leaveFullScreen() { }
+//
+
+function handleGlobeClock() {
     $(cityIcon).addClass(aRandomPlace.city.class);
     $(cityName).text(aRandomPlace.city.name);
     if (sec % 2 == 0) {
@@ -98,11 +133,11 @@ function createSkyIcon() {
     skyIcon = $('<span />', {
         id: 'sky-icon',
     }).appendTo($(clockInnerCont));
-    var skyIconH = $(skyIcon).height();
-    var skyIconW = $(skyIcon).width();
+    // var skyIconH = $(skyIcon).height();
+    // var skyIconW = $(skyIcon).width();
     $(skyIcon).css({
-        'bottom': halfCircle.height + 50 - (skyIconH / 2),
-        'left': skyIconW / (-2)
+        'bottom': halfCircle.height + 50 - ( $(skyIcon).height() / 2 ),
+        'left': ( $(skyIcon).width() / (-2) )
     });
 }
 
