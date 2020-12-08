@@ -4,6 +4,7 @@ import { playlistURL }           from "../../js/spotify/spotifyPlayer";
 import { spotifyPlaceholder, 
         musicBox }               from "../../js/spotify/playerInit";
 import { getRandomIntInclusive } from "./utils";
+import { cbDefault }              from '../../js/init'
 
 export var songIsSelected = false;
 export function songSelected(status) {
@@ -58,25 +59,28 @@ var songTl;
 export const scrollText = {
     scrollDuration: 15000,
 
-    scroll: function(target, scrollWidth, vpWidth, delay) {
-        songTl.add({
-            targets: target,
-            delay: delay,
-            translateX: - scrollWidth,
-            duration: this.scrollDuration,
-            complete: function() {
-                target.style.translateX = 0;
-            }
-        }, '+=50')
-        .add({
-            translateX: [vpWidth + 10, 0],
-            duration: this.scrollDuration
-        });
+    scroll: function (animationProp, vpWidth) {
+        songTl
+            .add({
+                ...animationProp,
+                duration: this.scrollDuration,
+                complete: function() {
+                    target.style.translateX = 0;
+                }
+            }, '+=50')
+            .add({
+                translateX: [(vpWidth + 10), 0],
+                duration: this.scrollDuration
+            });
     },
 
-    play: function(target, scrollWidth, vpWidth, delay) {
-        if (!songTl) songTl = anime.timeline({easing: cbDefault, autoplay: false, loop: 3});
-        this.scroll(target, scrollWidth, vpWidth, delay);
+    play: function (animationProp, vpWidth) {
+        if (!songTl) songTl = anime.timeline({
+            easing: cbDefault, 
+            autoplay: false, 
+            loop: 3
+        });
+        this.scroll(animationProp, vpWidth);
         songTl.restart();
     },
 

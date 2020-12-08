@@ -3,7 +3,8 @@ import { spotify }              from "./spotifyRequests";
 import { initPlayerEvents }     from "./spotifyPlayerEvents";
 import { spotifyError }         from "./spotifyErrorHandling";
 import { player }               from "./spotifyPlayer";
-import { playIcon }             from "../../utils/js/playerUtils";
+import { playIcon,
+        scrollText }            from "../../utils/js/playerUtils";
 
 export const playbackIcon = $('#playback-icon'),
     spotifyIcon           = $('#spotify-icon');
@@ -16,8 +17,8 @@ export var deviceID = undefined,
 export function initSpotifyPlayer() {
     initPlayerEvents();
 
-    const trackName = $('#track-name'),
-        artistName = $('#artist-name'),
+    const trackName      = $('#track-name'),
+        artistName       = $('#artist-name'),
         spotifyTrackInfo = $('#spotify-track-info');
 
     // Error handling
@@ -64,7 +65,12 @@ export function initSpotifyPlayer() {
                 $(trackName).text(currentTrack.name);
                 var titleSize = $(trackName).get(0).scrollWidth;
                 if (titleSize - 5 > spWidth) {
-                    scrollText.play($(trackName).get(0), titleSize, spWidth, 2000);
+                    const animeProp = {
+                        target: $(trackName).get(0),
+                        translateX: (- titleSize),
+                        delay: 2000,
+                    }
+                    scrollText.play(animeProp, spWidth);
                 }
 
                 var artistsText = '';
@@ -81,7 +87,12 @@ export function initSpotifyPlayer() {
 
                 var artistNameSize = $(artistName).get(0).scrollWidth;
                 if (artistNameSize - 5 > spWidth) {
-                    scrollText.play($(artistName).get(0), artistNameSize, spWidth, 4000);
+                    const animeProp = {
+                        target: $(artistName).get(0),
+                        translateX: (- artistNameSize),
+                        delay: 4000,
+                    }
+                    scrollText.play(animeProp, spWidth);
                 }
 
                 setTimeout(spotify.isLiked(currentTrackId, false), 250);

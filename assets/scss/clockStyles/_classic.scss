@@ -1,0 +1,8 @@
+.classic {
+    .big-clock {
+        @include phones {
+            font-size: 18vw;
+            font-weight: 500;
+        }
+    }
+}

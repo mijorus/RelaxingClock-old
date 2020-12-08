@@ -28,7 +28,8 @@ export const spotifyError = {
     //Logs an error to the console
      logError: function(message, error, throwError = true) {
         console.error(`${message}`);
-        console.error(error);
+        const responseError = error.responseJSON.error.message || error.message || error;
+        console.error(responseError);
         if (throwError) this.throwGenericError();
     },
 

@@ -14,7 +14,9 @@ var screenSaverTimeout;
 export function enableScreenSaver(timeout) {
     console.log(`Screen saver timeout set to ${timeout}`);
     clearTimeout(screenSaverTimeout);
-    if (!screenSaverIsActive) screenSaverTimeout = setTimeout(() => {setScreenSaver()}, timeout);
+    if (!screenSaverIsActive) screenSaverTimeout = setTimeout(() => {
+        setScreenSaver()
+    }, timeout);
 }
 
 export function disableScreenSaver() {

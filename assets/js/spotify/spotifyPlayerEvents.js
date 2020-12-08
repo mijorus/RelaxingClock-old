@@ -5,7 +5,8 @@ import { playerIsBusy,
         song }            from "./spotifyPlayer";
 import { spotify,
         playbackStarted } from "./spotifyRequests";
-import { deviceID }       from "./spotifyPlayerListeners";
+import { deviceID,
+        currentTrackId }  from "./spotifyPlayerListeners";
 
 export var likeBtn, playBtn, songInfo;
 
@@ -43,7 +44,7 @@ function playBtnListener() {
                             });
                         }
                     } else {
-                        reconnect(true);
+                        //reconnect(true);
                     }
                 });
             }

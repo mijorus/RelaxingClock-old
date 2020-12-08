@@ -1,0 +1,36 @@
+.metro {
+    .big-clock{
+        font-size: 8vw;
+
+        @include phones {
+            font-size: 10vh;
+            font-weight: 500;
+        }
+    }
+
+    .ampm {
+        display: none;
+    }
+
+    .metro-margin {
+        transition: margin-bottom 1s linear !important;
+    }
+
+    #clock-inner-container {
+        position: relative;
+        margin-bottom: 7vw;;
+
+        &.metro-margin {
+            transition: margin-bottom 1s linear !important;
+        }
+
+        @include phones {
+            margin-bottom: 15vh;
+        }
+    }
+
+    .screen-saving #clock-inner-container {
+        position: relative;
+        margin-bottom: 0vw;
+    }
+}

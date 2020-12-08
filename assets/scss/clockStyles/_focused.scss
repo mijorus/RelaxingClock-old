@@ -1,0 +1,8 @@
+.focused {
+    .big-clock {
+        @include phones {
+            font-size: 25vw;
+            font-weight: 500;
+        }
+    }
+}

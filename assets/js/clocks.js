@@ -2,14 +2,10 @@
 import { clockContainer,
         main, 
         bigClock, 
-        cbDefault }             from "./init";
-import { enableClockListeners } from "./clockListeners";
-import { handleMouseCursor, 
-        enableScreenSaver, 
-        disableScreenSaver, 
-        screenSaverIsActive, 
-        screenSaverisAnimating } from "./screenSaver";
-import { aRandomPlace }           from '../utils/js/internationalClock/internationalClock';
+        cbDefault }              from "./init";
+import { enableClockListeners }  from "./clockListeners";
+import * as screenSaver          from './screenSaver'
+import { aRandomPlace }          from '../utils/js/internationalClock/internationalClock';
 import { handleLoader }          from "../utils/js/utils";
 import { clockStyles }           from "./clockStyles/styles";
 import { clockFormat, 
@@ -20,7 +16,6 @@ import { clockFormat,
 
 var clockInAction = false,
 formatIsAnimating = false,
-globeInAction     = false,
 clockIsResizing   = false,
 clock             = undefined,
 localTimezone     = moment.tz.guess(),
@@ -44,8 +39,8 @@ clockOpAnimation      = 350; //timing of the clock opacity animation
 export function displayDefaultClock() {
     
     enableClockListeners();
-    handleMouseCursor('watch');
-    enableScreenSaver(15000);
+    screenSaver.handleMouseCursor('watch');
+    screenSaver.enableScreenSaver(15000);
 
     if(clockFormat === '24h') {
         $('#format-12').addClass('unfocus');
@@ -80,10 +75,10 @@ export function resizeClock(resizing) {
 }
 
 export function clockIsStale() {
-    if (!screenSaverIsActive && 
+    if (!screenSaver.screenSaverIsActive && 
         !formatIsAnimating && 
-        !screenSaverisAnimating &&
-        !globeInAction &&
+        !screenSaver.screenSaverisAnimating &&
+        !clockStyles[4].globeInAction &&
         !clockInAction) {
         return true;
     } else {
@@ -94,7 +89,7 @@ export function clockIsStale() {
 export function changeFormat(selectedFormat, fromFormat, toFormat) { 
     formatIsAnimating = true;
     var firstLoop = true;
-    disableScreenSaver();
+    screenSaver.disableScreenSaver();
     fromFormat.removeClass('unfocus');
     toFormat.addClass('unfocus');
     anime({
@@ -179,7 +174,7 @@ export function handleSelectedClock(userSelection, transition, resetClock, oldPo
         
         clockInAction = true;
         clearInterval(clock);
-        disableScreenSaver();
+        screenSaver.disableScreenSaver();
         anime({
             ...animationProps,
             opacity: 0,
@@ -281,7 +276,8 @@ export function getRemoteTime(status = true) {
         $(rtLoader.get(0).nextElementSibling).addClass('unavailable');
         handleLoader($(rtLoader), true);
         $.ajax({
-            method: "GET", cache: false, url: "https://worldtimeapi.org/api/ip",
+            method: "GET",
+            url: "https://worldtimeapi.org/api/ip",
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }

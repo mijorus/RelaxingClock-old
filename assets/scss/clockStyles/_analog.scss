@@ -1,0 +1,112 @@
+.analog {
+    #clock-inner-container {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .screen-saving #clock-inner-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .ampm {
+        display: none;
+    }
+
+    #circle-container {
+        display: block;
+        transition: top 2s cubic-bezier(0.37, 0, 0.63, 1);
+
+        &.screen-saving {
+            display: block;
+            top: 50%;
+        }
+        
+        body.screen-saving-color &.screen-saving {
+            opacity: .7;
+            transition: all 2s cubic-bezier(0.37, 0, 0.63, 1);
+            display: block;
+            top: 50%;
+        }
+
+        body.high-contrast &.screen-saving {
+            opacity: 1;
+            transition: all 2s cubic-bezier(0.37, 0, 0.63, 1);
+        }
+    }
+
+    .selection-box #clock-format-selector button {
+        opacity: 0;
+        cursor: default;
+
+        button {
+            cursor: default;
+            pointer-events: none;
+        }
+    }
+}
+
+#circle-container {
+    display: none;
+    overflow: visible;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transition: top 2s cubic-bezier(0.37, 0, 0.63, 1);
+
+    @media (max-width: $phone) {
+        top: 0;
+    }
+    
+    #circle {
+        position: absolute;
+        border: .2vw solid $color-white;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        display: block;
+        transition: opacity .5 linear;
+
+        #little-dot {
+            position: absolute;
+            background-color: darken($color: $color-white, $amount: 20%) ;
+            border-radius: 50%;
+            width: 1vw;
+            height: 1vw;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            z-index: 6;
+        }
+
+        .hand {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            border-radius: .3vw;
+            display: inline-block;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -100%);
+            transform-origin: 50% 100%;
+        }
+
+        #hand-hours {
+            width: .5vw;
+            background-color: $color-white;
+            z-index: 4;
+
+        }
+
+        #hand-min {
+            width: .3vw;
+            background-color: $color-white;
+            z-index: 3;
+        }
+
+        #hand-seconds {
+            width: .1vw;
+            background-color: red;
+            z-index: 5;
+        }
+    }
+}

@@ -150,7 +150,7 @@ export const spotify = {
         $.ajax({
             type: "PUT",
             headers: requestHeader,
-            url: spotifyBaseURL + `/player/shuffle?state=${state}&device_id=${deviceID}`,
+            url: spotifyBaseURL + `/me/player/shuffle?state=${state}&device_id=${deviceID}`,
         })
             .done(function() {
                 console.log('SHUFFLE IS ENABLED!');
@@ -160,26 +160,25 @@ export const spotify = {
             })
     },
 
-    /*The changeState parameter specifies if we have to display only
-    the changes on screen or send an ajax requesto to Spotify */
+    // The changeState parameter specifies if we have 
+    // to display only the changes on screen or we also 
+    // need to add the current song to the library
     isLiked: function(song, changeState) {
         $.ajax({
             type: "GET",
             headers: requestHeader,
-            url: spotifyBaseURL + `/tracks/contains?ids=${song}`,
+            url: spotifyBaseURL + `/me/tracks/contains?ids=${song}`,
         })
             .done(function(response) {
                 if (response[0]) {
                     console.log('This song is in your library');
-                    /*If we only have to change the color of the heart, it calls the func
-                    directly, otherwise will execute an ajax request*/
                     (changeState) 
-                        ? spotify.likeSong(currentTrackId, false) 
+                        ? spotify.likeSong(song, false) 
                         : handleHeartButton(true);
                 } else {
                     console.log('This song is NOT in your library');
                     (changeState) 
-                        ? spotify.likeSong(currentTrackId, true) 
+                        ? spotify.likeSong(song, true) 
                         : handleHeartButton(false);
                 }
             })
@@ -188,7 +187,7 @@ export const spotify = {
             })
     },
 
-    likeSong: function(song = currentTrackId, toLike = true) {
+    likeSong: function(song, toLike = true) {
         $.ajax({
             type: (toLike) ? "PUT" : "DELETE", 
             headers: requestHeader,
