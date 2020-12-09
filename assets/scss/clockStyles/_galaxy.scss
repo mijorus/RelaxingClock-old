@@ -2,15 +2,28 @@
     #galaxy-container {
         display: block;
     }
+
+    .ampm {
+        display: none;
+    }
+
+    .selection-box #clock-format-selector button {
+        opacity: 0;
+        cursor: default;
+
+        button {
+            cursor: default;
+            pointer-events: none;
+        }
+    }
 }
 
 #galaxy-container {
     display: none;
 
     overflow: visible;
-    position: absolute;
-    top: 30%;
-    left: 50%;
+    position: relative;
+    margin-bottom: $cc-margin-bottom;
     transition: top 2s $cb-default;
 
     @include phones {
@@ -19,10 +32,19 @@
 
     #galaxy-space {
         position: relative;
-        //transform: translate(-50%, -50%);
 
+        svg {
+            overflow: visible;
+
+            path {
+                stroke: $color-white;
+                stroke-width: 2px;
+                fill: none;
+            }
+        }
+        
         #galaxy-hours {
-            border: 2px solid white;
+            //border: 2px solid white;
             width: 200px;
             height: 200px;
             position: absolute;
@@ -37,7 +59,7 @@
         }
 
          #galaxy-min {
-            border: 2px solid white;
+            //border: 2px solid white;
             width: 100px;
             height: 100px;
             position: absolute;
@@ -46,8 +68,8 @@
             transform: translate(-50%, -50%);
         }
 
-         #galaxy-seconds {
-            border: 2px solid white;
+         #galaxy-sec {
+            //border: 2px solid white;
             width: 50px;
             height: 50px;
             position: absolute;
