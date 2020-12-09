@@ -3,9 +3,12 @@ import { bigClock,
         clockInnerCont,
         cbDefault,
         eaElasticDefault }   from "../init";
-import { centerContainer }   from "../clocks";
+import { centerContainer,
+        hours,
+        min,
+        sec  }               from "../clocks";
 import { newRandomPlace,
-        aRandomPlace }      from "../../utils/js/internationalClock/internationalClock";
+        aRandomPlace, }      from "../../utils/js/internationalClock/internationalClock";
 
 export function loadStyle() {
     $(main).addClass('metro');

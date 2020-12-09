@@ -1,0 +1,59 @@
+.galaxy {
+    #galaxy-container {
+        display: block;
+    }
+}
+
+#galaxy-container {
+    display: none;
+
+    overflow: visible;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transition: top 2s $cb-default;
+
+    @include phones {
+        top: 0;
+    }
+
+    #galaxy-space {
+        position: relative;
+        //transform: translate(-50%, -50%);
+
+        #galaxy-hours {
+            border: 2px solid white;
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            top: -50%;
+            left: 25%;
+            transform: translate(-50%, -50%);
+
+            #galaxy-h-path {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+         #galaxy-min {
+            border: 2px solid white;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: -50%;
+            left: 25%;
+            transform: translate(-50%, -50%);
+        }
+
+         #galaxy-seconds {
+            border: 2px solid white;
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            top: -50%;
+            left: 25%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}

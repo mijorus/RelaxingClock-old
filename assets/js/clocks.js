@@ -5,7 +5,7 @@ import { clockContainer,
         cbDefault }              from "./init";
 import { enableClockListeners }  from "./clockListeners";
 import * as screenSaver          from './screenSaver'
-import { aRandomPlace }          from '../utils/js/internationalClock/internationalClock';
+import { aRandomPlace, newRandomPlace }          from '../utils/js/internationalClock/internationalClock';
 import { handleLoader }          from "../utils/js/utils";
 import { clockStyles }           from "./clockStyles/styles";
 import { clockFormat, 
@@ -23,8 +23,10 @@ remoteUnix        = false;
 
 const optionsName = $('.option-name');
 
+export var hours, min, sec;
+
 export const ampmIcon = $('#ampm'),
-styleList             = 'classic focused metro globe analog',
+styleList             = 'classic focused metro globe analog galaxy',
 options               = $(optionsName).length,
 format12              = $('#format-12'),
 format24              = $('#format-24'),
@@ -163,14 +165,14 @@ export function handleSelectedClock(userSelection, transition, resetClock, oldPo
         clockStyles[oldPosition].unloadStyle();
     }
 
+    clockStyles[userSelection].beforeLoad();
+
     if (transition && resetClock) {
         const animationProps = {
             targets: clockContainer.get(0),
             duration: clockOpAnimation,
             easing: 'linear',
         }
-
-        clockStyles[userSelection].beforeLoad();
         
         clockInAction = true;
         clearInterval(clock);
@@ -197,12 +199,13 @@ export function handleSelectedClock(userSelection, transition, resetClock, oldPo
         });
     }
 
-    //Launches the clock directly, skips the initiation of the interval
+    //Launch the clock directly, skip the initiation of the interval
     else if (!transition && !resetClock) {
         clockStyles[userSelection].skipInit();
         handleSelection(userSelection);
     }
 
+    //Lauch the selected style without any transition animation
     else if (!transition && resetClock) {
         clockStyles[userSelection].resetStyle();
 
@@ -245,6 +248,7 @@ export function loadTime(timeFormat, zone = localTimezone) {
 function handleSelection(userSelection) {
     switch (userSelection) {
         case 4:
+            if (!aRandomPlace.city) newRandomPlace()
             loadTime(clockFormat, aRandomPlace.city.tz);
         break;
     

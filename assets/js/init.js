@@ -20,7 +20,6 @@ clockInnerCont    = $('#clock-inner-container'),
 clockContainer    = $('#clock-container'),
 cbDefault         = 'cubicBezier(0.37, 0, 0.63, 1)',
 eaElasticDefault  = 'easeOutElastic(1, 1)';
-export var hours,min,sec;
 
 export function init() {
   //Test if all the features are supported

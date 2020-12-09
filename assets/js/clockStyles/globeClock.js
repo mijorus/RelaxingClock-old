@@ -6,14 +6,21 @@ import { clockFormat,
 import { format12, 
         format24, 
         loadTime, 
-        styleSelectorL,
-        styleSelectorR,
-        centerContainer }   from "../clocks";
+        centerContainer,
+        hours,
+        min,
+        sec  }              from "../clocks";
 import { aRandomPlace, 
         newRandomPlace  }   from "../../utils/js/internationalClock/internationalClock";
 
+const halfCircleHtml = 
+`<svg id="half-circle" class="toscreensave">
+    <path id="half-circle-path" stroke-width="1" stroke-linejoin="round" fill="none" d="" />
+    <path id="half-circle-dashed" stroke-width="4" stroke-linejoin="round" fill="none" d="" />
+</svg>`
+
 export const cityName = $('.city-name'), cityIcon = $('#city-icon');
-export var globeInAction, circleTl = undefined;
+export var globeInAction, circleTl = undefined, circlePathTl = undefined;
 
 export function loadStyle() {
     handleGlobeClock();
@@ -21,17 +28,24 @@ export function loadStyle() {
 
 export function beforeLoad() {
     cityIcon.removeClass();
-    newRandomPlace();
+
+    if (!$('#half-circle').length) {
+        $(clockInnerCont).append(halfCircleHtml);
+    }
 }
 
 export function startProgression() {
     $(centerContainer).addClass('globe');
     handleGlobeAnimation(true);
+    console.log('stat');
 }
 
 export function unloadStyle() {
-    if (circleTl !== undefined) { 
-        circleTl.pause();
+    $('#sky-icon').remove();
+    if (circleTl) circleTl.pause();
+    if (circlePathTl) {
+        circlePathTl.pause();
+        circlePathTl = undefined;
     }
 }
 
@@ -59,8 +73,7 @@ function handleGlobeClock() {
     }
 }
 
-var circlePathTl,
-    halfCirPath,
+var halfCirPath,
     bigClockContainer,
     animePath,
     skyIcon,
@@ -94,28 +107,12 @@ export function handleGlobeAnimation(pathAnimation) {
 }
 
 function animateCirclePath() {
-    globeInAction = true;
-
     circlePathTl = anime.timeline({
-        begin: () => {
-            for (const el of clockFormatBtns) {
-                $(el).addClass('unfocus');
-            }
-            $(styleSelectorL).addClass('overscroll');
-            $(styleSelectorR).addClass('overscroll');
-        },
         duration: 3000,
         easing: cbDefault,
         autoplay: false,
         complete: () => {
-            globeInAction = false;
-            $(styleSelectorL).removeClass('overscroll');
-            $(styleSelectorR).removeClass('overscroll');
-            (clockFormat === '12h')
-                ? $(format12).removeClass('unfocus') 
-                : $(format24).removeClass('unfocus');
-            
-            animateSkyIcon();
+            if (currentPosition === 4) animateSkyIcon();
         }
     })
         .add({
@@ -133,8 +130,6 @@ function createSkyIcon() {
     skyIcon = $('<span />', {
         id: 'sky-icon',
     }).appendTo($(clockInnerCont));
-    // var skyIconH = $(skyIcon).height();
-    // var skyIconW = $(skyIcon).width();
     $(skyIcon).css({
         'bottom': halfCircle.height + 50 - ( $(skyIcon).height() / 2 ),
         'left': ( $(skyIcon).width() / (-2) )
@@ -186,7 +181,7 @@ function animateSkyIcon() {
             loopComplete: function () {
                 $(cityIcon).removeClass();
                 newRandomPlace();
-                loadTime(clockFormat, aRandomPlace.tz);
+                loadTime(clockFormat, aRandomPlace.city.tz);
                 handleGlobeClock();
             },
         }, `-=${skyIconTime}`);

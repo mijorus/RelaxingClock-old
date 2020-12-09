@@ -3,6 +3,7 @@ import * as focusedClock from "./focusedClock";
 import * as metroClock   from "./metroClock";
 import * as analogClock  from "./analogClock";
 import * as globeClock   from "./globeClock";
+import * as galaxyClock  from "./galaxyClock";
 
 export const clockStyles = {
     0: classicClock,
@@ -10,4 +11,5 @@ export const clockStyles = {
     2: metroClock,
     3: analogClock,
     4: globeClock,
+    5: galaxyClock,
 }

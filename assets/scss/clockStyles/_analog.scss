@@ -15,7 +15,7 @@
 
     #circle-container {
         display: block;
-        transition: top 2s cubic-bezier(0.37, 0, 0.63, 1);
+        transition: top 2s $cb-default;
 
         &.screen-saving {
             display: block;
@@ -24,14 +24,14 @@
         
         body.screen-saving-color &.screen-saving {
             opacity: .7;
-            transition: all 2s cubic-bezier(0.37, 0, 0.63, 1);
+            transition: all 2s $cb-default;
             display: block;
             top: 50%;
         }
 
         body.high-contrast &.screen-saving {
             opacity: 1;
-            transition: all 2s cubic-bezier(0.37, 0, 0.63, 1);
+            transition: all 2s $cb-default;
         }
     }
 
@@ -52,7 +52,7 @@
     position: absolute;
     top: 30%;
     left: 50%;
-    transition: top 2s cubic-bezier(0.37, 0, 0.63, 1);
+    transition: top 2s $cb-default;
 
     @media (max-width: $phone) {
         top: 0;

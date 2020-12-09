@@ -1,20 +1,42 @@
-import { clockContainer }   from "../init";
-import { centerContainer }  from "../clocks";
+import { clockContainer,
+        clockInnerCont }    from "../init";
+import { centerContainer,
+        hours,
+        min,
+        sec  }              from "../clocks";
 
 var handColor,
     handhours,
     handmin,
     handsec,
+    circle,
     circleIsdrawn = false;
+
+const analogClockHtml = 
+`<div id="circle-container" class="toscreensave">
+    <div id="circle">
+        <span id="little-dot"></span>
+        <span id="hand-hours" class="hand smooth-move"></span>
+        <span id="hand-min" class="hand smooth-move"></span>
+        <span id="hand-seconds" class="hand"></span>
+    </div>
+</div>`;
 
 export function loadStyle() {
     $(centerContainer).addClass('analog');
     handleAnalogClock();
 }
 
-export function beforeLoad() {}
+export function beforeLoad() {
+    if (!$('#circle-container').length) {
+        $(clockInnerCont).append(analogClockHtml);
+        circle = $('#circle');
+    }
+}
 
-export function unloadStyle() { }
+export function unloadStyle() {
+   
+}
 
 export function startProgression() {
     randomHandColor();
@@ -26,7 +48,7 @@ export function skipInit() {
     handleAnalogClock();
 }
 
-export function resetStyle() { }
+export function resetStyle() {}
 
 //Screen Saver actions
 // export function goFullScreen() {}
@@ -36,15 +58,15 @@ export function resetStyle() { }
 //
 
 function handleAnalogClock() {
-    if (!handhours) handhours = $('#hand-hours');
-    if (!handmin)   handmin   = $('#hand-min');
-    if (!handsec)   handsec   = $('#hand-seconds');
+    if (!handhours) handhours = $(circle).find($('#hand-hours'));
+    if (!handmin)   handmin   = $(circle).find($('#hand-min'));
+    if (!handsec)   handsec   = $(circle).find($('#hand-seconds'));
 
     if (!circleIsdrawn) {
         computeAnalogSize();
-    } else {
-        fullHandMovement();
-    }
+    } 
+
+    fullHandMovement();
 }
 
 function randomHandColor() {
@@ -54,19 +76,14 @@ function randomHandColor() {
 function computeAnalogSize() {
     const ccMargin = parseInt($(clockContainer).css('margin-bottom'))
     const cicHeight = $(clockContainer).height();
-    const circle = $('#circle');
     const circleRadius = ((ccMargin) + cicHeight / 2);
     const circleDiameter = circleRadius * 2;
-    $(circle).width(circleDiameter);
-    $(circle).height(circleDiameter);
-
+    $(circle).width(circleDiameter).height(circleDiameter);
     $(handsec).height((circleRadius * 80) / 100);
     $(handmin).height((circleRadius * 60) / 100);
     $(handhours).height((circleRadius * 40) / 100);
 
     circleIsdrawn = true;
-
-    fullHandMovement();
 }
 
 function fullHandMovement() {

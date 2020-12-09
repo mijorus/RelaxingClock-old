@@ -1,5 +1,8 @@
 import { bigClock }        from "../init";
-import { centerContainer } from "../clocks";
+import { centerContainer,
+        hours,
+        min,
+        sec  }             from "../clocks";
 
 export function loadStyle() {
     $(centerContainer).addClass('focused');
