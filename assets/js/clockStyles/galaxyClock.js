@@ -16,7 +16,6 @@ import { centerContainer,
 var cicHeight,
     galaxyAnim,
     galaxyContainer,
-    galaxyIsDrawn,
     galaxyHours,
     galaxyMin,
     galaxySec, 
@@ -29,19 +28,25 @@ const galaxyClockHtml =
     <div id="galaxy-space">
         <div id="galaxy-dot"></div>
         <div id="galaxy-hours" class="orbit-container">
-            <span id="galaxy-h-n" class="galaxy-time"></span>
+            <div id="galaxy-h-n" class="galaxy-time">
+                <span class="galaxy-time-n"></span>
+            </div>
             <svg id="galaxy-h-path" class="galaxy-orbit">
                 <path d="" />
             </svg>
         </div>
         <div id="galaxy-min" class="orbit-container">
-            <span id="galaxy-m-n" class="galaxy-time"></span>
+            <div id="galaxy-m-n" class="galaxy-time">
+                <span class="galaxy-time-n"></span>
+            </div>
             <svg id="galaxy-m-path" class="galaxy-orbit">
                 <path d="" />
             </svg>
         </div>
         <div id="galaxy-sec" class="orbit-container">
-            <span id="galaxy-s-n" class="galaxy-time"></span>
+            <div id="galaxy-s-n" class="galaxy-time">
+                <span class="galaxy-time-n"></span>
+            </div>
             <svg id="galaxy-s-path" class="galaxy-orbit">
                 <path d="" />
             </svg>
@@ -98,8 +103,7 @@ export function startProgression() {
 }
 
 export function skipInit() {
-    galaxyIsDrawn = false;
-    handleGalaxyClock();
+    handleGalaxyClock(true);
 }
 
 export function resetStyle() { }
@@ -129,24 +133,38 @@ export function leaveFullScreen() {
 }
 
 //
-
-function handleGalaxyClock() {
+var oldMin, oldHour;
+function handleGalaxyClock(forceRedraw = false) {
     const gHours = (hours > 12) ? hours - 12 : hours;
-    const h = describeArc(galaxyHoursOrbit.radius, 0, ((gHours * 30)));
-    const m = describeArc(galaxyMinOrbit.radius, 0, (min * 6));
-    const s = describeArc(galaxySecOrbit.radius, 0, (sec * 6));
+    [
+        {
+            el: $(galaxyHours),
+            num: hours,
+            arc: describeArc(galaxyHoursOrbit.radius, 0, (gHours * 6)),
+            old: oldHour,
+        },
+        {
+            el: $(galaxyMin),
+            num: min,
+            arc: describeArc(galaxyMinOrbit.radius, 0, (min * 6)),
+            old: oldMin,
+        },
+        {
+            el: $(galaxySec),
+            num: sec,
+            arc: describeArc(galaxySecOrbit.radius, 0, (sec * 6)),
+        }
+    ].forEach((element) => {
+        if (element.num !== element.old || forceRedraw) {
+            $(element.el).find('path').attr('d', element.arc.d);
+            $(element.el).find('.galaxy-time')
+                .css({ 'transform': `translate(${element.arc.x}px, ${element.arc.y}px)` })
+                    .find('.galaxy-time-n').text(element.num)
+        }
+    })
 
-    $(galaxyHours).find('path').attr('d', h.d);
-    $(galaxyHours).find('#galaxy-h-n')
-        .text(hours).css({ 'top': h.y, 'left': h.x })
-
-    $(galaxyMin).find('path').attr('d', m.d);
-    $(galaxyMin).find('#galaxy-m-n')
-        .text(min).css({ 'top': m.y, 'left': m.x })
-
-    $(galaxySec).find('path').attr('d', s.d);
-    $(galaxySec).find('#galaxy-s-n')
-        .text(sec).css({ 'top': s.y,'left': s.x })
+    oldHour = hours;
+    oldMin = min;
 }
 
 function computeGalaxyClockSize() {

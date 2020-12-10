@@ -7,16 +7,6 @@
         display: none;
     }
 
-    .selection-box #clock-format-selector button {
-        //opacity: 0;
-        // cursor: default;
-
-        // button {
-        //     cursor: default;
-        //     pointer-events: none;
-        // }
-    }
-
     body.screen-saving-color &.screen-saving {
         opacity: .7;
         transition: all 2s $cb-default;
@@ -52,16 +42,15 @@
             width: .5vw;
             height: .5vw;
             background-color: darken($color: $color-white, $amount: 20%);
-            transform: translate(-25%, -25%);
+            transform: translate(-50%, -50%);
         }
 
         .galaxy-time {
             position: absolute;
-            background-color: $color-bg;
-            border-radius: 50%;
-            padding: 5px;
-            z-index: 5;
+            background-color: transparent;
+            transition: transform .3s ease;
             transform: translate(-50%, -50%);
+            z-index: 4;
         }
 
         svg {
@@ -80,12 +69,20 @@
             top: -50%;
             left: 25%;
             transform: translate(-50%, -50%);
+
+            .galaxy-time-n {
+                display: inline-block;
+                transform: translate(-50%, -50%);
+                background-color: $color-bg;
+                padding: 5px;
+                border-radius: 50%;
+                z-index: 5;
+            }
         }
         
         #galaxy-hours {
             #galaxy-h-n {
                 font-size: 2.2vw;
-                transition: top .3s linear, left .3s linear;
 
                 @include phones {
                     font-size: 20px;
@@ -97,7 +94,6 @@
          #galaxy-min {
              #galaxy-m-n {
                 font-size: 1.3vw;
-                transition: top .3s linear, left .3s linear;
 
                 @include phones {
                     font-size: 15px;
@@ -108,7 +104,6 @@
          #galaxy-sec {
              #galaxy-s-n {
                 font-size: 1vw;
-                transition: top .3s ease, left .3s ease;
 
                 @include phones {
                     font-size: 10px;

@@ -9,8 +9,7 @@ var handColor,
     handhours,
     handmin,
     handsec,
-    circle,
-    circleIsdrawn = false;
+    circle;
 
 const analogClockHtml = 
 `<div id="circle-container" class="toscreensave">
@@ -31,6 +30,12 @@ export function beforeLoad() {
     if (!$('#circle-container').length) {
         $(clockInnerCont).append(analogClockHtml);
         circle = $('#circle');
+
+        handhours = $(circle).find($('#hand-hours'));
+        handmin = $(circle).find($('#hand-min'));
+        handsec = $(circle).find($('#hand-seconds'));
+
+        computeAnalogSize();
     }
 }
 
@@ -39,12 +44,12 @@ export function unloadStyle() {
 }
 
 export function startProgression() {
-    randomHandColor();
+    handColor = randomColor({ luminosity: 'light' });
     loadStyle();
 }
 
 export function skipInit() { 
-    circleIsdrawn = false;
+    computeAnalogSize();
     handleAnalogClock();
 }
 
@@ -58,19 +63,12 @@ export function resetStyle() {}
 //
 
 function handleAnalogClock() {
-    if (!handhours) handhours = $(circle).find($('#hand-hours'));
-    if (!handmin)   handmin   = $(circle).find($('#hand-min'));
-    if (!handsec)   handsec   = $(circle).find($('#hand-seconds'));
-
-    if (!circleIsdrawn) {
-        computeAnalogSize();
-    } 
-
-    fullHandMovement();
-}
-
-function randomHandColor() {
-    handColor = randomColor({ luminosity: 'light' });
+    $(handhours).css('transform', `translate(-50%, -100%) rotate(${(hours * 30) + (min / 2)}deg)`);
+    $(handmin).css('transform', `translate(-50%, -100%) rotate(${(min * 6) + (sec / 10)}deg)`);
+    $(handsec).css({
+        'transform': `translate(-50%, -100%) rotate(${sec * 6}deg)`,
+        'background-color': handColor
+    });
 }
 
 function computeAnalogSize() {
@@ -82,15 +80,4 @@ function computeAnalogSize() {
     $(handsec).height((circleRadius * 80) / 100);
     $(handmin).height((circleRadius * 60) / 100);
     $(handhours).height((circleRadius * 40) / 100);
-
-    circleIsdrawn = true;
-}
-
-function fullHandMovement() {
-    $(handhours).css('transform', `translate(-50%, -100%) rotate(${(hours * 30) + (min / 2)}deg)`);
-    $(handmin).css('transform', `translate(-50%, -100%) rotate(${(min * 6) + (sec / 10)}deg)`);
-    $(handsec).css({
-        'transform': `translate(-50%, -100%) rotate(${sec * 6}deg)`,
-        'background-color': handColor
-    });
 }
