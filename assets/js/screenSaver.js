@@ -9,18 +9,20 @@ import { inSettings }       from "./settingsPageHandler";
 export var screenSaverIsActive = false, //whether or not the screen saver is active
     screenSaverisAnimating     = false; //whether or not the screen saver is animating
 
-var screenSaverTimeout;
+var screenSaverTimeout, watchMouse;
 
 export function enableScreenSaver(timeout) {
-    console.log(`Screen saver timeout set to ${timeout}`);
-    clearTimeout(screenSaverTimeout);
-    if (!screenSaverIsActive) screenSaverTimeout = setTimeout(() => {
-        setScreenSaver()
-    }, timeout);
+    disableScreenSaver();
+    if (!screenSaverIsActive && timeout >  1) {
+        console.log(`Screen saver timeout set to ${timeout}`);
+        handleMouseCursor('watch', timeout);
+    } else if (!screenSaverIsActive && timeout <= 1) {
+        setScreenSaver();
+    }
 }
 
 export function disableScreenSaver() {
-    clearTimeout(screenSaverTimeout);
+    clearTimeout(watchMouse);
 }
 
 export function setScreenSaverColors() {
@@ -72,20 +74,22 @@ function leaveScreenSaver() {
                 screenSaverisAnimating = false 
             }, 750);
         }
+
+        handleMouseCursor('watch')
     }
 }
 
 var cursorTimeout;
-export function handleMouseCursor(setState) {     
+export function handleMouseCursor(setState, timeout = 15000) {     
     switch (setState) {
         case 'watch':
-            var watchMouse;
+            console.log('Watching for mouse movements...');
             $(window).on('mousemove', function() {
                 clearTimeout(watchMouse);
                 watchMouse = setTimeout(function() {
                     $(window).off('mousemove');
                     enableScreenSaver(1);
-                }, 15000)
+                }, timeout)
             }); 
             break;
 

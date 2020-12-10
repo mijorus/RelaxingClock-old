@@ -37,7 +37,6 @@ export function beforeLoad() {
 export function startProgression() {
     $(centerContainer).addClass('globe');
     handleGlobeAnimation(true);
-    console.log('stat');
 }
 
 export function unloadStyle() {

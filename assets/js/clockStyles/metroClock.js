@@ -46,7 +46,6 @@ export function goFullScreen() {
             return (($(window).height() * 0.85) / $(bigClock).height());
         },
         complete: function () {
-            //screenSaverisAnimating = false;
             $(clockInnerCont).removeClass('metro-margin');
         }
     });
@@ -55,7 +54,7 @@ export function goFullScreen() {
 export function leaveFullScreen() { 
     return anime({
         targets: $(bigClock).get(0),
-        scale: [1.8, 1],
+        scale: 1,
         easing: eaElasticDefault,
         duration: 2500,
     });

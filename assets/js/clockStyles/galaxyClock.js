@@ -5,42 +5,44 @@
 */
 
 import {clockContainer,
-        clockInnerCont }  from "../init";
+        clockInnerCont,
+        cbDefault,
+        eaElasticDefault } from "../init";
 import { centerContainer,
         hours,
         min,
-        sec  } from "../clocks";
-import anime from "vendors/anime/anime";
+        sec  }             from "../clocks";
 
 var cicHeight,
     galaxyAnim,
+    galaxyContainer,
     galaxyIsDrawn,
     galaxyHours,
     galaxyMin,
     galaxySec, 
-    galaxyHoursDiam,
-    galaxyMinDiam,
-    galaxySecDiam,
-    galaxyHoursRad,
-    galaxyMinRad,
-    galaxySecRad;
+    galaxyHoursOrbit = {},
+    galaxyMinOrbit = {},
+    galaxySecOrbit = {};
 
 const galaxyClockHtml =
-`<div id="galaxy-container" class="toscreensave">
+`<div id="galaxy-container" class="galaxy-margin toscreensave">
     <div id="galaxy-space">
         <div id="galaxy-dot"></div>
-        <div id="galaxy-hours" class="galaxy-orbit">
-            <svg id="galaxy-h-path">
+        <div id="galaxy-hours" class="orbit-container">
+            <span id="galaxy-h-n" class="galaxy-time"></span>
+            <svg id="galaxy-h-path" class="galaxy-orbit">
                 <path d="" />
             </svg>
         </div>
-        <div id="galaxy-min" class="galaxy-orbit">
-            <svg id="galaxy-m-path">
+        <div id="galaxy-min" class="orbit-container">
+            <span id="galaxy-m-n" class="galaxy-time"></span>
+            <svg id="galaxy-m-path" class="galaxy-orbit">
                 <path d="" />
             </svg>
         </div>
-        <div id="galaxy-sec" class="galaxy-orbit">
-            <svg id="galaxy-s-path">
+        <div id="galaxy-sec" class="orbit-container">
+            <span id="galaxy-s-n" class="galaxy-time"></span>
+            <svg id="galaxy-s-path" class="galaxy-orbit">
                 <path d="" />
             </svg>
         </div>
@@ -55,6 +57,7 @@ export function loadStyle() {
 export function beforeLoad() {
     if (!$('#galaxy-container').length) {
         $(clockInnerCont).append(galaxyClockHtml);
+        galaxyContainer = $('#galaxy-container');
     }
 
     if (!galaxyHours) galaxyHours = $('#galaxy-hours');
@@ -76,19 +79,22 @@ export function unloadStyle() {
 export function startProgression() {
     galaxyAnim = anime.timeline({
         targets: '.galaxy-orbit',
-        opacity: [1, 0.2, 1],
-        delay: anime.stagger(250),
-        duration: 750,
+        direction: 'reverse',
         easing: 'easeOutQuad',
-        loop: 3,
-        direction: 'reverse'
+        loop: 3 
     })
         .add({
-            targets: '.galaxy-orbit',
+            opacity: [0.2, 1],
+            delay: anime.stagger(250),
+            duration: 350,
+        })
+        .add({
             opacity: [1, 0.2],
-            easing: 'easeOutQuad',
-            direction: 'reverse'
-        }, '+=10')
+            delay: anime.stagger(250),
+            duration: 350,
+        })
+
+    galaxyAnim.restart();
 }
 
 export function skipInit() {
@@ -99,49 +105,87 @@ export function skipInit() {
 export function resetStyle() { }
 
 //Screen Saver actions
-// export function goFullScreen() {}
+export function goFullScreen() {
+    $(galaxyContainer).removeClass('galaxy-margin');
+    return anime({
+        targets: $(galaxyContainer).get(0),
+        easing: cbDefault,
+        duration: 2000,
+        delay: 50,
+        scale: () => {
+            return (($(window).height() * 0.65) / $(galaxyHours).height());
+        },
+    });
+}
 
-// export function leaveFullScreen() {}
+export function leaveFullScreen() {
+    $(galaxyContainer).addClass('galaxy-margin');
+    return anime({
+        targets: $(galaxyContainer).get(0),
+        easing: eaElasticDefault,
+        duration: 2500,
+        scale: 1
+    });
+}
 
 //
 
 function handleGalaxyClock() {
-    $(galaxyHours).find('path').attr('d', (describeArc(galaxyHoursRad, galaxyHoursRad, galaxyHoursRad, 0, (hours * 30))));
-    $(galaxyMin).find('path').attr('d', (describeArc(galaxyMinRad, galaxyMinRad, galaxyMinRad, 0, (min * 6))));
-    $(galaxySec).find('path').attr('d', (describeArc(galaxySecRad, galaxySecRad, galaxySecRad, 0, (sec * 6))));
+    const gHours = (hours > 12) ? hours - 12 : hours;
+    const h = describeArc(galaxyHoursOrbit.radius, 0, ((gHours * 30)));
+    const m = describeArc(galaxyMinOrbit.radius, 0, (min * 6));
+    const s = describeArc(galaxySecOrbit.radius, 0, (sec * 6));
+
+    $(galaxyHours).find('path').attr('d', h.d);
+    $(galaxyHours).find('#galaxy-h-n')
+        .text(hours).css({ 'top': h.y, 'left': h.x })
+
+    $(galaxyMin).find('path').attr('d', m.d);
+    $(galaxyMin).find('#galaxy-m-n')
+        .text(min).css({ 'top': m.y, 'left': m.x })
+
+    $(galaxySec).find('path').attr('d', s.d);
+    $(galaxySec).find('#galaxy-s-n')
+        .text(sec).css({ 'top': s.y,'left': s.x })
 }
 
 function computeGalaxyClockSize() {
-    const ccMargin = parseInt($(clockContainer).css('margin-bottom'))
     cicHeight = $(clockContainer).height();
+    const ccMargin = parseInt($(clockContainer).css('margin-bottom'));
     const circleDiameter = ((ccMargin) + cicHeight / 2) * 2;
 
-    galaxyHoursDiam = circleDiameter;
-    galaxyMinDiam = circleDiameter / 1.5;
-    galaxySecDiam = circleDiameter / 3;
+    galaxyHoursOrbit = {
+        diameter: circleDiameter,
+        radius: (circleDiameter / 2)
+    };
+    galaxyMinOrbit = {
+        diameter: circleDiameter / 1.5,
+        radius: (circleDiameter / ( 1.5 * 2)),
+    };
+    
+    galaxySecOrbit = {
+        diameter: circleDiameter / 3,
+        radius: (circleDiameter / ( 3 * 2)),
+    };
 
-    galaxyHoursRad = galaxyHoursDiam / 2;
-    galaxyMinRad = galaxyMinDiam / 2;
-    galaxySecRad = galaxySecDiam /2;
-
-    $(galaxyHours).width(galaxyHoursDiam).height(circleDiameter);
-    $(galaxyMin).width(galaxyMinDiam).height(galaxyMinDiam);
-    $(galaxySec).width(galaxySecDiam).height(galaxySecDiam);
+    $(galaxyHours).width(galaxyHoursOrbit.diameter).height(galaxyHoursOrbit.diameter);
+    $(galaxyMin).width(galaxyMinOrbit.diameter).height(galaxyMinOrbit.diameter);
+    $(galaxySec).width(galaxySecOrbit.diameter).height(galaxySecOrbit.diameter);
 }
 
-function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+function polarToCartesian(radius, angleInDegrees) {
     const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
 
     return {
-        x: centerX + (radius * Math.cos(angleInRadians)),
-        y: centerY + (radius * Math.sin(angleInRadians))
+        x: radius + (radius * Math.cos(angleInRadians)),
+        y: radius + (radius * Math.sin(angleInRadians))
     };
 }
 
-function describeArc(x, y, radius, startAngle, endAngle) {
+function describeArc(radius, startAngle, endAngle) {
 
-    const start = polarToCartesian(x, y, radius, endAngle);
-    const end = polarToCartesian(x, y, radius, startAngle);
+    const start = polarToCartesian(radius, endAngle);
+    const end = polarToCartesian(radius, startAngle);
 
     const largeArcFlag = (endAngle - startAngle <= 180) ? "0" : "1";
 
@@ -150,5 +194,9 @@ function describeArc(x, y, radius, startAngle, endAngle) {
         "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
     ].join(" ");
 
-    return d;
+    return {
+        d: d,
+        x: start.x,
+        y: start.y,
+    };
 }
