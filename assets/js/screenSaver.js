@@ -9,7 +9,7 @@ import { inSettings }       from "./settingsPageHandler";
 export var screenSaverIsActive = false, //whether or not the screen saver is active
     screenSaverisAnimating     = false; //whether or not the screen saver is animating
 
-var screenSaverTimeout, watchMouse;
+var watchMouse;
 
 export function enableScreenSaver(timeout) {
     disableScreenSaver();
@@ -84,12 +84,10 @@ export function handleMouseCursor(setState, timeout = 15000) {
     switch (setState) {
         case 'watch':
             console.log('Watching for mouse movements...');
-            $(window).on('mousemove', function() {
-                clearTimeout(watchMouse);
-                watchMouse = setTimeout(function() {
-                    $(window).off('mousemove');
-                    enableScreenSaver(1);
-                }, timeout)
+            screenSaverTimeout(timeout);
+
+            $(window).on('mousemove', () => {
+                screenSaverTimeout(timeout, true);
             }); 
             break;
 
@@ -123,3 +121,11 @@ function showMouseCursor() {
     });
 }
 
+function screenSaverTimeout(timeout, mouse = false) {
+    clearTimeout(watchMouse);
+    watchMouse = setTimeout(() => {
+        if (!mouse) console.log('No mouse movement detected');
+        $(window).off('mousemove');
+        enableScreenSaver(1);
+    }, timeout)
+}
