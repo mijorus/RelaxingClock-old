@@ -6,17 +6,17 @@ import { currentPosition }  from "./getSettings";
 import { clockStyles }      from "./clockStyles/styles";
 import { inSettings }       from "./settingsPageHandler";
 
-export var screenSaverIsActive = false, //whether or not the screen saver is active
-    screenSaverisAnimating     = false; //whether or not the screen saver is animating
+export var isActive = false, //whether or not the screen saver is active
+    isAnimating     = false; //whether or not the screen saver is animating
 
 var watchMouse;
 
 export function enableScreenSaver(timeout) {
     disableScreenSaver();
-    if (!screenSaverIsActive && timeout >  1) {
+    if (!isActive && timeout >  1) {
         console.log(`Screen saver timeout set to ${timeout}`);
         handleMouseCursor('watch', timeout);
-    } else if (!screenSaverIsActive && timeout <= 1) {
+    } else if (!isActive && timeout <= 1) {
         setScreenSaver();
     }
 }
@@ -35,8 +35,8 @@ export function setScreenSaverColors() {
 
 function setScreenSaver() {
     console.log('Starting screen saver');
-    screenSaverIsActive = true;
-    screenSaverisAnimating = true;
+    isActive = true;
+    isAnimating = true;
     setScreenSaverColors();
     handleMouseCursor('hide');
     $(toScreenSave).addClass('screen-saving');
@@ -47,19 +47,19 @@ function setScreenSaver() {
     if (clockStyles[currentPosition].goFullScreen) {
         clockStyles[currentPosition].goFullScreen()
             .finished.then(() => {
-                screenSaverisAnimating = false;
+                isAnimating = false;
             })
     } else {
         setTimeout(() => { 
-            screenSaverisAnimating = false 
+            isAnimating = false 
         }, 1700);
     }
 }
 
-function leaveScreenSaver() {
-    if (!screenSaverisAnimating) {
-        screenSaverIsActive = false;
-        screenSaverisAnimating = true;
+export function leaveScreenSaver() {
+    if (!isAnimating) {
+        isActive = false;
+        isAnimating = true;
         $(window).off('click');
         handleMouseCursor('leave');
         $(body).removeClass('screen-saving-color high-contrast');
@@ -67,11 +67,11 @@ function leaveScreenSaver() {
         if (clockStyles[currentPosition].leaveFullScreen) {
             clockStyles[currentPosition].leaveFullScreen()
                 .finished.then(() => {
-                    screenSaverisAnimating = false;
+                    isAnimating = false;
                 })
         } else {
             setTimeout(() => { 
-                screenSaverisAnimating = false 
+                isAnimating = false 
             }, 750);
         }
 

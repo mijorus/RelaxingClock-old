@@ -61,6 +61,7 @@ export function resizeClock(resizing) {
     anime({
         begin: function() {
             clockIsResizing = true;
+            if (screenSaver.isActive) screenSaver.leaveScreenSaver();
 
             if (!resizing) {
                 handleSelectedClock(currentPosition, false, false);
@@ -77,9 +78,9 @@ export function resizeClock(resizing) {
 }
 
 export function clockIsStale() {
-    if (!screenSaver.screenSaverIsActive && 
+    if (!screenSaver.isActive && 
         !formatIsAnimating && 
-        !screenSaver.screenSaverisAnimating &&
+        !screenSaver.isAnimating &&
         !clockStyles[4].globeInAction &&
         !clockInAction) {
         return true;
