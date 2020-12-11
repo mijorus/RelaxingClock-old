@@ -6,7 +6,7 @@ import { body,
         cbDefault }               from "./init";
 import { compatibility }          from "./compatibilityDetector";
 
-const arrows = $('#alarm-big-clock').find('.arrow'),
+const arrows     = $('#alarm-big-clock').find('.arrow'),
     alarmSection = $('#alarm-section');
 var alarmTime, ringTl;
 
@@ -49,7 +49,7 @@ export const alarm = {
         this.alarmLable = $('#alarm-lable');
     },
 
-    openPage: function () {
+    openPage: function() {
         this.init();
         inSettings = true;
         alarmTime = moment().second(0).add(1, 'm');
@@ -91,10 +91,9 @@ export const alarm = {
         return timeLeft;
     },
 
-    set: function (when) {
+    set: function(when) {
         console.log(`Alarm set at ${when.format('HH:mm')}`);
         this.removeAlarmListeners();
-        
         if (moment().isBefore(when)) {
             alarm.enabled = true;
             localStorage.setItem('alarmTime', alarmTime.unix());
@@ -125,7 +124,7 @@ export const alarm = {
         this.closePage();
     },
 
-    dismiss: function (closePage = true) {
+    dismiss: function(closePage = true) {
         console.log('Dismissed alarm!');
 
         this.ring(false);
@@ -138,14 +137,18 @@ export const alarm = {
 
         anime({
             targets: $(alarm.alarmLable).get(0),
-            direction: 'alternate', duration: 650, loop: 1, easing: cbDefault, opacity: [1, 0],
+            direction: 'alternate', 
+            duration: 650, 
+            loop: 1, 
+            easing: cbDefault, 
+            opacity: [1, 0],
             loopComplete: () => {
                 $(this.alarmLable).text(`Set an alarm`);
             }
         });
     },
 
-    snooze: function () {
+    snooze: function() {
         console.log('Snoozed alarm!');
         clearInterval(this.at);
         clearTimeout(this.alarmTimeout);
@@ -154,7 +157,7 @@ export const alarm = {
         this.set(alarmTime.add(10, 'm'));
     },
 
-    ring: function (ringing = true) {
+    ring: function(ringing = true) {
 
         if (ringing) {
             inSettings = true;
@@ -236,7 +239,7 @@ export const alarm = {
         }
     },
 
-    closePage: function () {   
+    closePage: function() {
         this.removeAlarmListeners();
         anime({
             begin: () => { $('#big-container').removeClass('blur') },
@@ -252,17 +255,15 @@ export const alarm = {
         });
     },
 
-    updateTime: function () {
+    updateTime: function() {
         if (clockFormat === '24h') {
             $(this.alarmH).empty().append(alarmTime.format('HH'));
         } else if (clockFormat === '12h') {
             $(this.alarmH).empty().append(alarmTime.format('hh'));
 
-            if ((alarmTime.format('HH') <= 12)) {
-                $(this.ampmAlarm).text('AM');
-            } else {
-                $(this.ampmAlarm).text('PM');
-            }
+            (alarmTime.format('HH') <= 12)
+                ? $(this.ampmAlarm).text('AM')
+                : $(this.ampmAlarm).text('PM');
         }
 
         $(this.alarmM).empty().text(alarmTime.format('mm'));
@@ -335,13 +336,12 @@ function checkSubt(time) {
     }
 }
 
-if (localStorage.getItem('alarmTime') !== null) {
-    console.log('Restored old alarm');
-    
-    const savedAlarm = parseInt(localStorage.alarmTime);
-    if (savedAlarm + 900 > moment().unix() && moment().unix() < savedAlarm) {
+export function checkAndRestoreAlarm(savedAlarm) {
+    const timeNow = moment().unix();
+    if ((savedAlarm + 900 > timeNow) && (timeNow < savedAlarm)) {
+        console.log('Restored old alarm');
         alarm.init();
         alarmTime = moment.unix(savedAlarm);
-        alarm.set(alarmTime);    
+        alarm.set(alarmTime);
     }
 }

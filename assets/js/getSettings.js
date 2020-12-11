@@ -1,3 +1,4 @@
+import { checkAndRestoreAlarm } from "./alarm";
 import { handleSettingButtons } from "./settingsPage";
 
 //User settings
@@ -14,6 +15,11 @@ export function getSettings() {
         if (localStorage.getItem('defaultClockFormat') === null) {
             localStorage.setItem('defaultClockFormat', '24h');
         } clockFormat = localStorage.defaultClockFormat;
+
+        if (localStorage.getItem('alarmTime') !== null) {
+            const savedAlarm = parseInt(localStorage.alarmTime);
+            checkAndRestoreAlarm(savedAlarm)
+        }
 
         [
             'userHasLogged',
