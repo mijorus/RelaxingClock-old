@@ -1,17 +1,18 @@
-import { musicBox }             from "./playerInit";
-import { spotify }              from "./spotifyRequests";
-import { spotifyError }         from "./spotifyErrorHandling";
+import { musicBox }              from "./playerInit";
+import { spotify }               from "./spotifyRequests";
+import { spotifyError }          from "./spotifyErrorHandling";
 import { updateStatusText,
         songIsSelected,
         songSelection,
         songSelected,
-        updatePlaceholderText } from "../../utils/js/playerUtils";
-import { getRandomIntInclusive }from '../../utils/js/utils';
+        updatePlaceholderText }  from "../../utils/js/playerUtils";
+import { getRandomIntInclusive } from '../../utils/js/utils';
 import { initSpotifyPlayer,
         deviceID,
-        playerIsReady }         from "./spotifyPlayerListeners";
+        playerIsReady,
+        paused }                 from "./spotifyPlayerListeners";
 
-export const playlistURL              = '4ZTZhFPPyRzpfHZsWEXAW9';
+export const playlistURL = '4ZTZhFPPyRzpfHZsWEXAW9';
 
 export var player = undefined,
 song              = undefined;
@@ -37,12 +38,7 @@ export function createNewSpotifyPlayer() {
 
             else if (localStorage.refreshToken) {
                 //We need to request a new token using refreshToken
-                spotify.refreshToken()
-                    .done(() => {
-                        if (localStorage.getItem('premium') === null) {
-                            getUserInfo();
-                        }
-                    })
+                spotify.refreshToken();
             }
 
             $(document).on('spotifyLoginCompleted', function () {
@@ -61,10 +57,11 @@ export function createNewSpotifyPlayer() {
         })
 }
 
-function getUserInfo() {
+export function getUserInfo() {
     spotify.getUserDetails()
         .done((res) => {
             userDetails = res;
+            $('#autoplay-box').removeClass('unavailable');
             updateStatusText(`Logged in as ${userDetails.id}`);
             setTimeout(() => {
                 firstSongSelection();
@@ -81,10 +78,9 @@ function firstSongSelection() {
             if (localStorage.autoplay === 'true') {
                 const wait = getRandomIntInclusive(4000, 7500);
                 console.log(`Autoplay is enabled, starting in ${wait / 1000} seconds`);
-                updatePlaceholderText('Music will<br>start soon...');
-                
 
-                setTimeout(function () {
+                updatePlaceholderText('Music will<br>start soon...');
+                setTimeout(function() {
                     if (paused) {
                         spotifyError.removeLoader();
                         spotify.play(deviceID, song);

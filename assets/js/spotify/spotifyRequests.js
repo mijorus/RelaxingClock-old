@@ -84,7 +84,6 @@ export const spotify = {
                     spotifyError.logError('CANNOT GET YOUR USERNAME:', error);
                     updateStatusText(`Cannot get your your profile infos :(`);
                     spotifyError.throwGenericError();
-                    console.log(requestHeader)
                 })
     },
 
@@ -191,7 +190,7 @@ export const spotify = {
         $.ajax({
             type: (toLike) ? "PUT" : "DELETE", 
             headers: requestHeader,
-            url: spotifyBaseURL + `/tracks?ids=${song}`,
+            url: spotifyBaseURL + `/me/tracks?ids=${song}`,
         })
             .done(function () {
                 if (toLike) {

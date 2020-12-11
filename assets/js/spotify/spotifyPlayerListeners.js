@@ -2,7 +2,8 @@ import { spotifyPlaceholder }   from "./playerInit";
 import { spotify }              from "./spotifyRequests";
 import { initPlayerEvents }     from "./spotifyPlayerEvents";
 import { spotifyError }         from "./spotifyErrorHandling";
-import { player }               from "./spotifyPlayer";
+import { player,
+        getUserInfo }           from "./spotifyPlayer";
 import { playIcon,
         scrollText }            from "../../utils/js/playerUtils";
 
@@ -12,6 +13,7 @@ export const playbackIcon = $('#playback-icon'),
 export var deviceID = undefined,
     playerIsReady   = false,
     currentTrack    = {},
+    paused          = true,
     currentTrackId  = undefined;
 
 export function initSpotifyPlayer() {
@@ -44,7 +46,7 @@ export function initSpotifyPlayer() {
                 playIcon(false);
             } else {
                 paused = false;
-                playIcon(false);
+                playIcon(true);
             }
 
             if (currentTrack.id !== currentTrackId) {
@@ -66,7 +68,7 @@ export function initSpotifyPlayer() {
                 var titleSize = $(trackName).get(0).scrollWidth;
                 if (titleSize - 5 > spWidth) {
                     const animeProp = {
-                        target: $(trackName).get(0),
+                        targets: $(trackName).get(0),
                         translateX: (- titleSize),
                         delay: 2000,
                     }
@@ -88,7 +90,7 @@ export function initSpotifyPlayer() {
                 var artistNameSize = $(artistName).get(0).scrollWidth;
                 if (artistNameSize - 5 > spWidth) {
                     const animeProp = {
-                        target: $(artistName).get(0),
+                        targets: $(artistName).get(0),
                         translateX: (- artistNameSize),
                         delay: 4000,
                     }
@@ -113,6 +115,10 @@ export function initSpotifyPlayer() {
         playerIsReady = true;
         deviceID = device_id;
         console.log('Ready with Device ID', deviceID);
+
+        if (localStorage.getItem('premium') === null) {
+            getUserInfo();
+        }
     });
 
     // Not Ready

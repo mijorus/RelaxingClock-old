@@ -4,18 +4,18 @@ import { playlistURL }           from "../../js/spotify/spotifyPlayer";
 import { spotifyPlaceholder, 
         musicBox }               from "../../js/spotify/playerInit";
 import { getRandomIntInclusive } from "./utils";
-import { cbDefault }              from '../../js/init'
+import { cbDefault }             from '../../js/init';
 
 export var songIsSelected = false;
 export function songSelected(status) {
     songIsSelected = status; 
 }
 
-export function playIcon(showPlay) {
-    if (showPlay) {
-        $(playbackIcon).removeClass('fa-pause').addClass('fa-play');
-    } else {
+export function playIcon(musicIsPlaying) {
+    if (musicIsPlaying) {
         $(playbackIcon).removeClass('fa-play').addClass('fa-pause');
+    } else {
+        $(playbackIcon).removeClass('fa-pause').addClass('fa-play');
     }
 }
 
@@ -65,7 +65,7 @@ export const scrollText = {
                 ...animationProp,
                 duration: this.scrollDuration,
                 complete: function() {
-                    target.style.translateX = 0;
+                    animationProp.targets.style.translateX = 0;
                 }
             }, '+=50')
             .add({
@@ -75,11 +75,14 @@ export const scrollText = {
     },
 
     play: function (animationProp, vpWidth) {
-        if (!songTl) songTl = anime.timeline({
-            easing: cbDefault, 
-            autoplay: false, 
-            loop: 3
-        });
+        if (!songTl) {
+            songTl = anime.timeline({
+                easing: cbDefault,
+                autoplay: false,
+                loop: 3
+            });
+        }
+
         this.scroll(animationProp, vpWidth);
         songTl.restart();
     },

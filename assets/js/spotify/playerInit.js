@@ -4,8 +4,6 @@ import { login }         from "./spotifyAuth";
 export const spotifyPlaceholder  = $('#spotify-placeholder'),
 musicBox                         = $('#music-box');
 
-export var paused = true; //the music state
-
 export function initSpotifyAuthProcess() {
     //Attempts the login
     login();

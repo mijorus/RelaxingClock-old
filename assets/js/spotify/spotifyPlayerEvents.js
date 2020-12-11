@@ -22,7 +22,7 @@ export function initPlayerEvents() {
 
     volumeScrollListener();
 
-    albumHoverLister();
+    albumCoverLister();
 }
 
 function playBtnListener() {
@@ -32,20 +32,21 @@ function playBtnListener() {
             if (!playbackStarted) {
                 spotify.play(deviceID, song);
             } else {
-                player.getCurrentState().then((state) => {
-                    if (state) {
-                        if (!state.paused) {
-                            player.pause().then(() => {
-                                console.log('Music Paused!');
-                            });
+                player.getCurrentState()
+                    .then((state) => {
+                        if (state) {
+                            if (!state.paused) {
+                                player.pause().then(() => {
+                                    console.log('Music Paused!');
+                                });
+                            } else {
+                                player.resume().then(() => {
+                                    console.log('Playback Resumed!');
+                                });
+                            }
                         } else {
-                            player.resume().then(() => {
-                                console.log('Playback Resumed!');
-                            });
+                            //reconnect(true);
                         }
-                    } else {
-                        //reconnect(true);
-                    }
                 });
             }
         }
@@ -119,12 +120,22 @@ function volumeScrollListener() {
     }, { passive: false });
 }
 
-function albumHoverLister() {
+var coverClickLock = false;
+function albumCoverLister() {
     $(spotifyIcon).hover(() => {
-        $(songInfo).removeClass('hide');
+        if (!coverClickLock) $(songInfo).removeClass('hide');
     }, () => {
-        $(songInfo).addClass('hide');
-    });
+        if (!coverClickLock) $(songInfo).addClass('hide');
+    })
+        .on('click', () => {
+            if (!coverClickLock) {
+                coverClickLock = true;
+                $(songInfo).removeClass('hide');
+            } else {
+                coverClickLock = false;
+                $(songInfo).addClass('hide')
+            }
+        })
 }
 
 function reconnect(play = false) {

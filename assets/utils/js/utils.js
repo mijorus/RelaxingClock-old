@@ -1,6 +1,6 @@
 import { cbDefault } from "../../js/init";
-import { player } from "../../js/spotify/spotifyPlayer";
-
+import { player }    from "../../js/spotify/spotifyPlayer";
+import { paused }    from "../../js/spotify/spotifyPlayerListeners";
 //Get the URL params
 export function getUrlVars() {
     var vars = {};
@@ -18,12 +18,18 @@ export function handleLoader(target, show, success = true, enabled = true) {
         const el = $(target).find('.loader');
         if (show) {
             $(el).removeClass('disp-none');
-            anime({ targets: $(el).get(0),
-                opacity: [0, 1], duration: 200});
+            anime({ 
+                targets: $(el).get(0),
+                opacity: [0, 1], 
+                duration: 200
+            });
         } else {
-            anime({targets: $(el).get(0),
-                opacity: [1, 0], duration: 200,
-                complete: () => $(el).addClass('disp-none')});
+            anime({
+                targets: $(el).get(0),
+                opacity: [1, 0], 
+                duration: 200,
+                complete: () => $(el).addClass('disp-none')
+            });
 
             if (success === true) {
                 $(target).append('<i class="status-icon icon-checkmark"></i>');
@@ -47,8 +53,11 @@ export function getRandomIntInclusive(min, max) {
 export function changeBtnLable(target, nextMessage, dur = 650) {
     anime({
         targets: $(target).get(0),
-        direction: 'alternate', duration: dur, 
-        loop: 1, easing: cbDefault, opacity: [1, 0],
+        direction: 'alternate', 
+        duration: dur, 
+        loop: 1, 
+        easing: cbDefault, 
+        opacity: [1, 0],
         loopComplete: () => {
             $(target).text(`${nextMessage}`);
         }
