@@ -1,0 +1,43 @@
+.settings-title {
+    font-size: $settings-title-font-size;
+
+    @include phones {
+        font-size: $settings-title-font-size-phone;
+    }
+}
+
+.settings-hint {
+    font-size: $settings-hint-font-size;
+    @include phones {
+        font-size: $settings-hint-font-size-phones;
+    }
+}
+
+.settings-text {
+    font-size: $settings-font-size;
+
+    @include md-screen {
+        font-size: $settings-font-size-md;
+    }
+
+    @include phones {
+        font-size: $settings-font-size-phone;
+        margin-left: 0;
+    }
+}
+
+.settings-icon {
+    font-size: $settings-icon-font-size;
+
+    @include phones {
+        font-size: $fs-icon-phone;
+    }
+}
+
+.brand-title {
+    font-size: $brand-title-font-size;
+
+    @include phones {
+        font-size: $brand-title-font-size-phone;
+    }
+}

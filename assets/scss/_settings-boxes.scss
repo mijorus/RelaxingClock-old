@@ -1,0 +1,84 @@
+#spotify-logout-box {
+    dt {
+
+        .spotify-icon {
+            font-size: 4vw;
+
+            @include phones {
+                font-size: $fs-icon-phone + 10px;
+            }
+        }
+    }
+}
+
+#presentation-box{
+    dt i{
+        font-weight: 700;
+        color: #fcf4ac;
+    }
+}
+
+#beta-features-box {
+    .icon-lab1 {
+        color: #8fffb6;
+    }
+}
+
+#alarm-box {
+    #set-alarm-btn {
+
+        &.activated::before {
+            content: "Set";
+        }
+        
+        &.btn-dismiss {
+            color: $color-white !important;
+            background-color: #b10505 !important;
+            border-color: #b10505 !important;
+        }
+        
+        &.btn-dismiss::before {
+            content: "Dismiss" !important;
+        }
+    }
+}
+
+#pomodoro-box {
+    #pomodoro-lable-box {
+        transition: background-color .2s linear;
+
+        &.working {
+            background-color: $concentration !important;
+        }
+
+        &.relaxing {
+            color: $color-bg !important;
+            background-color: $relax !important;
+        }
+
+        #set-pomodoro-btn{
+
+            &.activated::before {
+                content: "Start";
+            }
+            
+            &.btn-dismiss {
+                color: $color-white !important;
+                background-color: $color-bg !important;
+                border-color: $color-bg !important;
+            }
+            
+            &.btn-dismiss::before {
+                content: "Stop" !important;
+            }
+        }
+    }
+
+
+    #pomodoro-icon {
+        .icon-tomato-22 {
+            top: 4px;
+            position: relative;
+        }
+    }
+}

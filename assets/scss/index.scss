@@ -7,7 +7,7 @@
 // Are you stressed? Check out my new project to relax at relaxingclock.com :)
 
 //ASSETS
-{{ $cities := resources.Get "scss/_cities.scss" | resources.ExecuteAsTemplate "css/cities.css" . | resources.ToCSS}}
+{{ $cities := resources.Get "scss/_cities.scss" | resources.ExecuteAsTemplate "css/cities.css" . | resources.ToCSS }}
 @import 'custom-fonts';
 @import 'main.scss';
 @import '{{ $cities.RelPermalink }}';
@@ -19,6 +19,7 @@
 @import 'settings';
 @import 'footer';
 @import 'alarm';
+@import 'helper-classes';
 
 //UTILS
 @import '../utils/scss/utils'; 

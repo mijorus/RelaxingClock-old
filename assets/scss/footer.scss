@@ -11,15 +11,10 @@ footer {
     }
 
     h1 {
-        font-size: $settings-title-font-size;
         font-weight: 600;
         text-align: center;
         white-space: nowrap;
         margin: 0;
-
-        @media (max-width: $phone) {
-            font-size: $settings-title-font-size-phone;
-        }
     }
 
     #made-with-love {
@@ -37,11 +32,11 @@ footer {
             }
 
             @include md-screen {
-                    font-size: $settings-title-font-size-md;
-                }
+                font-size: $settings-font-size-md;
+            }
 
             @include phones {
-                    font-size: $settings-font-size-phone;
+                font-size: $settings-font-size-phone;
             }
         }
 
@@ -53,7 +48,7 @@ footer {
         justify-content: space-around;
 
         @include phones {
-            width: 60%;
+            width: 40%;
         }
 
         a {
@@ -65,7 +60,6 @@ footer {
         }
 
         i {
-            font-size: $settings-icon-font-size;
             font-weight: 500;
             white-space: nowrap;
             transition: color .2s linear;
@@ -81,10 +75,6 @@ footer {
 
             &.fa-spotify {
                 color: $spotify-color !important;
-            }
-
-            @media (max-width: $phone) {
-                font-size: $fs-icon-phone;
             }
         }
     }
@@ -113,7 +103,6 @@ footer {
                 display: block;
                 width: auto;
                 font-size: $settings-font-size-phone !important;
-                transform: translateX(0);
                 margin: {
                     left: 0 !important;
                     right: 0 !important;
@@ -145,7 +134,7 @@ footer {
 
 
             @include md-screen {
-                font-size: $settings-title-font-size-md;
+                font-size: $settings-font-size-md;
             }
         }
     }
@@ -156,10 +145,10 @@ footer {
         text-align: center;
 
         @include md-screen {
-            font-size: $settings-title-font-size-md;
+            font-size: $settings-font-size-md;
         }
 
-        @media (max-width: $phone) {
+        @include phones {
             font-size: $settings-font-size-phone;
         }
     }

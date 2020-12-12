@@ -12,15 +12,23 @@ $sky-icon-size-phones: 7vw;
 $cb-default: cubic-bezier(0.37, 0, 0.63, 1);
 
 $alarm-arrow-phone: 24px;
-
 $settings-title-font-size: 2.5vw;   
 $settings-title-font-size-phone: 16px;
-$settings-title-font-size-md: 1.5vw;
-$settings-icon-font-size: 2.5vw;
+$settings-icon-font-size: $settings-title-font-size;
+
+$brand-title-font-size: 2.5vw + 0.5;   
+$brand-title-font-size-phone: 16px + 8px;
+
 $dd-margin-left: 2.1vw;
 $dd-padding: 1.9vh;
+
 $settings-font-size: 1.2vw;
+$settings-font-size-md: 1.5vw;
 $settings-font-size-phone: 10px;
+
+$settings-hint-font-size: $settings-font-size - 0.45;
+$settings-hint-font-size-phones: $settings-font-size-phone - 3px;
+
 $alarm-set-size: 2vw;
 $alarm-set-size-phone: 2vw;
 $alarm-font-size: 4vw;

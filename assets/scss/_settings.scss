@@ -1,3 +1,18 @@
+@import 'settings-boxes';
+
+.brand-box {
+    margin: 15vh 0;
+    .brand-image {
+        margin: auto;
+        display: block;
+        height: $settings-title-font-size;
+
+        @include phones {
+            height: $settings-title-font-size-phone;
+        }
+    }
+}
+
 #settings-section {
     width: 50%;
     margin: {
@@ -33,19 +48,16 @@
 
 
             span {
-                font-size: $settings-title-font-size;
                 font-weight: 600;
                 white-space: nowrap;
                 margin-left: $dd-margin-left;
 
                 @include phones {
                     margin-left: 20px;
-                    font-size: $settings-title-font-size-phone;
                 }
             }
     
             i {
-                font-size: $settings-icon-font-size;
                 position: absolute;
                 bottom: 100%;
                 left: 0;
@@ -56,9 +68,8 @@
                     font-size: inherit;
                 }
 
-                @media (max-width: $phone) {
+                @include phones {
                     transform: translate(-50%, $settings-title-font-size-phone);
-                    font-size: $fs-icon-phone;
                 }
             }
         }
@@ -74,17 +85,11 @@
             margin-top: 3vh;
             border-radius: 1.8vh;
             background-color: $color-bg-settings;
-            font-size: $settings-font-size;
             opacity: 1;
             margin-left: $dd-margin-left;
             transition: opacity .2s linear;
 
-            @include md-screen {
-                font-size: $settings-title-font-size-md;
-            }
-
             @include phones {
-                font-size: $settings-font-size-phone;
                 margin-left: 0;
             }
 
@@ -97,7 +102,7 @@
                 border-left: .3vw solid $color-white;
                 color: $color-white;
 
-                @media (max-width: $phone) {
+                @include phones {
                     margin-left: 0;
                 }
             }
@@ -108,6 +113,7 @@
     
             span {
                 position: relative;
+                padding: 5px;
 
                 @include phones {
                     white-space: normal;
@@ -115,7 +121,6 @@
             }
     
             .settings-btn {
-                font-size: 1.2vw;
                 border: 2px solid $color-white;
                 border-radius: .8vw;
                 color: $color-white;
@@ -123,43 +128,25 @@
                 text-align: center;
                 background-color: transparent;
                 transition: all .1s linear;
-                padding: {
-                    top: .4vh;
-                    bottom: .4vh;
-                    left: .4vw;
-                    right: .4vw;
-                }
+                padding: .4vh .5vw;
     
                 &.activated {
                     font-weight: 600;
                     color: $color-bg-settings;
                     background-color: $color-white;
-                    transition: all .1s linear;
                 }
 
                 @include phones {
-                    font-size: $settings-font-size-phone;
                     border-width: 1px;
                     border-radius: 7px;
-
-                    padding: {
-                        top: 3px;
-                        bottom: 3px;
-                        left: 4px;
-                        right: 4px;
-                    }
-                }
-
-                @include md-screen {
-                    font-size: 1.5vw;
+                    padding: 3px 4px;
                 }
             }
         }
 
-        div p {
+        .settings-hint {
             display: flex;
             flex-flow: row;
-            font-size: $settings-font-size - 0.45;
             padding: $dd-padding;
             margin-left: $dd-margin-left;
             color: $color-white-ss;
@@ -169,105 +156,17 @@
             }
 
             @include phones {
-            font-size: $settings-font-size-phone - 3px;
                 margin-left: 0;
             }
         }
     
-        #spotify-logout-box {
-            
-            dt {
-
-                .spotify-icon {
-                    font-size: 4vw;
-
-                    @media (max-width: $phone) {
-                        font-size: $fs-icon-phone + 10px;
-                    }
-                }
-            }
-        }
-
-        #presentation-box{
-            dt i{
-                font-weight: 700;
-                color: #fcf4ac;
-            }
-        }
-
-        #beta-features-box {
-            .icon-lab1 {
-                color: #8fffb6;
-            }
-        }
-
-        #alarm-box {
-
-            #set-alarm-btn {
-
-                &.activated::before {
-                    content: "Set";
-                }
-                
-                &.btn-dismiss {
-                    color: $color-white !important;
-                    background-color: #b10505 !important;
-                    border-color: #b10505 !important;
-                }
-                
-                &.btn-dismiss::before {
-                    content: "Dismiss" !important;
-                }
-            }
-        }
-
-        #pomodoro-box {
-            #pomodoro-lable-box {
-                transition: background-color .2s linear;
-
-                &.working {
-                    background-color: $concentration !important;
-                }
-
-                &.relaxing {
-                    color: $color-bg !important;
-                    background-color: $relax !important;
-                }
-
-                #set-pomodoro-btn{
-
-                    &.activated::before {
-                        content: "Start";
-                    }
-                    
-                    &.btn-dismiss {
-                        color: $color-white !important;
-                        background-color: $color-bg !important;
-                        border-color: $color-bg !important;
-                    }
-                    
-                    &.btn-dismiss::before {
-                        content: "Stop" !important;
-                    }
-                }
-            }
-
-
-            #pomodoro-icon {
-                .icon-tomato-22 {
-                    top: 4px;
-                    position: relative;
-                }
-            }
-        }
-
         .unavailable {
                 opacity: .5;
                 pointer-events: none !important;
         }
     }
 
-    @media (max-width: $phone) {
+    @include phones {
         width: 85%;
     }
 
