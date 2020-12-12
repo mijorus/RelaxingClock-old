@@ -140,7 +140,7 @@ function handleGalaxyClock(forceRedraw = false) {
         {
             el: $(galaxyHours),
             num: hours,
-            arc: describeArc(galaxyHoursOrbit.radius, 0, (gHours * 6)),
+            arc: describeArc(galaxyHoursOrbit.radius, 0, (gHours * 30)),
             old: oldHour,
         },
         {
