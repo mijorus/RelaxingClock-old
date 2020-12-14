@@ -61,7 +61,9 @@ export function getUserInfo() {
     spotify.getUserDetails()
         .done((res) => {
             userDetails = res;
-            $('#autoplay-box').removeClass('unavailable');
+            [$('#autoplay-box'), $('#playlist-box')].forEach((el) => {
+                $(el).removeClass('unavailable');
+            });
             updateStatusText(`Logged in as ${userDetails.id}`);
             setTimeout(() => {
                 firstSongSelection();

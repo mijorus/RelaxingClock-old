@@ -71,22 +71,13 @@ a {
     color: inherit;
 }
 
-.expand-icon.lnr-frame-expand {
+.expand-icon {
     font-size: 1.2vw;
 
-    @media (max-width: $phone) {
-        font-size: 2.5vw;
+    @include phones {
+        font-size: 16px;
     }
 }
-
-.expand-icon.lnr-frame-contract {
-    font-size: 1.5vw;
-
-    @media (max-width: $phone) {
-        font-size: 2.7vw;
-    }
-}
-
 
 #main-container {
     position: relative;

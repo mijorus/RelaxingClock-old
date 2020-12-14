@@ -32,6 +32,52 @@
         margin-top: 0;
     }
 
+    .expandable {
+        flex-direction: column;
+        align-items: flex-start;
+        border-color: transparent !important;
+        position: relative;
+
+        .visible-item {
+            display: flex;
+            flex-direction: row;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+
+            .arrow {
+                padding-right: 50%;
+            }
+        }
+
+        .hidden-list {
+            overflow-y: hidden;
+            overflow-x: auto;
+            list-style: none;
+            padding: 0;
+
+            li {
+                 padding: $dd-padding;
+                 border-radius: $dd-radius - .5vh;
+                 margin-top: $dd-margin-top;
+                 background-color: lighten($color-bg-settings, 20);
+            }
+
+            &.compact {
+                max-height: 0;
+                display: none;
+                margin: 0;
+            }
+
+            &.expanded {
+                max-height: 80vh;
+            }
+
+            @include phones {
+                padding-left: 0;
+            }
+        }
+    }
+
     dl {
 
         &:last-child {
@@ -40,8 +86,7 @@
 
         dt {
             display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
+            flex-flow: row nowrap;
             align-content: center;
             align-items: baseline;
             position: relative;
@@ -82,8 +127,8 @@
             justify-content: space-between;
             position: relative;
             padding: $dd-padding;
-            margin-top: 3vh;
-            border-radius: 1.8vh;
+            margin-top: $dd-margin-top;
+            border-radius: $dd-radius;
             background-color: $color-bg-settings;
             opacity: 1;
             margin-left: $dd-margin-left;

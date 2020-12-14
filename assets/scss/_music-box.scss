@@ -167,7 +167,7 @@
         }
         
         .music-btn {
-            font-size: 1.2vw;
+            font-size: $settings-font-size;
         }
 
         .play-btn {
@@ -251,7 +251,6 @@
         }
         
         .spotify-icon {
-            //font-size: $sp-icon-fs;
             margin-right: .5vw;
             transition: opacity 1s linear;
             background-position: center;
@@ -263,12 +262,10 @@
             }
 
             body.screen-saving-color &.screen-saving {
-                //color: rgba(29, 185, 84, 0.443);
                 opacity: .5;
             }
 
             body.high-contrast &.screen-saving {
-                //color: rgba(29, 185, 84, 1);
                 opacity: 1;
             }
         }
@@ -290,7 +287,7 @@
             }
         }
 
-        #spotify-track-info{
+        #spotify-track-info {
             max-width: 100%;
             height: 100%;
             display: flex;
@@ -362,7 +359,4 @@
     }
 }
 
-
 /* End music box */
-
-/* Media queries */

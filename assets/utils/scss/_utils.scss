@@ -26,6 +26,10 @@
     width: 100%;
 }
 
+.m-auto {
+    margin: auto;
+}
+
 .full-h {
     height: 100%;
 }
@@ -85,53 +89,53 @@
 }
 
 .loader-container {
-            display: flex;
-            justify-content: start;
-            align-items: center;
-            height: $settings-font-size;
-            font-size: $settings-font-size;
-            flex-grow: 30;
-            position: relative;
-            
-            @media (max-width: $phone) {
-                font-size: $settings-font-size-phone;
-                height: $settings-font-size-phone;
-            }
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: $settings-font-size;
+    font-size: $settings-font-size;
+    flex-grow: 30;
+    position: relative;
+    
+    @media (max-width: $phone) {
+        font-size: $settings-font-size-phone;
+        height: $settings-font-size-phone;
+    }
 
-            
+    
 
-            .status-icon {
-                transition: opacity .2s linear;
-                font-size: $settings-font-size;
-                margin-left: 12px;
-                position: absolute;
-                left: 0;
-                flex-grow: 30;
+    .status-icon {
+        transition: opacity .2s linear;
+        font-size: $settings-font-size;
+        margin-left: 12px;
+        position: absolute;
+        left: 0;
+        flex-grow: 30;
 
 
-                &.icon-checkmark {
-                    color: #00be00;
-                }
+        &.icon-checkmark {
+            color: #00be00;
+        }
 
-                &.icon-cross {
-                    color: #ff0000;
-                }
+        &.icon-cross {
+            color: #ff0000;
+        }
 
-                @media (max-width: $phone) {
-                    font-size: $settings-font-size-phone;
-                }
-            }
-            
-            .loader {
-                transform: scale(0.5);
-                display: block;
-                font-size: inherit;
-                transition: opacity .2s linear;
+        @media (max-width: $phone) {
+            font-size: $settings-font-size-phone;
+        }
+    }
+    
+    .loader {
+        transform: scale(0.5);
+        display: block;
+        font-size: inherit;
+        transition: opacity .2s linear;
 
-                @media (max-width: $phone) {
-                    transform: scale(0.3);
-                }
-            }
+        @media (max-width: $phone) {
+            transform: scale(0.3);
+        }
+    }
 }
 
 .feature-box {
