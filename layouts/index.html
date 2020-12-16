@@ -1,32 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        {{partial "head/head.html"}}
-        {{partial "head/vendor-css.html"}}
-        {{partial "head/css.html"}}
+        {{ partial "head/head.html" }}
+        {{ partial "head/vendor-css.html" }}
+        {{ partial "head/css.html" }}
         <title>{{ site.Title }}</title>
     </head>
     <body>
-        {{partial "cookie-banner.html"}}
-        {{partial "alarm-section.html"}}
+        <noscript>
+            This website requires javascript
+        </noscript>
+        {{ partial "cookie-banner.html" }}
+        {{ partial "alarm-section.html" }}
         <div id="big-container">
-            {{partial "main.html"}}
-            {{partial "settings.html"}}
-            {{partial "footer.html"}}
+            {{ partial "main.html" }}
+            {{ partial "settings.html" }}
+            {{ partial "footer.html" }}
         </div>
     </body>
+    <!-- vendors.js -->
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    {{ $vendorScripts := partial "scripts/vendor-scripts.html" . }}
+    <script src="{{ $vendorScripts.RelPermalink }}" 
+        crossorigin="anonymous" 
+        integrity="{{ $vendorScripts.Data.Integrity }}">
+    </script>
+    
+    <!-- main.js -->
+    {{ $main := partial "scripts/scripts.html" . }}
+    <script src="{{ $main.RelPermalink }}" 
+        crossorigin="anonymous"
+        integrity="{{ $main.Data.Integrity }}">
+    </script>
+
+    <!-- service worker -->
+    {{ $cacheFiles := (slice $main.RelPermalink $vendorScripts.RelPermalink) }}
+    {{ $sw := partial "scripts/service-worker.html" $cacheFiles }}
+    <script src="{{ $sw.RelPermalink }}" 
+        crossorigin="anonymous" 
+        integrity="{{ $sw.Data.Integrity }}"
+    >
+    </script>
+
+    <!-- service worker registration -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/serviceWorker.js').then(registration => {
-                    console.log(`Service Worker registered!`);
-                }, error => {
-                    console.error(`Service Worker registration failed: ${error}`);
-                });
-            });
+                navigator.serviceWorker.register('{{ $sw.RelPermalink }}')
+                    .then((registration) => {
+                        console.log(`Service Worker registered!`);
+                    })
+                    .catch((error) => {
+                        console.error(`Service Worker registration failed: ${error}`)
+                    });
+            })
         }
     </script>
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
-    {{ partial "scripts/vendor-scripts.html" }}
-    {{ partial "scripts/scripts.html" }}
 </html>

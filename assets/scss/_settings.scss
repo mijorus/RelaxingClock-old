@@ -46,6 +46,7 @@
 
             .arrow {
                 padding-right: 50%;
+                color: $color-white;
             }
         }
 
@@ -54,6 +55,7 @@
             overflow-x: auto;
             list-style: none;
             padding: 0;
+            margin: 0;
 
             li {
                  padding: $dd-padding;
@@ -63,13 +65,8 @@
             }
 
             &.compact {
-                max-height: 0;
                 display: none;
-                margin: 0;
-            }
-
-            &.expanded {
-                max-height: 80vh;
+                pointer-events: none !important;
             }
 
             @include phones {

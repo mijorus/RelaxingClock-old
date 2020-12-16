@@ -7,10 +7,10 @@
 {{ $momentDuration := resources.Get "vendors/moment/moment-duration-format.js" }}
 {{ $momentTimezone := resources.Get "vendors/moment/moment-timezone-with-data-10-year-range.min.js" }}
 {{ $suncalc := resources.Get "vendors/suncalc/suncalc.js" }}
-{{ $noSleep := resources.Get "vendors/NoSleep/NoSleep.min.js"}}
+{{ $noSleep := resources.Get "vendors/NoSleep/NoSleep.min.js" }}
 {{ $mobileDetect := resources.Get "vendors/mobile-detect/mobile-detect.min.js" }}
 
 <!-- This is the concat of every vendor js file -->
-{{ $vendorsBundle := slice $jquery $loader $randomColor $anime $moment $momentDuration $momentTimezone $suncalc $noSleep $mobileDetect | resources.Concat "js/vendors.js" | minify | fingerprint}}
+{{ $vendorsBundle := slice $jquery $loader $randomColor $anime $moment $momentDuration $momentTimezone $suncalc $noSleep $mobileDetect | resources.Concat "js/vendors.js" | minify | fingerprint }}
 
-<script src="{{ $vendorsBundle.RelPermalink }}" crossorigin="anonymous"></script>
+{{ return $vendorsBundle }}

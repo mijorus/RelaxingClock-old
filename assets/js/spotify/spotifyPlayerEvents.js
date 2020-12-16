@@ -2,11 +2,14 @@ import { musicBox }       from "./playerInit";
 import { spotifyIcon }    from "./spotifyPlayerListeners";
 import { playerIsBusy, 
         player,
-        song }            from "./spotifyPlayer";
+        song ,
+        userDetails}      from "./spotifyPlayer";
 import { spotify,
         playbackStarted } from "./spotifyRequests";
 import { deviceID,
         currentTrackId }  from "./spotifyPlayerListeners";
+import { reconnect }      from "./spotifyReconnect";
+import { cbDefault }      from "js/init";
 
 export var likeBtn, playBtn, songInfo;
 
@@ -23,6 +26,8 @@ export function initPlayerEvents() {
     volumeScrollListener();
 
     albumCoverLister();
+
+    playlistSelector();
 }
 
 function playBtnListener() {
@@ -35,15 +40,9 @@ function playBtnListener() {
                 player.getCurrentState()
                     .then((state) => {
                         if (state) {
-                            if (!state.paused) {
-                                player.pause().then(() => {
-                                    console.log('Music Paused!');
-                                });
-                            } else {
-                                player.resume().then(() => {
-                                    console.log('Playback Resumed!');
-                                });
-                            }
+                            state.paused 
+                                ? player.resume().then(() => { console.log('Playback Resumed!') })
+                                : player.pause().then(() => { console.log('Music Paused!') });
                         } else {
                             //reconnect(true);
                         }
@@ -138,40 +137,37 @@ function albumCoverLister() {
         })
 }
 
-function reconnect(play = false) {
-    updatePlaceholderText('Reconnecting <br> to Spotify...', true);
-    spotify.removeLoader(false);
-    playerIsReady = false;
+var userPlaylists = [];
+function playlistSelector() {
+    $('#expand-playlist').on('click', () => {
+        const playlistListBox = $('#playlist-list-box');
 
-    let lastSong;
-    //const context = currentStateContext.uri;
-    /* We will test the context uri against this regex
-    to see if is it a valid uris recognised but the 
-    web API, if the context is not recognised (for ex 
-    the user's favourite playlist) it will just play the last track*/
-    const validContext = /:artist|:album|:playlist/;
-    if (validContext.test(context)) {
-        lastSong = {
-            'context_uri': context,
-            'offset': { 'uri': currentTrack.uri },
-        }
-    } else {
-        lastSong = { 'uris': [currentTrack.uri] };
-    }
+        const animationProp = {
+            targets: $(playlistListBox).get(0),
+            duration: 750,
+            easing: cbDefault,
+        };
 
-    spotify.findDevices()
-        .done(function (response) {
-            console.log(response);
-            for (device of response.devices) {
-                if (device.id !== deviceID && device.is_active) {
-                    spotify.removeLoader(true);
-                    updatePlaceholderText(`${device.name}`, false);
-                    $(spotifyIcon).removeClass('has-cover').css('background-image', 'none');
-                    playIcon(true);
-                }
+        if (playlistListBox.hasClass('compact')) {
+            anime({
+                ...animationProp,
+                begin: () => { $(playlistListBox).removeClass('compact') },
+                maxHeight: [0, '40vh']
+            })
+
+            if (userPlaylists.length === 0) {
+                $.when(spotify.getPlaylistList(userDetails.id), spotify.getShowList())
+                    .done((res1, res2) => {
+                        userPlaylists.push(res1[0].items, res2[0].items);
+                        console.log(userPlaylists)
+                    })
             }
-        })
-        .fail(function (error) {
-            spotify.logError('CANNOT GET DEVICES LIST', error);
-        });
-}
+        } else {
+            anime({
+                ...animationProp,
+                maxHeight: 0,
+                complete: () => { $(playlistListBox).addClass('compact') }
+            })
+        }
+    })
+} 

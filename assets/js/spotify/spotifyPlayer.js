@@ -17,7 +17,7 @@ export const playlistURL = '4ZTZhFPPyRzpfHZsWEXAW9';
 export var player = undefined,
 song              = undefined;
 
-var userDetails   = {};
+export var userDetails   = {};
 // *** Spotify Player *** //
 export function playerIsBusy() {
     if (playerIsReady && songIsSelected) {
@@ -64,7 +64,7 @@ export function getUserInfo() {
             [$('#autoplay-box'), $('#playlist-box')].forEach((el) => {
                 $(el).removeClass('unavailable');
             });
-            updateStatusText(`Logged in as ${userDetails.id}`);
+            updateStatusText(`Logged in as ${userDetails.display_name}`);
             setTimeout(() => {
                 firstSongSelection();
             }, 1000);

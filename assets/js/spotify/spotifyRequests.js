@@ -87,6 +87,34 @@ export const spotify = {
                 })
     },
 
+    getPlaylistList: function (user_id, limit = 50) {
+        return $.ajax({
+            type: "GET",
+            headers: requestHeader,
+            url: spotifyBaseURL + '/users/' + user_id + '/playlists',
+            data: {
+                limit: limit
+            }
+        })
+            .fail(function (error) {
+                spotifyError.logError('CANNOT GET YOUR PLAYLIST LIST:', error, false);
+            })
+    },
+
+    getShowList: function (limit = 50) {
+        return $.ajax({
+            type: "GET",
+            headers: requestHeader,
+            url: spotifyBaseURL + '/me/shows',
+            data: {
+                limit: limit
+            }
+        })
+            .fail(function (error) {
+                spotifyError.logError('CANNOT GET YOUR PODCAST LIST:', error, false);
+            })
+    },
+
     getPlaylistData: function(playlistURL) {
         return $.ajax({
             type: "GET",

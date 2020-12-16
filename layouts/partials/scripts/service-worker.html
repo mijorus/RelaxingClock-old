@@ -1,0 +1,10 @@
+{{ $sw := resources.Get "serviceWorker.js" }}
+
+<!-- This is the concat of every vendor js file -->
+{{ $serviceWorker := $sw | resources.ExecuteAsTemplate "serviceWorker.js" . | fingerprint }}
+
+{{ if not site.IsServer }}
+{{ $serviceWorker := $sw | minify.RelPermalink }}
+{{ end }}
+
+{{ return $serviceWorker }}

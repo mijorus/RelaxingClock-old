@@ -1,17 +1,14 @@
 {{ $params := (dict "client_id" (getenv "HUGO_SPOTIFY_CLIENT_ID") "base_url" site.BaseURL) }}
 {{ $commonOpt := (dict "target" "esnext" "avoidTDZ" true "params" $params) }}
 
-{{ if site.IsServer }}
 {{ $minify := (dict "minify" false) }}
-{{ $jsBundleOpt := (merge $commonOpt $minify) }}
-{{ $bundle := resources.Get "js/main.js" | js.Build $jsBundleOpt}}
-{{ $assetsBundle := $bundle | fingerprint}}
-<script src="{{ $assetsBundle.RelPermalink }}" crossorigin="anonymous"></script>
 
-{{ else }}
+{{ if site.IsServer }}
 {{ $minify := (dict "minify" true) }}
+{{ end }}
+
 {{ $jsBundleOpt := (merge $commonOpt $minify) }}
 {{ $bundle := resources.Get "js/main.js" | js.Build $jsBundleOpt}}
-{{ $assetsBundle := $bundle | fingerprint}}
-<script src="{{ $assetsBundle.RelPermalink }}" crossorigin="anonymous"></script>
-{{ end }}
+{{ $assetsBundle := $bundle | fingerprint }}
+
+{{ return $assetsBundle }}
