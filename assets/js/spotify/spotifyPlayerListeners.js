@@ -1,5 +1,5 @@
 import { spotifyPlaceholder }   from "./playerInit";
-import { spotify }              from "./spotifyRequests";
+import * as spotify             from "./spotifyRequests";
 import { initPlayerEvents }     from "./spotifyPlayerEvents";
 import { spotifyError }         from "./spotifyErrorHandling";
 import { player,

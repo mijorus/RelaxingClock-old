@@ -45,23 +45,29 @@
             justify-content: space-between;
 
             .arrow {
-                padding-right: 50%;
+                margin-right: 50%;
                 color: $color-white;
+                transition: transform .2s $cb-default;
+
+                &.point-up {
+                    transform: rotate(180deg);
+                    transform-origin: center center;
+                }
             }
         }
 
         .hidden-list {
-            overflow-y: hidden;
-            overflow-x: auto;
+            overflow-y: scroll;
+            overflow-x: hidden;
             list-style: none;
-            padding: 0;
-            margin: 0;
+            display: flex;
+            flex-direction: column;
 
             li {
                  padding: $dd-padding;
                  border-radius: $dd-radius - .5vh;
                  margin-top: $dd-margin-top;
-                 background-color: lighten($color-bg-settings, 20);
+                 background-color: lighten($color-bg-settings, 10);
             }
 
             &.compact {

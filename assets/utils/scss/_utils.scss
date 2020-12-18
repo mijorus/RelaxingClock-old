@@ -34,6 +34,20 @@
     height: 100%;
 }
 
+.skinny {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.no-scrollbar {
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    
+    &::-webkit-scrollbar {
+        display: none; /* WebKit */
+    }
+}
+
 .hide {
     opacity: 0;
 }

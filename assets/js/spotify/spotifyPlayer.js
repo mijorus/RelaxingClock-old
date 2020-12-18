@@ -1,5 +1,5 @@
 import { musicBox }              from "./playerInit";
-import { spotify }               from "./spotifyRequests";
+import * as spotify              from "./spotifyRequests";
 import { spotifyError }          from "./spotifyErrorHandling";
 import { updateStatusText,
         songIsSelected,

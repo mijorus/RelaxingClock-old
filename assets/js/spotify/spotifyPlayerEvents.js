@@ -2,14 +2,16 @@ import { musicBox }       from "./playerInit";
 import { spotifyIcon }    from "./spotifyPlayerListeners";
 import { playerIsBusy, 
         player,
-        song ,
-        userDetails}      from "./spotifyPlayer";
-import { spotify,
+        song }            from "./spotifyPlayer";
+import { play,
+        isLiked,
         playbackStarted } from "./spotifyRequests";
 import { deviceID,
         currentTrackId }  from "./spotifyPlayerListeners";
 import { reconnect }      from "./spotifyReconnect";
 import { cbDefault }      from "js/init";
+import { toggleArrow }    from '../../utils/js/utils'
+import { playlistLoader } from "./playlistLoader";
 
 export var likeBtn, playBtn, songInfo;
 
@@ -35,7 +37,7 @@ function playBtnListener() {
         event.preventDefault(); event.stopPropagation();
         if (!playerIsBusy()) {
             if (!playbackStarted) {
-                spotify.play(deviceID, song);
+                play(deviceID, song);
             } else {
                 player.getCurrentState()
                     .then((state) => {
@@ -69,7 +71,7 @@ function likeBtnListener() {
         event.preventDefault();
         event.stopPropagation();
         if (!playerIsBusy() && playbackStarted) {
-            spotify.isLiked(currentTrackId, true);
+            isLiked(currentTrackId, true);
         }
     });
 }
@@ -137,37 +139,37 @@ function albumCoverLister() {
         })
 }
 
-var userPlaylists = [];
 function playlistSelector() {
     $('#expand-playlist').on('click', () => {
         const playlistListBox = $('#playlist-list-box');
 
         const animationProp = {
             targets: $(playlistListBox).get(0),
-            duration: 750,
+            duration: 350,
             easing: cbDefault,
         };
 
         if (playlistListBox.hasClass('compact')) {
             anime({
                 ...animationProp,
-                begin: () => { $(playlistListBox).removeClass('compact') },
-                maxHeight: [0, '40vh']
-            })
+                begin: () => { 
+                    $(playlistListBox).removeClass('compact');
+                    toggleArrow($('#expand-playlist-arrow'), true)
+                },
+                maxHeight: [0, '45vh']
+            });
 
-            if (userPlaylists.length === 0) {
-                $.when(spotify.getPlaylistList(userDetails.id), spotify.getShowList())
-                    .done((res1, res2) => {
-                        userPlaylists.push(res1[0].items, res2[0].items);
-                        console.log(userPlaylists)
-                    })
-            }
+            playlistLoader(playlistListBox);
+
         } else {
             anime({
+                begin: () => {
+                    toggleArrow($('#expand-playlist-arrow'), false)
+                },
                 ...animationProp,
                 maxHeight: 0,
                 complete: () => { $(playlistListBox).addClass('compact') }
-            })
+            });
         }
     })
 } 

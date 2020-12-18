@@ -31,20 +31,24 @@
                 <span>Playlist:</span> <span>[Mix #1]</span>
             </span>
             <button id="expand-playlist" class="settings-btn-container transp-btn">
-                <i class="fas fa-chevron-down settings-text arrow transp-btn"></i>
+                <i id="expand-playlist-arrow" class="fas fa-chevron-down settings-text arrow transp-btn"></i>
             </button>
         </div>
         <div class="full-w">
-            <ul id="playlist-list-box" class="hidden-list compact full-w">
-                <li class="settings-text">AA</li>
-                <li class="settings-text">BB</li>
-                <li class="settings-text">CC</li>
+            <ul id="playlist-list-box" class="hidden-list skinny compact full-w no-scrollbar">
                 <li class="searchbox">
                     <div class="full-w">
-                        <input type="text" class="playlist-search settings-text transp-btn">
-                        <i class="lnr lnr-magnifier settings-text"></i>
+                        <span>
+                            <input type="text" class="playlist-search settings-text transp-btn">
+                        </span>
+                        <p class="settings-hint search-hint">
+                            <i class="lnr lnr-magnifier"></i>Use the searchbar for more content
+                        </p>
                     </div>
                 </li>
+                <li class="settings-text playlist">Loading...</li>
+                <li class="settings-text playlist">Loading...</li>
+                <li class="settings-text playlist">Loading...</li>
             </ul>
         </div>
     </dd>

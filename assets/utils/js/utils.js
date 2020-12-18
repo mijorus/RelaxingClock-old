@@ -117,3 +117,11 @@ export function handleMusic (turnDown) {
         }
     }
 }
+
+export function toggleArrow(target, directionUp) {
+    if(directionUp) {
+        $(target).addClass('point-up')
+    } else {
+        $(target).removeClass('point-up')
+    }
+}

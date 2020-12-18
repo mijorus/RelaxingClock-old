@@ -9,20 +9,39 @@
             }
         }
     }
+}
 
-    dd {
-        .searchbox {
-            background-color: transparent !important;
-            text-align: center;
-            
-            .playlist-search {
-                width: 40%;
-                display: inline-block;
-                background-color: lighten($color-bg-settings, 20);
+#playlist-list-box {
+    .playlist {
+        white-space: nowrap;
 
-                @include phones {
-                    width: 100%;
-                }
+        .type {
+            color: darken($color-white, 20);
+        }
+
+        .name {
+            display: inline-block;
+            overflow: hidden;
+            max-width: 100%;
+        }
+    }
+
+    .searchbox {
+        background-color: transparent !important;
+        text-align: center;
+
+        .search-hint {
+            margin: auto !important;
+            display: block;
+        }
+        
+        .playlist-search {
+            width: 40%;
+            display: inline-block;
+            background-color: lighten($color-bg-settings, 10);
+
+            @include phones {
+                width: 100%;
             }
         }
     }
