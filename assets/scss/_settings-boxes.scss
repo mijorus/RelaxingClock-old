@@ -12,17 +12,47 @@
 }
 
 #playlist-list-box {
+    .list-type {
+        background-color: transparent !important;
+        margin: auto;
+    }
+
+    #searchloader {
+        transition: max-height .2s $cb-default, margin .2s $cb-default, padding .2s $cb-default;
+        max-height: 10vh;
+    }
+
     .playlist {
         white-space: nowrap;
+        padding: .7vh !important;
+        transition: opacity .5s linear;
 
-        .type {
-            color: darken($color-white, 20);
-        }
-
-        .name {
-            display: inline-block;
+        .details {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
             overflow: hidden;
-            max-width: 100%;
+
+            .playlist-icon {
+                height: $sp-icon-fs;
+                width: $sp-icon-fs;
+                border-radius: 5px;
+
+                @include phones {
+                    border-radius: 2px;
+                }
+            }
+
+            .type {
+                color: darken($color-white, 20);
+            }
+
+            .name {
+                display: inline-block;
+                overflow: hidden;
+                white-space: nowrap !important;
+                max-width: 100%;
+            }
         }
     }
 
@@ -37,8 +67,15 @@
         
         .playlist-search {
             width: 40%;
+            color: $color-white;
+            cursor: auto;
             display: inline-block;
             background-color: lighten($color-bg-settings, 10);
+
+            &::selection {
+                color: $color-bg;
+                background: $color-white;
+            }
 
             @include phones {
                 width: 100%;

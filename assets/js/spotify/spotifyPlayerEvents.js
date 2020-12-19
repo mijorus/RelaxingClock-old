@@ -150,17 +150,16 @@ function playlistSelector() {
         };
 
         if (playlistListBox.hasClass('compact')) {
+            playlistLoader(playlistListBox);
+            
             anime({
                 ...animationProp,
                 begin: () => { 
                     $(playlistListBox).removeClass('compact');
                     toggleArrow($('#expand-playlist-arrow'), true)
                 },
-                maxHeight: [0, '45vh']
+                maxHeight: [0, '51vh']
             });
-
-            playlistLoader(playlistListBox);
-
         } else {
             anime({
                 begin: () => {

@@ -16,26 +16,29 @@ export function handleLoader(target, show, success = true, enabled = true) {
     if (enabled) {
         $(target).removeClass('hide');
         const el = $(target).find('.loader');
+        const animProp = { duration: 200, targets: $(el).get(0) };
         if (show) {
             $(el).removeClass('disp-none');
-            anime({ 
-                targets: $(el).get(0),
+            return anime({ 
+                ...animProp,
                 opacity: [0, 1], 
-                duration: 200
             });
         } else {
-            anime({
-                targets: $(el).get(0),
+            return anime({
+                ...animProp,
                 opacity: [1, 0], 
-                duration: 200,
-                complete: () => $(el).addClass('disp-none')
-            });
+                complete: () => {
+                    $(el).addClass('disp-none');
 
-            if (success === true) {
-                $(target).append('<i class="status-icon icon-checkmark"></i>');
-            } else if (success === false) {
-                $(target).append('<i class="status-icon icon-cross"></i>');
-            }
+                    // Success can be undefined if we dont want
+                    // to show any confirmation icon
+                    if (success === true) {
+                        $(target).append('<i class="status-icon icon-checkmark"></i>');
+                    } else if (success === false) {
+                        $(target).append('<i class="status-icon icon-cross"></i>');
+                    }
+                }
+            });
         }
     } else {
         $(target).addClass('hide');
@@ -125,3 +128,7 @@ export function toggleArrow(target, directionUp) {
         $(target).removeClass('point-up')
     }
 }
+
+export function removeSpace (str) {
+    return str.replace(/\s+/g, '');
+};

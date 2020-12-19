@@ -42,7 +42,7 @@
 .no-scrollbar {
     scrollbar-width: none;  /* Firefox */
     -ms-overflow-style: none;  /* IE and Edge */
-    
+
     &::-webkit-scrollbar {
         display: none; /* WebKit */
     }
@@ -50,6 +50,12 @@
 
 .hide {
     opacity: 0;
+}
+
+.mini {
+    max-height: 0vh !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .force-hide {
@@ -94,6 +100,10 @@
 
 .blur {
     filter: blur(10px);
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 .bg-center {

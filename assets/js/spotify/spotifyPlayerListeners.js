@@ -53,9 +53,11 @@ export function initSpotifyPlayer() {
                 console.log('Playing a new track...');
                 $(spotifyTrackInfo).removeClass('hide');
                 $(spotifyPlaceholder).css('opacity', 0);
-                if (currentTrack.album.images[1].url) {
+                
+                const albumImage = currentTrack.album.images[1] || currentTrack.album.images[0];
+                if (albumImage.url) {
                     $(spotifyIcon).addClass('has-cover').css({
-                        'background-image': `url(${currentTrack.album.images[1].url})`
+                        'background-image': `url(${albumImage.url})`
                     });
                 }
 

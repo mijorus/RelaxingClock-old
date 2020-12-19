@@ -86,11 +86,11 @@ export function getUserDetails() {
             })
 }
 
-export function getPlaylistList (limit = 50, offset = 0) {
+export function getPlaylistList(externalUser = undefined, limit = 50, offset = 0) {
     return $.ajax({
         type: "GET",
         headers: requestHeader,
-        url: spotifyBaseURL + '/me/playlists',
+        url: spotifyBaseURL + ( (externalUser) ? `/users/${externalUser}` : '/me' ) + '/playlists',
         data: {
             limit: limit,
             offset: offset,
@@ -101,7 +101,7 @@ export function getPlaylistList (limit = 50, offset = 0) {
         })
 }
 
-export function getShowList (limit = 50, offset = 0) {
+export function getShowList(limit = 50, offset = 0) {
     return $.ajax({
         type: "GET",
         headers: requestHeader,
@@ -185,6 +185,22 @@ export function shuffle(state) {
         })
         .fail(function(error) {
             spotifyError.logError('ERROR WHILE ENABLING SHUFFLE MODE:', error, false);
+        })
+}
+
+export function search(query = ' ', types, limit = 7) {
+    return $.ajax({
+        type: "GET",
+        headers: requestHeader,
+        url: spotifyBaseURL + `/search`,
+        data: {
+            q: query,
+            type: types,
+            limit: limit,
+        }
+    })
+        .fail(function(error) {
+            spotifyError.logError('ERROR WHILE SEARCHING SPOTIFY DATABASE:', error, false);
         })
 }
 

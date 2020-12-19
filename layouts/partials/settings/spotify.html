@@ -39,16 +39,19 @@
                 <li class="searchbox">
                     <div class="full-w">
                         <span>
-                            <input type="text" class="playlist-search settings-text transp-btn">
+                            <input type="text" id="spotify-search" class="playlist-search settings-text transp-btn" value="">
                         </span>
                         <p class="settings-hint search-hint">
                             <i class="lnr lnr-magnifier"></i>Use the searchbar for more content
                         </p>
                     </div>
                 </li>
-                <li class="settings-text playlist">Loading...</li>
-                <li class="settings-text playlist">Loading...</li>
-                <li class="settings-text playlist">Loading...</li>
+                <li id="searchloader" class="list-type settings-text">
+                    <div class="loader-container">
+                        <div class="loader line-scale"></div>
+                    </div>
+                </li>
+                <li class="list-type list-item settings-text">Loading...</li>
             </ul>
         </div>
     </dd>
