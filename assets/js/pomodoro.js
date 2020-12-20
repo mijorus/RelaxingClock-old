@@ -1,5 +1,5 @@
 import { checkNotificationStatus,
-        changeBtnLable }            from "../utils/js/utils";
+        changeBtnLable }            from "./utils/utils";
 import { pomodoroBox }              from "./init";
 import { compatibility }            from "./compatibilityDetector";
 

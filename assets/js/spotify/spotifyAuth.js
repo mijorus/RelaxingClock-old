@@ -1,12 +1,12 @@
 import { spotifyPlaceholder, 
         musicBox }              from "./playerInit";
 import { compatibility }        from "../compatibilityDetector";
-import { updateStatusText }     from "../../utils/js/playerUtils";
+import { updateStatusText }     from "../utils/playerUtils";
 import { createNewSpotifyPlayer, 
         player }                from "./spotifyPlayer";
 import { generateUrl, 
-        redirectURI }           from '../../utils/js/generateSpotifyUrl';
-import { getUrlVars }           from "../../utils/js/utils";
+        redirectURI }           from '../utils/generateSpotifyUrl';
+import { getUrlVars }           from "../utils/utils";
 
 export var logged = false,
 accessDenied      = false;

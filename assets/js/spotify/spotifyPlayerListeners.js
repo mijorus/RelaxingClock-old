@@ -5,7 +5,7 @@ import { spotifyError }         from "./spotifyErrorHandling";
 import { player,
         getUserInfo }           from "./spotifyPlayer";
 import { playIcon,
-        scrollText }            from "../../utils/js/playerUtils";
+        scrollText }            from "../utils/playerUtils";
 
 export const playbackIcon = $('#playback-icon'),
     spotifyIcon           = $('#spotify-icon');

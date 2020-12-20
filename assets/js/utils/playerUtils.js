@@ -1,10 +1,10 @@
-import { likeBtn }               from "../../js/spotify/spotifyPlayerEvents";
-import { playbackIcon }          from "../../js/spotify/spotifyPlayerListeners";
-import { playlistURL }           from "../../js/spotify/spotifyPlayer";
+import { likeBtn }               from "../spotify/spotifyPlayerEvents";
+import { playbackIcon }          from "../spotify/spotifyPlayerListeners";
+import { playlistURL }           from "../spotify/spotifyPlayer";
 import { spotifyPlaceholder, 
-        musicBox }               from "../../js/spotify/playerInit";
+        musicBox }               from "../spotify/playerInit";
 import { getRandomIntInclusive } from "./utils";
-import { cbDefault }             from '../../js/init';
+import { cbDefault }             from '../init';
 
 export var songIsSelected = false;
 export function songSelected(status) {

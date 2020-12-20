@@ -1,6 +1,6 @@
-import { cbDefault } from "../../js/init";
-import { player }    from "../../js/spotify/spotifyPlayer";
-import { paused }    from "../../js/spotify/spotifyPlayerListeners";
+import { cbDefault } from "../init";
+import { player }    from "../spotify/spotifyPlayer";
+import { paused }    from "../spotify/spotifyPlayerListeners";
 //Get the URL params
 export function getUrlVars() {
     var vars = {};

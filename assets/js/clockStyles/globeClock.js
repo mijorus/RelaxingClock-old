@@ -11,7 +11,7 @@ import { format12,
         min,
         sec  }              from "../clocks";
 import { aRandomPlace, 
-        newRandomPlace  }   from "../../utils/js/internationalClock/internationalClock";
+        newRandomPlace  }   from "./internationalClock/internationalClock";
 
 const halfCircleHtml = 
 `<svg id="half-circle" class="toscreensave">

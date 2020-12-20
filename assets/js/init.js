@@ -4,7 +4,7 @@ import { settingsPageHandler,
         userInSettings,
         inSettings }                       from './settingsPageHandler';
 import { displayDefaultClock }             from "./clocks";
-import { handleExpandIcon }                from '../utils/js/fullScreenUtils';
+import { handleExpandIcon }                from './utils/fullScreenUtils';
 import { getSettings }                     from "./getSettings";
 import { musicBox,
         initSpotifyAuthProcess }           from "./spotify/playerInit";

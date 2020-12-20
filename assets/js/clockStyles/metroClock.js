@@ -8,7 +8,7 @@ import { centerContainer,
         min,
         sec  }               from "../clocks";
 import { newRandomPlace,
-        aRandomPlace, }      from "../../utils/js/internationalClock/internationalClock";
+        aRandomPlace, }      from "./internationalClock/internationalClock";
 
 export function loadStyle() {
     $(main).addClass('metro');

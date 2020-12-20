@@ -5,8 +5,8 @@ import { updateStatusText,
         songIsSelected,
         songSelection,
         songSelected,
-        updatePlaceholderText }  from "../../utils/js/playerUtils";
-import { getRandomIntInclusive } from '../../utils/js/utils';
+        updatePlaceholderText }  from "../utils/playerUtils";
+import { getRandomIntInclusive } from '../utils/utils';
 import { initSpotifyPlayer,
         deviceID,
         playerIsReady,

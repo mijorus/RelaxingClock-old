@@ -1,8 +1,8 @@
 import { handleHeartButton, 
-        updateStatusText }        from '../../utils/js/playerUtils';
+        updateStatusText }        from '../utils/playerUtils';
 import { spotifyError }           from "../spotify/spotifyErrorHandling";
 import { clientId,    
-        redirectURI }             from '../../utils/js/generateSpotifyUrl';
+        redirectURI }             from '../utils/generateSpotifyUrl';
 import { playbackIcon,
         deviceID }                from "./spotifyPlayerListeners";
 

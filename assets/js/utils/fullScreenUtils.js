@@ -1,5 +1,5 @@
 //Handle full screen button
-import { expandIcon } from "../../js/init";
+import { expandIcon } from "../init";
 
 var isFullScreen = false;
 

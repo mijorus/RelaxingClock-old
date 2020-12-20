@@ -3,7 +3,7 @@ import { getPlaylistData,
         getPlaylistList,
         search }       from "./spotifyRequests";
 import { removeSpace,
-        handleLoader } from "../../utils/js/utils";
+        handleLoader } from "../utils/utils";
 
 const defaultPlaylists = ['4ZTZhFPPyRzpfHZsWEXAW9'];
 // defaultLibrary = [],

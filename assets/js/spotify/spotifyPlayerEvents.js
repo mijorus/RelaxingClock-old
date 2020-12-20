@@ -10,7 +10,7 @@ import { deviceID,
         currentTrackId }  from "./spotifyPlayerListeners";
 import { reconnect }      from "./spotifyReconnect";
 import { cbDefault }      from "js/init";
-import { toggleArrow }    from '../../utils/js/utils'
+import { toggleArrow }    from '../utils/utils'
 import { playlistLoader } from "./playlistLoader";
 
 export var likeBtn, playBtn, songInfo;

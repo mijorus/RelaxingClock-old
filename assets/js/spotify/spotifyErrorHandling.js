@@ -1,11 +1,11 @@
 import { player }                from "./spotifyPlayer";
 import { playbackIcon }          from "./spotifyPlayerListeners";
 import { musicBox }              from "./playerInit";
-import { handleLoader }          from "../../utils/js/utils";
+import { handleLoader }          from "../utils/utils";
 import { updatePlaceholderText, 
-        updateStatusText }       from "../../utils/js/playerUtils";
+        updateStatusText }       from "../utils/playerUtils";
 import { redirectURI, 
-        generateUrl }            from "../../utils/js/generateSpotifyUrl";
+        generateUrl }            from "../utils/generateSpotifyUrl";
 import { logout }                from "./spotifyAuth";
 
 export const spotifyError = {

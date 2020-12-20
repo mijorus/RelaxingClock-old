@@ -6,7 +6,7 @@ import { getRemoteTime }        from "./clocks";
 import { compatibility }        from "./compatibilityDetector";
 import { logout }               from "./spotify/spotifyAuth";
 import { generateUrl, 
-        redirectURI }           from "../utils/js/generateSpotifyUrl";
+        redirectURI }           from "./utils/generateSpotifyUrl";
 
 const settingsSection = $('#settings-section');
 var btns = settingsSection.find('button');

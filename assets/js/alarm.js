@@ -1,6 +1,6 @@
 import { checkNotificationStatus,
         changeBtnLable,
-        handleMusic }             from "../utils/js/utils";
+        handleMusic }             from "./utils/utils";
 import { clockFormat }            from "./getSettings";
 import { body,
         cbDefault }               from "./init";
