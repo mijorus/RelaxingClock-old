@@ -171,7 +171,7 @@ function animateSkyIcon() {
             translateX: elapsed('x'),
             translateY: elapsed('y'),
             translateZ: 0,
-            easing: 'easeOutQuint',
+            easing: 'cubicBezier(.17,1.05,.48,.98)',
             opacity: {
                 value: [0, 1],
                 duration: 500,
@@ -182,7 +182,7 @@ function animateSkyIcon() {
             targets: [$(bigClockContainer).get(0), $(cityName).get(0), $(skyIcon).get(0)],
             opacity: [1, 0],
             direction: 'alternate',
-            easing: 'cubicBezier(0.000, 0.950, 0.000, 0.925)',
+            easing: 'easeInOutSine',
             duration: skyIconTime,
             loopComplete: function () {
                 $(cityIcon).removeClass();
