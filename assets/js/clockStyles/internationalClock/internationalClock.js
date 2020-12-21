@@ -47,7 +47,7 @@ function getDayPercentage(zero, hundred, x) {
     hundred = hundred - zero;
     x = x - zero;
     const h = hundred / 100;
-    return Math.round((x / h) / 10) * 10;
+    return Math.round((x / h) * 10) / 10;
 }
 
 function getDayStatus() {
@@ -83,9 +83,9 @@ function getDayStatus() {
     return { 
         isDay: isDay,
         percentage: circlePercentage,
-        cbCurve: function() {
-            return getCbCurve(circlePercentage)
-        }
+        // cbCurve: function() {
+        //     return getCbCurve(circlePercentage)
+        // }
     }
 }
 

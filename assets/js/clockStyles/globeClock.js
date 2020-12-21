@@ -12,12 +12,16 @@ import { format12,
         sec  }              from "../clocks";
 import { aRandomPlace, 
         newRandomPlace  }   from "./internationalClock/internationalClock";
+import { polarToCartesian }      from "./svgArc/describeArc";
 
 const halfCircleHtml = 
-`<svg id="half-circle" class="toscreensave">
-    <path id="half-circle-path" stroke-width="1" stroke-linejoin="round" fill="none" d="" />
-    <path id="half-circle-dashed" stroke-width="4" stroke-linejoin="round" fill="none" d="" />
-</svg>`
+`<div id="globe-path-container">
+    <svg id="half-circle" class="toscreensave">
+        <path id="half-circle-path" class="half-path" stroke-width="1" stroke-linejoin="round" fill="none" d="" />
+        <path id="half-circle-dashed" class="half-path" stroke-width="4" stroke-linejoin="round" fill="none" d="" />
+        <path id="half-circle-elapsed" class="half-path" stroke-width="1" stroke="transparent" stroke-linejoin="round" fill="none" d="" />
+    </svg>
+</div>`
 
 export const cityName = $('.city-name'), cityIcon = $('#city-icon');
 export var globeInAction, circleTl = undefined, circlePathTl = undefined;
@@ -76,12 +80,17 @@ var halfCirPath,
     bigClockContainer,
     animePath,
     skyIcon,
+    halfCircle,
+    elapsedPath,
     clockFormatBtns;
 
 export function handleGlobeAnimation(pathAnimation) {
-    if (!halfCirPath) halfCirPath = $('#half-circle-path');
-    if (!bigClockContainer) bigClockContainer = $('.big-clock-container');
-    if (!clockFormatBtns) clockFormatBtns = [$(format12), $(format24)];
+    if (!halfCirPath) {
+        halfCirPath = $('#half-circle-path');
+        elapsedPath = $('#half-circle-elapsed');
+        bigClockContainer = $('.big-clock-container');
+        clockFormatBtns = [$(format12), $(format24)];
+    }
 
     if (circleTl !== undefined) {
         circleTl.pause();
@@ -90,16 +99,14 @@ export function handleGlobeAnimation(pathAnimation) {
     halfCircle = computeCircleSize();
     animePath = anime.path(halfCircle.path);
     
-    if ($(skyIcon).length) {
-        $('#sky-icon').remove();
-    }
+    $('#sky-icon').remove();
 
     createSkyIcon();
     
     if (pathAnimation) {
         animateCirclePath();
     } else {
-        halfCirPath.get(0).setAttribute('stroke-dasharray', 10000);
+        halfCirPath.attr('stroke-dasharray', 10000);
         if (circlePathTl) circlePathTl.pause();
         animateSkyIcon();
     }
@@ -126,18 +133,22 @@ function animateCirclePath() {
 }
 
 function createSkyIcon() {
-    skyIcon = $('<span />', {
-        id: 'sky-icon',
-    }).appendTo($(clockInnerCont));
+    skyIcon = $(`<span id='sky-icon' class="skinny"></span>`).appendTo( $('#globe-path-container') );
     $(skyIcon).css({
-        'bottom': halfCircle.height + 50 - ( $(skyIcon).height() / 2 ),
-        'left': ( $(skyIcon).width() / (-2) )
+        'top': - ( $(skyIcon).height() / 2 ),
+        'left': ( $(skyIcon).width() / (-2) ),
     });
 }
 
+
 function animateSkyIcon() {
-    const skyIconTime = 1500;
+    const skyIconTime = 750;
     const cityDay = aRandomPlace.day();
+
+    const coord = polarToCartesian(halfCircle.radius, percentageToDegrees(cityDay.percentage))
+    $(elapsedPath).attr('d', `M 0 ${halfCircle.radius} A ${halfCircle.radius} ${halfCircle.radius} 180 0 1 ${coord.x} ${coord.y}`);
+
+    const elapsed = anime.path($(elapsedPath).get(0));
 
     circleTl = anime.timeline({
         duration: (1000 * 60),
@@ -146,25 +157,21 @@ function animateSkyIcon() {
         begin: () => {
             loadTime(clockFormat, aRandomPlace.city.tz);
             handleGlobeClock();
-            if (cityDay.isDay) {
-                $(skyIcon).removeClass('moon').addClass('sun');
-            } else {
-                $(skyIcon).removeClass('sun').addClass('moon');
-            }
+            cityDay.isDay
+                ? $(skyIcon).removeClass('moon').addClass('sun')
+                : $(skyIcon).removeClass('sun').addClass('moon');
         },
         complete: () => {
-            circleTl.pause()
-            if (currentPosition === 4) animateSkyIcon()
+            circleTl.pause();
+            if (currentPosition === 4) animateSkyIcon();
         }
-    });
-
-    circleTl
+    })
         .add({
             targets: $(skyIcon).get(0),
-            translateX: animePath('x'),
-            translateY: animePath('y'),
+            translateX: elapsed('x'),
+            translateY: elapsed('y'),
             translateZ: 0,
-            easing: cityDay.cbCurve(),
+            easing: 'easeOutQuint',
             opacity: {
                 value: [0, 1],
                 duration: 500,
@@ -175,7 +182,7 @@ function animateSkyIcon() {
             targets: [$(bigClockContainer).get(0), $(cityName).get(0), $(skyIcon).get(0)],
             opacity: [1, 0],
             direction: 'alternate',
-            easing: 'easeInOutSine',
+            easing: 'cubicBezier(0.000, 0.950, 0.000, 0.925)',
             duration: skyIconTime,
             loopComplete: function () {
                 $(cityIcon).removeClass();
@@ -188,18 +195,25 @@ function animateSkyIcon() {
 
 
 
-//Calculates the size of the half circle
+// Calculates the size of the half circle
 function computeCircleSize() {
-    const cPathDashed = $('#half-circle-dashed'),
-        cicWidth = clockInnerCont.width(),
-        cicHeight = clockInnerCont.height();
+    const cicWidth = clockInnerCont.width();
     const halfCircleRadius = cicWidth / 2;
-    const halfCircleSize = `M 0 ${cicHeight} A ${halfCircleRadius} ${halfCircleRadius} 180 0 1 ${cicWidth} ${cicHeight}`;
-    $(halfCirPath).attr('d', halfCircleSize);
-    $(cPathDashed).attr('d', halfCircleSize);
+
+    $('#globe-path-container').height(halfCircleRadius);
+    const halfCircleSize = `M 0 ${halfCircleRadius} A ${halfCircleRadius} ${halfCircleRadius} 180 0 1 ${cicWidth} ${halfCircleRadius}`;
+    
+    [$(halfCirPath), $('#half-circle-dashed')].forEach((el) => {
+        $(el).attr('d', halfCircleSize); });
     return {
         path: $(halfCirPath).get(0),
-        width: cicWidth,
-        height: cicHeight
+        radius: halfCircleRadius,
     };
+}
+
+function percentageToDegrees(percentage) {
+    const degrees = percentage * 1.8;
+
+    return (percentage >= 50) ? degrees - 90 : degrees + 270;
+    
 }

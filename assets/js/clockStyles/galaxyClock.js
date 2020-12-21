@@ -12,6 +12,7 @@ import { centerContainer,
         hours,
         min,
         sec  }             from "../clocks";
+import { describeArc }     from "./svgArc/describeArc";
 
 var cicHeight,
     galaxyAnim,
@@ -191,25 +192,3 @@ function computeGalaxyClockSize() {
     $(galaxySec).width(galaxySecOrbit.diameter).height(galaxySecOrbit.diameter);
 }
 
-function polarToCartesian(radius, angleInDegrees) {
-    const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
-
-    return {
-        x: radius + (radius * Math.cos(angleInRadians)),
-        y: radius + (radius * Math.sin(angleInRadians))
-    };
-}
-
-function describeArc(radius, startAngle, endAngle) {
-    const start = polarToCartesian(radius, endAngle);
-    const end = polarToCartesian(radius, startAngle);
-    const largeArcFlag = (endAngle - startAngle <= 180) ? "0" : "1";
-    
-    const d = `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArcFlag} 0 ${end.x} ${end.y}`;
-
-    return {
-        d: d,
-        x: start.x,
-        y: start.y,
-    };
-}

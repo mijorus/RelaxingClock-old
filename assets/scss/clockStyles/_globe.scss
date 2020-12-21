@@ -66,11 +66,6 @@
             background-size: contain;
             overflow: visible;
             transform: translate(5%, -115%) translateZ(0);
-
-            // @media (max-width: $phone) {
-            //     width: 90%;
-            //     transform: translate(0%, -110%) translateZ(0);
-            // }
         }
     }
 
@@ -78,7 +73,7 @@
         display: block;
     }
 
-    #half-circle {
+    #globe-path-container {
         display: block;
 
         #half-circle-path {
@@ -86,12 +81,11 @@
         }
     
         #half-circle-dashed {
-            display: block;
             stroke: rgb(29, 29, 29);
             stroke-dasharray: 1vw;
         }
     
-        #half-circle .screen-saving{
+        .screen-saving{
             stroke: inherit;
         }
     
@@ -101,24 +95,21 @@
     }
 }
 
-#half-circle {
+#globe-path-container {
+    left: 0;
     display: none;
     position: absolute;
     bottom: 50px;
-    left: 0;
     width: 100%;
-    height: 100%;
-    overflow: visible;
 
-    #half-circle-dashed {
-        display: none;
-        position: absolute;
-        bottom: 50px;
-        left: 0;
-        width: 100%;
+    #half-circle {
         height: 100%;
+        width: 100%;
+        overflow: visible;
     }
 }
+
+
 
 #sky-icon {
     position: absolute;
@@ -128,8 +119,7 @@
     font-family: 'icomoon' !important;
     font-style: normal;
     display: none;
-    margin: 0;
-    padding: 0;
+    background-color: $color-bg;
     will-change: transform;
 
     @include phones {
