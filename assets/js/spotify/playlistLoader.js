@@ -1,7 +1,7 @@
 import { getPlaylistData,
         getShowList,
         getPlaylistList,
-        search }       from "./spotifyRequests";
+        search }       from "./requests";
 import { removeSpace,
         handleLoader } from "../utils/utils";
 

@@ -1,12 +1,12 @@
-import { player }                from "./spotifyPlayer";
-import { playbackIcon }          from "./spotifyPlayerListeners";
-import { musicBox }              from "./playerInit";
+import { player }                from "./player";
+import { playbackIcon }          from "./playerListeners";
+import { musicBox }              from "./init";
 import { handleLoader }          from "../utils/utils";
 import { updatePlaceholderText, 
         updateStatusText }       from "../utils/playerUtils";
 import { redirectURI, 
         generateUrl }            from "../utils/generateSpotifyUrl";
-import { logout }                from "./spotifyAuth";
+import { logout }                from "./auth";
 
 export const spotifyError = {
      throwTokenError: function() {

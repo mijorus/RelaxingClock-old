@@ -1,9 +1,9 @@
 import { spotifyPlaceholder, 
-        musicBox }              from "./playerInit";
+        musicBox }              from "./init";
 import { compatibility }        from "../compatibilityDetector";
 import { updateStatusText }     from "../utils/playerUtils";
 import { createNewSpotifyPlayer, 
-        player }                from "./spotifyPlayer";
+        player }                from "./player";
 import { generateUrl, 
         redirectURI }           from '../utils/generateSpotifyUrl';
 import { getUrlVars }           from "../utils/utils";

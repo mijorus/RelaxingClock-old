@@ -1,14 +1,14 @@
-import { musicBox }       from "./playerInit";
-import { spotifyIcon }    from "./spotifyPlayerListeners";
+import { musicBox }       from "./init";
+import { spotifyIcon }    from "./playerListeners";
 import { playerIsBusy, 
         player,
-        song }            from "./spotifyPlayer";
+        song }            from "./player";
 import { play,
         isLiked,
-        playbackStarted } from "./spotifyRequests";
+        playbackStarted } from "./requests";
 import { deviceID,
-        currentTrackId }  from "./spotifyPlayerListeners";
-import { reconnect }      from "./spotifyReconnect";
+        currentTrackId }  from "./playerListeners";
+import { reconnect }      from "./reconnect";
 import { cbDefault }      from "js/init";
 import { toggleArrow }    from '../utils/utils'
 import { playlistLoader } from "./playlistLoader";

@@ -7,7 +7,7 @@ import { displayDefaultClock }             from "./clocks";
 import { handleExpandIcon }                from './utils/fullScreenUtils';
 import { getSettings }                     from "./getSettings";
 import { musicBox,
-        initSpotifyAuthProcess }           from "./spotify/playerInit";
+        initSpotifyAuthProcess }           from "./spotify/init";
 
 export const body = $('body'),
 main              = $('main'),

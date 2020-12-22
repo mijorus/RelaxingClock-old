@@ -1,8 +1,8 @@
-import { likeBtn }               from "../spotify/spotifyPlayerEvents";
-import { playbackIcon }          from "../spotify/spotifyPlayerListeners";
-import { playlistURL }           from "../spotify/spotifyPlayer";
+import { likeBtn }               from "../spotify/playerEvents";
+import { playbackIcon }          from "../spotify/playerListeners";
+import { playlistURL }           from "../spotify/player";
 import { spotifyPlaceholder, 
-        musicBox }               from "../spotify/playerInit";
+        musicBox }               from "../spotify/init";
 import { getRandomIntInclusive } from "./utils";
 import { cbDefault }             from '../init';
 

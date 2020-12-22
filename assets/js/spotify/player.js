@@ -1,6 +1,6 @@
-import { musicBox }              from "./playerInit";
-import * as spotify              from "./spotifyRequests";
-import { spotifyError }          from "./spotifyErrorHandling";
+import { musicBox }              from "./init";
+import * as spotify              from "./requests";
+import { spotifyError }          from "./errorHandling";
 import { updateStatusText,
         songIsSelected,
         songSelection,
@@ -10,7 +10,7 @@ import { getRandomIntInclusive } from '../utils/utils';
 import { initSpotifyPlayer,
         deviceID,
         playerIsReady,
-        paused }                 from "./spotifyPlayerListeners";
+        paused }                 from "./playerListeners";
 
 export const playlistURL = '4ZTZhFPPyRzpfHZsWEXAW9';
 

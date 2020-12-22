@@ -1,9 +1,9 @@
-import { spotifyPlaceholder }   from "./playerInit";
-import * as spotify             from "./spotifyRequests";
-import { initPlayerEvents }     from "./spotifyPlayerEvents";
-import { spotifyError }         from "./spotifyErrorHandling";
+import { spotifyPlaceholder }   from "./init";
+import * as spotify             from "./requests";
+import { initPlayerEvents }     from "./playerEvents";
+import { spotifyError }         from "./errorHandling";
 import { player,
-        getUserInfo }           from "./spotifyPlayer";
+        getUserInfo }           from "./player";
 import { playIcon,
         scrollText }            from "../utils/playerUtils";
 

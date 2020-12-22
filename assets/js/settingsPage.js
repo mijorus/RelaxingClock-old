@@ -1,10 +1,10 @@
-import { accessDenied }         from './spotify/spotifyAuth';
+import { accessDenied }         from './spotify/auth';
 import { setScreenSaverColors } from './screenSaver';
 import { pomodoro }             from './pomodoro';
 import { alarm }                from './alarm';
 import { getRemoteTime }        from "./clocks";
 import { compatibility }        from "./compatibilityDetector";
-import { logout }               from "./spotify/spotifyAuth";
+import { logout }               from "./spotify/auth";
 import { generateUrl, 
         redirectURI }           from "./utils/generateSpotifyUrl";
 

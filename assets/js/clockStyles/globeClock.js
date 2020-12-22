@@ -171,7 +171,7 @@ function animateSkyIcon() {
             translateX: elapsed('x'),
             translateY: elapsed('y'),
             translateZ: 0,
-            easing: 'cubicBezier(.17,1.05,.48,.98)',
+            easing: 'cubicBezier(.25,.85,.49,.98)',
             opacity: {
                 value: [0, 1],
                 duration: 500,
