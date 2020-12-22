@@ -12,7 +12,9 @@ import { initSpotifyPlayer,
         playerIsReady,
         paused }                 from "./playerListeners";
 
-export const playlistURL = '4ZTZhFPPyRzpfHZsWEXAW9';
+export const defaultPlaylist = ['4ZTZhFPPyRzpfHZsWEXAW9', '3gDup3YFG9AXol9jEFqAax'];
+
+export const playlistURL = getDefaultPlaylist();
 
 export var player = undefined,
 song              = undefined;
@@ -74,7 +76,8 @@ export function getUserInfo() {
 function firstSongSelection() {
     spotify.getPlaylistData(playlistURL)
         .done((res) => {
-            song = songSelection(res)
+            song = songSelection(res);
+            console.log(song);
             $(musicBox).addClass('loaded');
             songSelected(true);
             if (localStorage.autoplay === 'true') {
@@ -85,7 +88,10 @@ function firstSongSelection() {
                 setTimeout(function() {
                     if (paused) {
                         spotifyError.removeLoader();
-                        spotify.play(deviceID, song);
+                        spotify.play(deviceID, {
+                            context_uri: song.context_uri,
+                            offset: song.offset,
+                        });
                     }
                 }, wait);
             } else if (localStorage.autoplay === 'false') {
@@ -93,4 +99,13 @@ function firstSongSelection() {
                 updatePlaceholderText('Ready to<br>play!');
             }
         })
+}
+
+function getDefaultPlaylist() {
+    if(localStorage.getItem('defaultPlaylist') === null) {
+        localStorage.setItem('defaultPlaylist', defaultPlaylist[0]);
+        return localStorage.defaultPlaylist;
+    } else {
+        return localStorage.defaultPlaylist;
+    }
 }

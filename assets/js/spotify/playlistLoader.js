@@ -1,21 +1,23 @@
 import { getPlaylistData,
         getShowList,
         getPlaylistList,
-        search }       from "./requests";
+        search }           from "./requests";
 import { removeSpace,
-        handleLoader } from "../utils/utils";
+        handleLoader }     from "../utils/utils";
 
-const defaultPlaylists = ['4ZTZhFPPyRzpfHZsWEXAW9'];
-// defaultLibrary = [],
+import { defaultPlaylist } from "./player";
 
 var userLibrary = [],
+defaultLibrary = [],
 listContainer;
 export function playlistLoader(container) {
     listContainer = container;
     if (userLibrary.length === 0) {
-        $.when(getPlaylistList(), getShowList())
-            .done((playlists, shows, defaults) => {
+        $.when(getPlaylistList(), getShowList(), getPlaylistData(defaultPlaylist[0]), getPlaylistData(defaultPlaylist[1]))
+            .done((playlists, shows, default1, default2) => {
                 userLibrary.push(playlists[0].items, shows[0].items);
+                defaultLibrary.push(default1[0], default2[0]);
+                console.log(defaultLibrary);
                 loadUserList(userLibrary);
             })
     } else {
@@ -32,6 +34,11 @@ function displayList(list) {
     $(listContainer).find('.list-item').remove();
     const loader = $(listContainer).find('#searchloader');
 
+    listTypeHTML('by Relaxing Clock');
+    defaultLibrary.forEach((playlist) => {
+        playlistItemHTML(playlist);
+    })
+
     if (list.length > 0) {
         handleLoader($(loader), false, null)
             .finished.then(() => { $(loader).addClass('mini') })
@@ -39,33 +46,16 @@ function displayList(list) {
         list.forEach((type) => {
             if (type.length > 0) {
                 const listType = getElementDetails(type[0]);
-                $(`<li class="list-type list-item settings-text">[${listType.type}]</li>`).appendTo($(listContainer));
+                listTypeHTML(listType.type)
 
-                for (const element of type) {
-                    const details = getElementDetails(element);
-                    const item = `
-                <li class="settings-text playlist list-item pointer hide">
-                    <div class="details skinny">
-                        <span><img class="playlist-icon flex-center" src="${details.img.url}" alt="${details.name} cover"></span>
-                        <span class="name">${details.name || ''}</span>
-                    </div>
-                </li>`
-                    $(item).appendTo($(listContainer)).removeClass('hide');
+                for (const playlist of type) {
+                    playlistItemHTML(playlist);
                 }
             }
         });
     } else {
         $(loader).removeClass('mini');
         handleLoader($(loader), true, null);
-    }
-}
-
-function getElementDetails(el) {
-    const element = (el.show) ? el.show : el;
-    return {
-        name: element.name || '',
-        img: (element.images[1]) ? element.images[1] : element.images[0],
-        type: (element.type === 'show') ? 'podcast' : element.type,
     }
 }
 
@@ -111,4 +101,32 @@ function searchContent(query) {
 
             displayList(resultItems);
         });
+}
+
+function playlistItemHTML(playlist) {
+    const details = getElementDetails(playlist)
+    const item = `
+    <li class="settings-text playlist list-item pointer hide">
+        <div class="details skinny">
+            <span><img class="playlist-icon flex-center" src="${details.img.url}" alt="${details.name} cover"></span>
+            <span class="name">${details.name || ''}</span>
+        </div>
+    </li>`;
+
+    $(item).appendTo($(listContainer)).removeClass('hide');
+}
+
+function listTypeHTML(type) {
+    const item = $(`<li class="list-type list-item settings-text">[${type}]</li>`);
+    $(item).appendTo( $(listContainer) );
+}
+
+function getElementDetails(el) {
+    console.log(el);
+    const element = (el.show) ? el.show : el;
+    return {
+        name: element.name || '',
+        img: (element.images[1]) ? element.images[1] : element.images[0],
+        type: (element.type === 'show') ? 'podcast' : element.type,
+    }
 }

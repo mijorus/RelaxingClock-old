@@ -1,4 +1,5 @@
 import { handleHeartButton, 
+    songSelected, 
         updateStatusText }        from '../utils/playerUtils';
 import { spotifyError }           from "./errorHandling";
 import { clientId,    
@@ -127,21 +128,18 @@ export function getPlaylistData(playlistURL) {
         });
 }
 
-export function play(device_id, song) {
-    console.log(`I am playing on: [Device id:${device_id}]`);
+export function play(device_id, params = {}) {
+    console.log(JSON.stringify(params));
     $.ajax({
         type: "PUT",
         headers: requestHeader,
         url: spotifyBaseURL + '/me/player/play?device_id=' + device_id,
-        data: JSON.stringify(song)
+        data: JSON.stringify(params)
     })
         .done(function() {
-            console.log('I AM PLAYING!');
+            console.log(`I am playing on: [Device id:${device_id}]`);
             playbackStarted = true;
             $(playbackIcon).removeClass('fa-play').addClass('fa-pause');
-            setTimeout(function() {
-                spotify.shuffle(true);
-            }, 2000);
         })
         .fail(function(error) {
             spotifyError.logError('PLAYBACK ERROR!', error);

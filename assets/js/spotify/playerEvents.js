@@ -33,11 +33,14 @@ export function initPlayerEvents() {
 }
 
 function playBtnListener() {
-    $(playBtn).on('click', function (event) {
+    $(playBtn).on('click', function(event) {
         event.preventDefault(); event.stopPropagation();
         if (!playerIsBusy()) {
             if (!playbackStarted) {
-                play(deviceID, song);
+                play(deviceID, {
+                    context_uri: song.context_uri,
+                    offset: song.offset,
+                });
             } else {
                 player.getCurrentState()
                     .then((state) => {
