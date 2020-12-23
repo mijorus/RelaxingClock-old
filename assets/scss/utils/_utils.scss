@@ -66,6 +66,14 @@
     display: none !important;
 }
 
+.upper {
+    text-transform: uppercase;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
 .transp-btn {
     cursor: pointer;
     border: none;

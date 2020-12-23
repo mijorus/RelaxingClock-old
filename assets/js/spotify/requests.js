@@ -129,8 +129,7 @@ export function getPlaylistData(playlistURL) {
 }
 
 export function play(device_id, params = {}) {
-    console.log(JSON.stringify(params));
-    $.ajax({
+    return $.ajax({
         type: "PUT",
         headers: requestHeader,
         url: spotifyBaseURL + '/me/player/play?device_id=' + device_id,

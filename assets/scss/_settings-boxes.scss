@@ -26,6 +26,8 @@
         white-space: nowrap;
         padding: .7vh !important;
         transition: opacity .5s linear;
+        animation: reveal .25s linear;
+        animation-fill-mode: forwards;
 
         .details {
             display: flex;
@@ -53,6 +55,16 @@
                 white-space: nowrap !important;
                 max-width: 100%;
             }
+        }
+    }
+
+    @keyframes reveal {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
         }
     }
 

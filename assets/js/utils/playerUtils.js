@@ -1,4 +1,4 @@
-import { likeBtn }               from "../spotify/playerEvents";
+import { likeBtn }               from "../spotify/userEvents";
 import { playbackIcon }          from "../spotify/playerListeners";
 import { playlistURL }           from "../spotify/player";
 import { spotifyPlaceholder, 
@@ -62,24 +62,25 @@ export const scrollText = {
     scroll: function (animationProp, vpWidth) {
         songTl
             .add({
-                ...animationProp,
+                translateX: animationProp.translateX,
                 duration: this.scrollDuration,
                 complete: function() {
-                    animationProp.targets.style.translateX = 0;
+                    $(animationProp.targets).css('translateX', 0);
                 }
             }, '+=50')
             .add({
                 translateX: [(vpWidth + 10), 0],
-                duration: this.scrollDuration
+                duration: this.scrollDuration,
             });
     },
 
     play: function (animationProp, vpWidth) {
         if (!songTl) {
             songTl = anime.timeline({
+                targets: $(animationProp.targets).get(0),
                 easing: cbDefault,
                 autoplay: false,
-                loop: 3
+                loop: true
             });
         }
 

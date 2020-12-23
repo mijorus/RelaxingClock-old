@@ -77,7 +77,6 @@ function firstSongSelection() {
     spotify.getPlaylistData(playlistURL)
         .done((res) => {
             song = songSelection(res);
-            console.log(song);
             $(musicBox).addClass('loaded');
             songSelected(true);
             if (localStorage.autoplay === 'true') {

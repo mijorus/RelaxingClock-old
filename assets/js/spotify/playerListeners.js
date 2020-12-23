@@ -1,11 +1,12 @@
 import { spotifyPlaceholder }   from "./init";
 import * as spotify             from "./requests";
-import { initPlayerEvents }     from "./playerEvents";
+import { initPlayerEvents }     from "./userEvents";
 import { spotifyError }         from "./errorHandling";
 import { player,
         getUserInfo }           from "./player";
 import { playIcon,
         scrollText }            from "../utils/playerUtils";
+import { displaySongInfo }      from "./displaySongInfo";
 
 export const playbackIcon = $('#playback-icon'),
     spotifyIcon           = $('#spotify-icon');
@@ -14,7 +15,7 @@ export var deviceID = undefined,
     playerIsReady   = false,
     currentTrack    = {},
     paused          = true,
-    currentTrackId  = undefined;
+    currentTrackUri  = undefined;
 
 export function initSpotifyPlayer() {
     initPlayerEvents();
@@ -49,7 +50,7 @@ export function initSpotifyPlayer() {
                 playIcon(true);
             }
 
-            if (currentTrack.id !== currentTrackId) {
+            if (currentTrack.uri !== currentTrackUri) {
                 console.log('Playing a new track...');
                 $(spotifyTrackInfo).removeClass('hide');
                 $(spotifyPlaceholder).css('opacity', 0);
@@ -61,53 +62,35 @@ export function initSpotifyPlayer() {
                     });
                 }
 
-                currentTrackId = currentTrack.id;
+                currentTrackUri = currentTrack.uri;
                 scrollText.stop($(trackName), $(artistName));
 
                 const spWidth = $(spotifyPlaceholder).width();
 
                 $(trackName).text(currentTrack.name);
-                var titleSize = $(trackName).get(0).scrollWidth;
-                if (titleSize - 5 > spWidth) {
-                    const animeProp = {
-                        targets: $(trackName).get(0),
-                        translateX: (- titleSize),
-                        delay: 2000,
-                    }
-                    scrollText.play(animeProp, spWidth);
-                }
+                animateTitle($(trackName), 2000, spWidth);
 
                 var artistsText = '';
                 const artists = currentTrack.artists;
                 for (var i = 0; i < artists.length; i++) {
-                    if (i == (artists.length - 1)) {
-                        artistsText += `${artists[i].name}`
-                    } else {
-                        artistsText += `${artists[i].name}, `
+                    artistsText += `${artists[i].name}`
+                    if (i !== (artists.length - 1)) {
+                        artistsText += `, `
                     }
                 }
 
                 $(artistName).text(artistsText);
+                animateTitle($(artistName), 4000, spWidth);
 
-                var artistNameSize = $(artistName).get(0).scrollWidth;
-                if (artistNameSize - 5 > spWidth) {
-                    const animeProp = {
-                        targets: $(artistName).get(0),
-                        translateX: (- artistNameSize),
-                        delay: 4000,
-                    }
-                    scrollText.play(animeProp, spWidth);
-                }
-
-                setTimeout(spotify.isLiked(currentTrackId, false), 250);
+                setTimeout(spotify.isLiked(currentTrack.id, false), 250);
                 $('#song-info-thumb-placeholder').addClass('hide');
-                $('#song-det-title').text(currentTrack.name);
-                $('#song-det-artist').text(artistsText);
-                $('#song-det-album').text(currentTrack.album.name);
-                $('#song-det-durat').text(moment.duration(currentTrack.duration_ms, 'milliseconds').format('mm:ss'));
-                $('#song-info-thumb').css({
-                    'background-image': `url(${currentTrack.album.images[2].url})`
-                });
+                displaySongInfo({
+                    trackName: currentTrack.name,
+                    artists: artistsText,
+                    albumName: currentTrack.album.name,
+                    duration: currentTrack.duration_ms,
+                    images: currentTrack.album.images,
+                })
             }
         }
     });
@@ -133,4 +116,17 @@ export function initSpotifyPlayer() {
         spotifyError.throwPremiumError(userDetails.id);
         console.error('Failed to validate Spotify account', message);
     });
+}
+
+function animateTitle(target, delay, spWidth) {
+    const size = $(target).get(0).scrollWidth;
+    if (size - 5 > spWidth) {
+        const animeProp = {
+            targets: $(target),
+            translateX: (- size),
+            delay: delay,
+        }
+
+        scrollText.play(animeProp, spWidth);
+    }
 }

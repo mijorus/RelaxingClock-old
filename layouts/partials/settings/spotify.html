@@ -28,7 +28,7 @@
     <dd id="playlist-box" class="nested unavailable expandable">
         <div class="visible-item full-w">
             <span class="settings-text">
-                <span>Playlist:</span> <span>[Mix #1]</span>
+                <span id="default-playlist-type" class="capitalize">Playlist:</span> <span id="default-playlist-text">[Mix #1]</span>
             </span>
             <button id="expand-playlist" class="settings-btn-container transp-btn">
                 <i id="expand-playlist-arrow" class="fas fa-chevron-down settings-text arrow transp-btn"></i>
@@ -39,7 +39,7 @@
                 <li class="searchbox">
                     <div class="full-w">
                         <span>
-                            <input type="text" id="spotify-search" class="playlist-search settings-text transp-btn" value="">
+                            <input type="text" id="spotify-search" autocomplete="off" class="playlist-search settings-text transp-btn" value="">
                         </span>
                         <p class="settings-hint search-hint">
                             <i class="lnr lnr-magnifier"></i>Use the searchbar for more content

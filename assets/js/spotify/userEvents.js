@@ -7,7 +7,7 @@ import { play,
         isLiked,
         playbackStarted } from "./requests";
 import { deviceID,
-        currentTrackId }  from "./playerListeners";
+        currentTrack }  from "./playerListeners";
 import { reconnect }      from "./reconnect";
 import { cbDefault }      from "js/init";
 import { toggleArrow }    from '../utils/utils'
@@ -74,7 +74,7 @@ function likeBtnListener() {
         event.preventDefault();
         event.stopPropagation();
         if (!playerIsBusy() && playbackStarted) {
-            isLiked(currentTrackId, true);
+            isLiked(currentTrack.id, true);
         }
     });
 }
