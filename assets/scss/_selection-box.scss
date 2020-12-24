@@ -24,7 +24,7 @@
     margin: auto;
 
     @include phones {
-        font-size: 3.5vw;
+        font-size: 2.5vw;
     }
 }
 
@@ -32,7 +32,7 @@
 
 #clock-style-selector {
     width: 100%;
-    height: 1.2vw;
+    height: $selection-box-font;
     margin-top: 1vw;
     position: relative;
     overflow: visible;
@@ -56,7 +56,7 @@
         }
 
         button {
-            font-size: 1.2vw;
+            font-size: $selection-box-font;
             color: inherit;
             position: absolute;
             background-color: transparent;
@@ -86,7 +86,7 @@
             }
 
             @include phones {
-                font-size: 3vw;
+                font-size: $selection-box-font-phone;
             }
         }
 
@@ -96,7 +96,7 @@
     }
 
     @include phones {
-        margin-top: 3.5vw;
+        margin-top: 2.2vw;
     }
 }
 
@@ -110,14 +110,14 @@
     display: inline-block; 
     text-align: center;
     width: 100%;
-    font-size: 1.2vw;
+    font-size: $selection-box-font;
     font-weight: 600;
     opacity: 0;
     border: none;
     transition: opacity .2s linear;
 
     @include phones {
-        font-size: 2.5vw;
+        font-size: $selection-box-font-phone;
     }
 }
 
@@ -134,7 +134,6 @@
     overflow: visible;
     white-space: nowrap;
     padding: 0;
-    margin-top: 1vw;
 
     .divisor {
         width: 1px;
@@ -149,7 +148,7 @@
     }
 
     button {
-        font-size: 1.1vw;
+        font-size: $selection-box-font;
         font-style: inherit;
         color: inherit;
         background-color: transparent;
@@ -171,12 +170,12 @@
         }
 
         @include phones {
-            font-size: 2.5vw;
+            font-size: $selection-box-font-phone;
         }
     }
 
     @include phones {
-        margin-top: 3.5vw;
+        margin-top: 3vw;
     }
 }
 

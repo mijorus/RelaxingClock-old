@@ -39,6 +39,11 @@
     padding: 0 !important;
 }
 
+.top-left-0 {
+    top: 0;
+    left: 0;
+}
+
 .no-scrollbar {
     scrollbar-width: none;  /* Firefox */
     -ms-overflow-style: none;  /* IE and Edge */
@@ -64,6 +69,10 @@
 
 .disp-none {
     display: none !important;
+}
+
+.relative {
+    position: relative;
 }
 
 .upper {
@@ -118,6 +127,12 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
+}
+
+.bg-center-cover {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 .loader-container {
