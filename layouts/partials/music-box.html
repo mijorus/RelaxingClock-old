@@ -1,27 +1,27 @@
 <div id="music-box" class="feature-box unlogged toscreensave">
-    <a id="spotify-link">
-        <i id="spotify-icon" class="fab fa-spotify feature-icon spotify-icon toscreensave" ></i>
+    <a id="spotify-link" class="relative">
+        <i id="spotify-icon" class="fab fa-spotify feature-icon spotify-icon toscreensave bg-center-cover" ></i>
     </a>
-    <div id="spotify-text">
-        <p id="spotify-placeholder" class="spotify-inner-text feature-placeholder">Loading...<br></p>
-        <div id="spotify-track-info" class="hide">
-            <p id="track-name" class="spotify-inner-text"></p>
-            <p id="artist-name" class="spotify-inner-text"></p>
+    <div id="spotify-text" class="full-w full-h relative">
+        <p id="spotify-placeholder" class="spotify-inner-text skinny top-left-0 feature-placeholder relative">Loading...<br></p>
+        <div id="spotify-track-info" class="full-h top-left-0 hide">
+            <p id="track-name" class="spotify-inner-text skinny top-left-0"></p>
+            <p id="artist-name" class="spotify-inner-text skinny top-left-0"></p>
         </div>
     </div>
     <button class="like-btn transp-btn sp-btn">
         <i id="like-icon" class="far fa-heart toscreensave"></i>
     </button>
     <button class="play-btn transp-btn sp-btn">
-        <div id="spotify-loader" class="loader-container">
+        <div id="spotify-loader" class="loader-container full-w full-h top-left-0">
             <div class="loader line-scale"></div>
         </div>
         <i id="playback-icon" class="fas fa-play hide"></i>
     </button>
     <span id="mute-warning" class="sp-btn hide"></span>
     <div id="song-info" class="hide">
-        <span id="song-info-thumb" class="bg-center">
-            <span id="song-info-thumb-placeholder" class="flex-center">
+        <span id="song-info-thumb" class="bg-center-cover">
+            <span id="song-info-thumb-placeholder" class="flex-center full-w full-h">
                 <span class="lnr lnr-picture"></span>
             </span>
         </span>

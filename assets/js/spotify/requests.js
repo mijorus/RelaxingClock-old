@@ -117,6 +117,21 @@ export function getShowList(limit = 50, offset = 0) {
         })
 }
 
+export function getShowEpisodes(id, limit = 50, offset = 0) {
+    return $.ajax({
+        type: "GET",
+        headers: requestHeader,
+        url: spotifyBaseURL + '/shows/' + id + '/episodes',
+        data: {
+            limit: limit,
+            offset: offset,
+        }
+    })
+        .fail(function (error) {
+            spotifyError.logError('CANNOT GET THE SELECTED PODCAST:', error, false);
+        })
+}
+
 export function getPlaylistData(playlistURL) {
     return $.ajax({
         type: "GET",

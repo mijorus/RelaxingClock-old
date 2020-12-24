@@ -2,12 +2,14 @@ import { getPlaylistData,
         getShowList,
         getPlaylistList,
         play,
-        search }           from "./requests";
+        search,
+        getShowEpisodes }    from "./requests";
 import { removeSpace,
-        handleLoader }     from "../utils/utils";
+        handleLoader }       from "../utils/utils";
 
-import { defaultPlaylist } from "./player";
-import { deviceID}         from "./playerListeners";
+import { defaultPlaylist }   from "./player";
+import { deviceID}           from "./playerListeners";
+import { getElementDetails } from "./playlistElementDetails";
 
 var userLibrary = [],
 defaultLibrary = [],
@@ -37,7 +39,6 @@ function displayList(list, fromSearch = false) {
     const loader = $(listContainer).find('#searchloader');
 
     if (!fromSearch) {
-        
         if (userSelection) {
             const item = playlistItemHTML(userSelection, false, false)
             addPlayingAnimation($(item))
@@ -57,7 +58,7 @@ function displayList(list, fromSearch = false) {
             if (type.length > 0) {
                 const listType = getElementDetails(type[0]);
                 listTypeHTML(listType.type)
-
+                console.log(type)
                 for (const playlist of type) {
                     const addedItem = playlistItemHTML(playlist);
                     $(addedItem).data('details', playlist);
@@ -111,58 +112,39 @@ function searchContent(query) {
         });
 }
 
+/**
+ * 
+ Creates a list item in the playlist list and returns the item.
+ */
+
 function playlistItemHTML(playlist, playOnClick = true, needsDetails = true) {
     const details = (needsDetails) ? getElementDetails(playlist) : playlist
     const item = $(`<li></li>`).addClass(`settings-text playlist list-item ${playOnClick ? 'pointer' : ''}`)
-        .append(`<div class="details skinny">
+        .append(`<div class="details skinny no-overflow">
                     <span><img class="playlist-icon flex-center" src="${details.img.url}" alt="${details.name} cover"></span>
-                    <span class="name">${details.name || ''}</span>
+                    <span class="name no-overflow">${details.name || ''}</span>
                 </div>`)
-        .data('uri', details.uri)
         .data('playlist', details)
         .appendTo($(listContainer))
 
-    if (playOnClick) $(item).on('click', playSelectedContent);
+    if (playOnClick) $(item).on('click', selectedContent);
 
     return $(item)
 }
 
-function listTypeHTML(type) {
-    const item = $(`<li class="list-type list-item settings-text">[${type}]</li>`);
-    $(item).appendTo( $(listContainer) );
+/**
+ * 
+ * @param {String} type 
+ */
+function listTypeHTML(type, pointer) {
+    const item = $(`<li>[${type}]</li>`)
+            .addClass(`list-type list-item settings-text ${pointer ? 'pointer' : ''}`)
+            .appendTo($(listContainer));
+
+    return $(item);
 }
 
-function getElementDetails(el) {
-    let type = (el.show) ? el.show.type : el.type;
-    let element = {};
-    switch (type) {
-        case 'show' || 'podcast':
-            data = el.show || el
-            element = { ...data};
-            element.type = 'podcast'
-        break;
 
-        case 'track':
-            element = { ...el };
-            let images = []
-            for (image of el.album.images) {
-                images.push(image)
-            }
-            element.images = images;
-        break;
-        
-        default:
-            element = el;
-        break;
-    }
-
-    return {
-        name: element.name || '',
-        img: element.images[1] || element.images[0] || '',
-        type: type || '',
-        uri: element.uri || '',
-    }
-}
 
 function purgeSingles(albums) {
     return albums.filter((album) => {
@@ -170,16 +152,35 @@ function purgeSingles(albums) {
     });
 }
 
-function playSelectedContent(event) {
+function selectedContent(event) {
     const target = event.currentTarget
-    const uri = $(target).data('uri');
-    play(deviceID, { context_uri: uri })
+    const playlistData = ( $(target).data('playlist') );
+    console.log(playlistData)
+
+    if (playlistData.id) {
+        switch (playlistData.type) {
+            case ('show' || 'podcast'):
+                loadShowEpisodes(playlistData);
+                break;
+            
+            case 'episode':
+                playSelectedContent(playlistData, { uris: [playlistData.uri] }, target);
+                break;
+            
+            default:
+                playSelectedContent(playlistData, { context_uri: playlistData.uri }, target);
+                break;
+        }
+    }
+}
+
+function playSelectedContent(playlistData, params, target) {
+    play(deviceID, params)
         .done(() => {
-            userSelection = $(target).data('playlist')
-            console.log(userSelection)
-            addPlayingAnimation($(target))
-            $('#default-playlist-type').empty().text(`${userSelection.type}: `)
-            $('#default-playlist-text').empty().text(`[${userSelection.name}]`)
+            userSelection = playlistData;
+            addPlayingAnimation($(target));
+            $('#default-playlist-type').empty().text(`${userSelection.type}: `);
+            $('#default-playlist-text').empty().text(`[${userSelection.name}]`);
             // localStorage.setItem('defaultPlaylist', userSelection.uri)
         })
 }
@@ -193,4 +194,16 @@ function addPlayingAnimation(target) {
 
     $(target).find('.details').append(playingAnimation)
         .find('.loader').loaders()
+}
+
+function loadShowEpisodes(playlistData) {
+    getShowEpisodes(playlistData.id, 25)
+        .done((res) => {
+            displayList([res.items], true);
+            (listTypeHTML('go back', true)).on('click', backToLibrary)
+        })
+}
+
+function backToLibrary() {
+    displayList(userLibrary, false)
 }

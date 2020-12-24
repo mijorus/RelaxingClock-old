@@ -33,7 +33,6 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            overflow: hidden;
 
             .playlist-icon {
                 height: $sp-icon-fs;
@@ -51,7 +50,6 @@
 
             .name {
                 display: inline-block;
-                overflow: hidden;
                 white-space: nowrap !important;
                 max-width: 100%;
             }
