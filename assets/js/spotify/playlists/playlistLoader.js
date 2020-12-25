@@ -11,11 +11,13 @@ import { defaultPlaylist }   from "../player";
 import { deviceID}           from "../playerListeners";
 import { getElementDetails } from "./elementDetails";
 import { playlistItemHTML,
+        addPlayingAnimation,
         listTypeHTML }       from "./listComponents";
+import { updatePlaylistBox,
+        currentPlaylist }    from "js/utils/playerUtils";
 
 var userLibrary = [],
-defaultLibrary = [],
-userSelection = undefined;
+defaultLibrary = [];
 
 export var listContainer = undefined;
 
@@ -43,8 +45,8 @@ function displayList(list, fromSearch = false) {
     const loader = $(listContainer).find('#searchloader');
 
     if (!fromSearch) {
-        if (userSelection) {
-            const item = playlistItemHTML(userSelection, false, false)
+        if (currentPlaylist) {
+            const item = playlistItemHTML(currentPlaylist, false, false)
             if (item !== null) addPlayingAnimation($(item))
         }
 
@@ -68,7 +70,7 @@ function displayList(list, fromSearch = false) {
                         const addedItem = playlistItemHTML(playlist);
                         if (addedItem !== null) {
                             $(addedItem).on('click', selectContent).data('details', playlist);
-                            if (userSelection && $(addedItem).data('uri') === userSelection.uri) {
+                            if (currentPlaylist && $(addedItem).data('uri') === currentPlaylist.uri) {
                                 addPlayingAnimation($(addedItem))
                             }
                         }
@@ -120,10 +122,6 @@ function searchContent(query) {
         });
 }
 
-
-
-
-
 function purgeSingles(albums) {
     return albums.filter((album) => {
         return album.album_type === 'album';
@@ -131,9 +129,8 @@ function purgeSingles(albums) {
 }
 
 function selectContent(event) {
-    const target = event.currentTarget
+    const target = event.currentTarget;
     const playlistData = ( $(target).data('playlist') );
-    console.log(playlistData)
 
     if (playlistData.id) {
         switch (playlistData.type) {
@@ -155,24 +152,13 @@ function selectContent(event) {
 function playSelectedContent(playlistData, params, target) {
     play(deviceID, params)
         .done(() => {
-            userSelection = playlistData;
             addPlayingAnimation($(target));
-            $('#default-playlist-type').empty().text(`${userSelection.type}: `);
-            $('#default-playlist-text').empty().text(`[${userSelection.name}]`);
+            updatePlaylistBox(playlistData);
             // localStorage.setItem('defaultPlaylist', userSelection.uri)
         })
 }
 
-function addPlayingAnimation(target) {
-    $(listContainer).find('.current-playing-track').remove();
-    const playingAnimation = `
-        <span class="loader-container current-playing-track">
-            <div class="loader line-scale-party"></div>
-        </span>`;
 
-    $(target).find('.details').append(playingAnimation)
-        .find('.loader').loaders()
-}
 
 function loadShowEpisodes(playlistData) {
     getShowEpisodes(playlistData.id, 25)

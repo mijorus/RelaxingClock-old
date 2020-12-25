@@ -3,7 +3,8 @@ import { playbackIcon }          from "../spotify/playerListeners";
 import { playlistURL }           from "../spotify/player";
 import { spotifyPlaceholder, 
         musicBox }               from "../spotify/init";
-import { getRandomIntInclusive } from "./utils";
+import { getRandomIntInclusive,
+        changeBtnLable }         from "./utils";
 import { cbDefault }             from '../init';
 
 export var songIsSelected = false;
@@ -53,6 +54,14 @@ export function updateStatusText (message) {
 export function updatePlaceholderText(text, error = false) {
     $(spotifyPlaceholder).html(text);
     if (error) $(musicBox).addClass('error');
+}
+
+export var currentPlaylist = undefined;
+export function updatePlaylistBox(details) {
+    if (currentPlaylist !== details || !currentPlaylist) {
+        changeBtnLable($('#default-playlist-text'), details.name);
+    }
+    currentPlaylist = details;
 }
 
 var songTl;

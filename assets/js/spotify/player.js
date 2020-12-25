@@ -5,6 +5,7 @@ import { updateStatusText,
         songIsSelected,
         songSelection,
         songSelected,
+        updatePlaylistBox,
         updatePlaceholderText }  from "../utils/playerUtils";
 import { getRandomIntInclusive,
         changeBtnLable }         from '../utils/utils';
@@ -12,6 +13,7 @@ import { initSpotifyPlayer,
         deviceID,
         playerIsReady,
         paused }                 from "./playerListeners";
+import { getElementDetails } from "./playlists/elementDetails";
 
 export const defaultPlaylist = ['4ZTZhFPPyRzpfHZsWEXAW9', '3gDup3YFG9AXol9jEFqAax'];
 
@@ -79,7 +81,7 @@ function firstSongSelection() {
         .done((res) => {
             song = songSelection(res);
             $(musicBox).addClass('loaded');
-            changeBtnLable($('#default-playlist-text'), res.name);
+            updatePlaylistBox( getElementDetails(res) );
             songSelected(true);
             if (localStorage.autoplay === 'true') {
                 const wait = getRandomIntInclusive(4000, 7500);
@@ -110,3 +112,4 @@ function getDefaultPlaylist() {
         return localStorage.defaultPlaylist;
     }
 }
+

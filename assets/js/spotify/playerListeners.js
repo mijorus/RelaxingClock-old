@@ -5,8 +5,10 @@ import { spotifyError }         from "./errorHandling";
 import { player,
         getUserInfo }           from "./player";
 import { playIcon,
+        updatePlaylistBox,
         scrollText }            from "../utils/playerUtils";
 import { displaySongInfo }      from "./displaySongInfo";
+import { getElementDetails }    from "./playlists/elementDetails";
 
 export const playbackIcon = $('#playback-icon'),
     spotifyIcon           = $('#spotify-icon');
@@ -39,8 +41,10 @@ export function initSpotifyPlayer() {
     player.addListener('player_state_changed', function (state) {
         if (state) {
             const thisTrack = state.track_window.current_track;
-            currentStateContext = state.context;
+            let currentStateContext = state.context;
             currentTrack = (thisTrack) ? thisTrack : currentTrack;
+
+            console.log(state)
 
             if (state.paused) {
                 paused = true;
@@ -54,6 +58,10 @@ export function initSpotifyPlayer() {
                 console.log('Playing a new track...');
                 $(spotifyTrackInfo).removeClass('hide');
                 $(spotifyPlaceholder).css('opacity', 0);
+
+                if (currentStateContext.metadata.context_description) {
+                    updatePlaylistBox( getElementDetails({...state, type: 'context'}) )
+                }
                 
                 const albumImage = currentTrack.album.images[1] || currentTrack.album.images[0];
                 if (albumImage.url) {

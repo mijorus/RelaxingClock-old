@@ -15,16 +15,20 @@ export function getElementDetails(el) {
         element.type = 'podcast'
     } else if (type === 'track') {
         element = { ...el };
-        let images = []
-        for (image of el.album.images) {
-            images.push(image)
-        }
-        element.images = images;
+        element.images = loadAlbumImages(el.album.images);
     } else if (type === 'episode') {
         element = { ...el };
         element.name = `[${el.release_date || ''}] ${el.name}`
     } else if (type === 'album' || type === 'playlist') {
         element = { ...el };
+    } else if (type === 'context') {
+        element = { 
+            name: el.context.metadata.context_description,
+            images: loadAlbumImages(el.track_window.current_track.album.images),
+            type: 'track',
+            uri: (el.context.uri) ? el.context.uri : el.track_window.current_track.uri,
+            id: el.track_window.current_track.id,
+        }
     } else {
         return null;
     }
@@ -50,4 +54,13 @@ export function prepareListItem(name, images = [], type, uri, id) {
         uri: uri || '',
         id: id || ''
     }
+}
+
+function loadAlbumImages(albumImages) {
+    let images = []
+    for (image of albumImages) {
+        images.push(image)
+    }
+
+    return images;
 }

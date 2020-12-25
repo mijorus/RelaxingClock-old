@@ -8,7 +8,6 @@ import { listContainer }     from "./playlistLoader";
 
 export function playlistItemHTML(playlist, playOnClick = true, needsDetails = true) {
     const details = (needsDetails) ? getElementDetails(playlist) : playlist;
-    console.log(details)
     if (details !== null) {
         const item = $(`<li></li>`).addClass(`settings-text playlist list-item ${playOnClick ? 'pointer' : ''}`)
             .append(`<div class="details skinny no-overflow">
@@ -34,4 +33,15 @@ export function listTypeHTML(type, pointer) {
         .appendTo($(listContainer));
 
     return $(item);
+}
+
+export function addPlayingAnimation(target) {
+    $(listContainer).find('.current-playing-track').remove();
+    const playingAnimation = `
+        <span class="loader-container current-playing-track">
+            <div class="loader line-scale-party"></div>
+        </span>`;
+
+    $(target).find('.details').append(playingAnimation)
+        .find('.loader').loaders()
 }
