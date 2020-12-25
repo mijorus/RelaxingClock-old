@@ -3,18 +3,22 @@ import { getPlaylistData,
         getPlaylistList,
         play,
         search,
-        getShowEpisodes }    from "./requests";
+        getShowEpisodes }    from "../requests";
 import { removeSpace,
-        handleLoader }       from "../utils/utils";
+        handleLoader }       from "../../utils/utils";
 
-import { defaultPlaylist }   from "./player";
-import { deviceID}           from "./playerListeners";
-import { getElementDetails } from "./playlistElementDetails";
+import { defaultPlaylist }   from "../player";
+import { deviceID}           from "../playerListeners";
+import { getElementDetails } from "./elementDetails";
+import { playlistItemHTML,
+        listTypeHTML }       from "./listComponents";
 
 var userLibrary = [],
 defaultLibrary = [],
-userSelection = undefined,
-listContainer;
+userSelection = undefined;
+
+export var listContainer = undefined;
+
 export function playlistLoader(container) {
     listContainer = container;
     if (userLibrary.length === 0 || defaultLibrary.length === 0) {
@@ -41,12 +45,13 @@ function displayList(list, fromSearch = false) {
     if (!fromSearch) {
         if (userSelection) {
             const item = playlistItemHTML(userSelection, false, false)
-            addPlayingAnimation($(item))
+            if (item !== null) addPlayingAnimation($(item))
         }
 
         listTypeHTML('by Relaxing Clock');
         defaultLibrary.forEach((playlist) => {
-            playlistItemHTML(playlist);
+            const item = (playlistItemHTML(playlist))
+            if (item !== null) $(item).on('click', selectContent);
         })
     }
 
@@ -57,13 +62,16 @@ function displayList(list, fromSearch = false) {
         list.forEach((type) => {
             if (type.length > 0) {
                 const listType = getElementDetails(type[0]);
-                listTypeHTML(listType.type)
-                console.log(type)
-                for (const playlist of type) {
-                    const addedItem = playlistItemHTML(playlist);
-                    $(addedItem).data('details', playlist);
-                    if ( userSelection && $(addedItem).data('uri') === userSelection.uri) {
-                        addPlayingAnimation($(addedItem))
+                if (listType !== null) {
+                    listTypeHTML(listType.type)
+                    for (const playlist of type) {
+                        const addedItem = playlistItemHTML(playlist);
+                        if (addedItem !== null) {
+                            $(addedItem).on('click', selectContent).data('details', playlist);
+                            if (userSelection && $(addedItem).data('uri') === userSelection.uri) {
+                                addPlayingAnimation($(addedItem))
+                            }
+                        }
                     }
                 }
             }
@@ -112,37 +120,7 @@ function searchContent(query) {
         });
 }
 
-/**
- * 
- Creates a list item in the playlist list and returns the item.
- */
 
-function playlistItemHTML(playlist, playOnClick = true, needsDetails = true) {
-    const details = (needsDetails) ? getElementDetails(playlist) : playlist
-    const item = $(`<li></li>`).addClass(`settings-text playlist list-item ${playOnClick ? 'pointer' : ''}`)
-        .append(`<div class="details skinny no-overflow">
-                    <span><img class="playlist-icon flex-center" src="${details.img.url}" alt="${details.name} cover"></span>
-                    <span class="name no-overflow">${details.name || ''}</span>
-                </div>`)
-        .data('playlist', details)
-        .appendTo($(listContainer))
-
-    if (playOnClick) $(item).on('click', selectedContent);
-
-    return $(item)
-}
-
-/**
- * 
- * @param {String} type 
- */
-function listTypeHTML(type, pointer) {
-    const item = $(`<li>[${type}]</li>`)
-            .addClass(`list-type list-item settings-text ${pointer ? 'pointer' : ''}`)
-            .appendTo($(listContainer));
-
-    return $(item);
-}
 
 
 
@@ -152,7 +130,7 @@ function purgeSingles(albums) {
     });
 }
 
-function selectedContent(event) {
+function selectContent(event) {
     const target = event.currentTarget
     const playlistData = ( $(target).data('playlist') );
     console.log(playlistData)

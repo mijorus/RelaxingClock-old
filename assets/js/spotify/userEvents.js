@@ -11,7 +11,7 @@ import { deviceID,
 import { reconnect }      from "./reconnect";
 import { cbDefault }      from "js/init";
 import { toggleArrow }    from '../utils/utils'
-import { playlistLoader } from "./playlistLoader";
+import { playlistLoader } from "./playlists/playlistLoader";
 
 export var likeBtn, playBtn, songInfo;
 
