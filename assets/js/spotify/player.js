@@ -6,7 +6,8 @@ import { updateStatusText,
         songSelection,
         songSelected,
         updatePlaceholderText }  from "../utils/playerUtils";
-import { getRandomIntInclusive } from '../utils/utils';
+import { getRandomIntInclusive,
+        changeBtnLable }         from '../utils/utils';
 import { initSpotifyPlayer,
         deviceID,
         playerIsReady,
@@ -78,6 +79,7 @@ function firstSongSelection() {
         .done((res) => {
             song = songSelection(res);
             $(musicBox).addClass('loaded');
+            changeBtnLable($('#default-playlist-text'), res.name);
             songSelected(true);
             if (localStorage.autoplay === 'true') {
                 const wait = getRandomIntInclusive(4000, 7500);

@@ -54,17 +54,19 @@ export function getRandomIntInclusive(min, max) {
 
 //Change button lable with animation
 export function changeBtnLable(target, nextMessage, dur = 650) {
-    anime({
-        targets: $(target).get(0),
-        direction: 'alternate', 
-        duration: dur, 
-        loop: 1, 
-        easing: cbDefault, 
-        opacity: [1, 0],
-        loopComplete: () => {
-            $(target).text(`${nextMessage}`);
-        }
-    });
+    if (nextMessage) {
+        anime({
+            targets: $(target).get(0),
+            direction: 'alternate',
+            duration: dur,
+            loop: 1,
+            easing: cbDefault,
+            opacity: [1, 0],
+            loopComplete: () => {
+                $(target).text(`${nextMessage}`);
+            }
+        });
+    }
 }
 
 let handlingMusic = false;
