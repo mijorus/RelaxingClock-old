@@ -44,8 +44,6 @@ export function initSpotifyPlayer() {
             let currentStateContext = state.context;
             currentTrack = (thisTrack) ? thisTrack : currentTrack;
 
-            console.log(state)
-
             if (state.paused) {
                 paused = true;
                 playIcon(false);
@@ -59,9 +57,7 @@ export function initSpotifyPlayer() {
                 $(spotifyTrackInfo).removeClass('hide');
                 $(spotifyPlaceholder).css('opacity', 0);
 
-                if (currentStateContext.metadata.context_description) {
-                    updatePlaylistBox( getElementDetails({...state, type: 'context'}) )
-                }
+                updatePlaylistBox( getElementDetails({...state, type: 'context'}) )
                 
                 const albumImage = currentTrack.album.images[1] || currentTrack.album.images[0];
                 if (albumImage.url) {

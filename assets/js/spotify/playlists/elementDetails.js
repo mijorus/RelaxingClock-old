@@ -23,7 +23,7 @@ export function getElementDetails(el) {
         element = { ...el };
     } else if (type === 'context') {
         element = { 
-            name: el.context.metadata.context_description,
+            name: el.context.metadata.context_description || el.track_window.current_track.name,
             images: loadAlbumImages(el.track_window.current_track.album.images),
             type: 'track',
             uri: (el.context.uri) ? el.context.uri : el.track_window.current_track.uri,
