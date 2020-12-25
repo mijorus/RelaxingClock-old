@@ -25,6 +25,7 @@
     .playlist {
         white-space: nowrap;
         padding: .7vh !important;
+        margin-right: .7vh;
         transition: opacity .5s linear;
         animation: reveal .25s linear;
         animation-fill-mode: forwards;

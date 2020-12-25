@@ -249,3 +249,23 @@
             font-size: $sp-plh-fs * 2.1;
     }
 }
+
+.minimal-scrollbar {
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: none;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        background-color:transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: $color-white;
+    }
+}
