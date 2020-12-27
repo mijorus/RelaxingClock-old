@@ -119,7 +119,6 @@
     font-family: 'icomoon' !important;
     font-style: normal;
     display: none;
-    background-color: $color-bg;
     will-change: transform;
 
     @include phones {
@@ -128,14 +127,18 @@
         height: $sky-icon-size-phones;
     }
 
-    &.sun:before {
-        content: "\e904";
+    &.sun {
+        background-image: url(/icons/sun-centered-border.svg);
+        background-position: center;
+        background-size: cover;
         color: #fc0;
     }
 
-    &.moon:before {
-        content: "\e903";
-        color: #95f;
+    &.moon {
+        background-image: url(/icons/moon-centered-border.svg);
+        background-position: center;
+        background-size: cover;
+        color: #fc0;
     }
 }
 
