@@ -4,7 +4,7 @@
 {{ $serviceWorker := $sw | resources.ExecuteAsTemplate "serviceWorker.js" . | fingerprint }}
 
 {{ if not site.IsServer }}
-{{ $serviceWorker := $sw | minify.RelPermalink }}
+{{ $serviceWorker := $sw | minify }}
 {{ end }}
 
 {{ return $serviceWorker }}
