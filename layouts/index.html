@@ -22,24 +22,21 @@
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
     {{ $vendorScripts := partial "scripts/vendor-scripts.html" . }}
     <script src="{{ $vendorScripts.RelPermalink }}" 
-        crossorigin="anonymous" 
-        integrity="{{ $vendorScripts.Data.Integrity }}">
+        crossorigin="anonymous" >
     </script>
     
     <!-- main.js -->
     {{ $main := partial "scripts/scripts.html" . }}
     <script src="{{ $main.RelPermalink }}" 
-        crossorigin="anonymous"
-        integrity="{{ $main.Data.Integrity }}">
+        crossorigin="anonymous">
     </script>
 
     <!-- service worker -->
     {{ $cacheFiles := (slice $main.RelPermalink $vendorScripts.RelPermalink) }}
     {{ $sw := partial "scripts/service-worker.html" $cacheFiles }}
     <script src="{{ $sw.RelPermalink }}" 
-        crossorigin="anonymous" 
-        integrity="{{ $sw.Data.Integrity }}"
-    >
+        crossorigin="anonymous">
+    </script>
     </script>
 
     <!-- service worker registration -->
