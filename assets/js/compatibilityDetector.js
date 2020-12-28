@@ -5,9 +5,13 @@ export const compatibility = {
     notification: false,
     //Credits: https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
     firefox: typeof InstallTrigger !== 'undefined',
+    onlineStatus: false,
 }
 
 export function runCompatibilityDetector() {
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+
     const md = new MobileDetect(window.navigator.userAgent);
 
     if (md.mobile() === null && window.btoa) {
@@ -25,4 +29,11 @@ export function runCompatibilityDetector() {
     if ('Notification' in window) {
         compatibility.notification = true;
     }
+
+    compatibility.onlineStatus = navigator.onLine;
+}
+
+
+function updateOnlineStatus() {
+    compatibility.onlineStatus = navigator.onLine;
 }

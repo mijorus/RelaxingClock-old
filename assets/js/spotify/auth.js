@@ -12,7 +12,7 @@ export var logged = false,
 accessDenied      = false;
 
 export function login () {
-    if (compatibility.login) {
+    if (compatibility.login && compatibility.onlineStatus) {
         if (localStorage.userHasLogged === 'false') {
             const params = getUrlVars();
             if (params.state === undefined) {
@@ -49,7 +49,7 @@ export function login () {
         }
     } else {
         throwUncompatibilityErr();
-    }
+    } 
 }
 
 export function logout(redirect = true) {
@@ -68,7 +68,8 @@ function throwAuthError(error) {
 
     accessDenied = true;
     $(spotifyPlaceholder).html('Authentication<br>Error').addClass('error');
-    (error === 'access_denied') ? updateStatusText(`Access denied! :(`)
+    (error === 'access_denied') 
+        ? updateStatusText(`Access denied! :(`)
         : updateStatusText(`Authentication Error :(`);
 }
 
@@ -76,12 +77,17 @@ function throwUncompatibilityErr() {
     $(musicBox).addClass('unsupported');
     $('#spotify-status-box').addClass('unavailable');
 
-    if (compatibility.isMobile) {
-        updateStatusText(`Connect from your PC to login with Spotify`);
-        console.error('Unsupported device: Spotify does not currenty support login from smartphones or tablets');
-    } else if (!compatibility.isMobile && !compatibility.urlEncoding) {
-        updateStatusText(`Your browser doesn't seem to be compatible :(`);
-        console.error('Unsupported device: Base64 encoding is not supported!');
+    if (compatibility.onlineStatus) {
+        if (compatibility.isMobile) {
+            updateStatusText(`Connect from your PC to login with Spotify`);
+            console.error('Unsupported device: Spotify does not currenty support login from smartphones or tablets');
+        } else if (!compatibility.isMobile && !compatibility.urlEncoding) {
+            updateStatusText(`Your browser doesn't seem to be compatible :(`);
+            console.error('Unsupported device: Base64 encoding is not supported!');
+        }
+    } else {
+        console.warn('Device is offline')
+        updateStatusText(`You are currently offline`);
     }
 }
 
