@@ -4,6 +4,7 @@ node_modules
 public
 resources
 relaxing-clock.code-workspace
-./netlify
 netlify/debug.log
 hugo.exe
+# Local Netlify folder
+.netlify
