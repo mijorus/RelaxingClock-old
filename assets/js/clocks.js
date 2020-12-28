@@ -7,6 +7,7 @@ import { enableClockListeners }  from "./clockListeners";
 import * as screenSaver          from './screenSaver'
 import { aRandomPlace, newRandomPlace }          from './clockStyles/internationalClock/internationalClock';
 import { handleLoader }          from "./utils/utils";
+import { remoteTime }            from './remoteTime';
 import { clockStyles }           from "./clockStyles/styles";
 import { clockFormat, 
         setClockFormat,
@@ -16,14 +17,13 @@ import { clockFormat,
 
 var clockInAction = false,
 formatIsAnimating = false,
-clockIsResizing   = false,
 clock             = undefined,
 localTimezone     = moment.tz.guess(),
 remoteUnix        = false;
 
 const optionsName = $('.option-name');
 
-export var hours, min, sec;
+export var hours, min, sec, clockIsResizing = false;
 
 export const ampmIcon = $('#ampm'),
 styleList             = 'classic focused metro globe analog galaxy',
@@ -276,41 +276,21 @@ function startClockInterval(userSelection) {
 
 var offset;
 export function getRemoteTime(status = true) {
-    const rtLoader = $('.remote-time-loader');
     if (status) {
-        $(rtLoader.get(0).nextElementSibling).addClass('unavailable');
-        handleLoader($(rtLoader), true);
-        $.ajax({
-            method: "GET",
-            url: "https://worldtimeapi.org/api/ip",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
+        remoteTime()
             .done(function(result) {
+                remoteUnix =  true;
                 localTimezone = result.timezone;
                 offset = moment().unix() - result.unixtime;
-                remoteUnix = true;
-                setTimeout(function () {
-                    handleLoader($(rtLoader), false, true);
-                    $(rtLoader.get(0).nextElementSibling).removeClass('unavailable');
-                }, 1500);
                 console.log(`The clock of your pc is ${offset} seconds behind`);
-            })
-            .fail(function(error) {
-                console.error(error);
-                setTimeout(function () {
-                    handleLoader($(rtLoader), false, false);
-                    $(rtLoader.get(0).nextElementSibling).removeClass('unavailable');
-                }, 1500);
             })
     } else {
         remoteUnix = false;
-        handleLoader($(rtLoader), false, false, false);
+        localTimezone = moment.tz.guess();
+        handleLoader($('.remote-time-loader'), false, false, false);
     }
 }
 
 function getAccurateUnix() {
-    let accurateUnix = moment().unix() - offset;
-    return accurateUnix
+    return moment().unix() - offset;
 }
