@@ -14,7 +14,7 @@ export function runCompatibilityDetector() {
 
     const md = new MobileDetect(window.navigator.userAgent);
 
-    if (md.mobile() === null && window.btoa) {
+    if (md.mobile() === null && window.btoa && (window.Promise !== undefined)) {
         compatibility.login = true;
     }
 
