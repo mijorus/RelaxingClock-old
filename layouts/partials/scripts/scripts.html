@@ -3,8 +3,8 @@
 
 {{ $minify := (dict "minify" false) }}
 
-{{ if site.IsServer }}
-{{ $minify := (dict "minify" true) }}
+{{ if not site.IsServer }}
+{{ $minify = (dict "minify" true) }}
 {{ end }}
 
 {{ $jsBundleOpt := (merge $commonOpt $minify) }}
