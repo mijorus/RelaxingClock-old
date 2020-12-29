@@ -36,12 +36,9 @@ styleSelectorR        = $('#style-selector-r'),
 ssTimeout             = 5000, //timeout after which the screen saver is engaged
 clockOpAnimation      = 350; //timing of the clock opacity animation
 
-//currentPosition = 0; //hardcoded position during development
-
 export function displayDefaultClock() {
     
     enableClockListeners();
-    //screenSaver.handleMouseCursor('watch');
     screenSaver.enableScreenSaver(10000);
 
     if(clockFormat === '24h') {
@@ -200,7 +197,7 @@ export function handleSelectedClock(userSelection, transition, resetClock, oldPo
         });
     }
 
-    //Launch the clock directly, skip the initiation of the interval
+    //Launch the clock directly, skip the initialization of the interval
     else if (!transition && !resetClock) {
         clockStyles[userSelection].skipInit();
         handleSelection(userSelection);

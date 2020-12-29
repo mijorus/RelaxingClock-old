@@ -14,7 +14,7 @@ export function remoteTime() {
             $(rtLoader.get(0).nextElementSibling).removeClass('unavailable');
         })
         .fail(function (error) {
-            console.error(error);
+            console.error(error.responseText);
             handleLoader($(rtLoader), false, false);
             $(rtLoader.get(0).nextElementSibling).removeClass('unavailable');
         })

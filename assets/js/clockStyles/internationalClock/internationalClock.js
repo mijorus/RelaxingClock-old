@@ -23,24 +23,8 @@ export function newRandomPlace() {
     }
     
     aRandomPlace.city = cities[currentCity]
-}
 
-function getCbCurve(percentage) {
-    const customCB = {
-         0: 'cubicBezier(1,.03,.9,.44)',
-        10: 'cubicBezier(.24,.3,.88,-0.31)',
-        20: 'cubicBezier(.27,.55,.9,-0.27)',
-        30: 'cubicBezier(.43,.68,.84,-0.18)',
-        40: 'cubicBezier(.39,.85,.84,-0.12)',
-        50: 'cubicBezier(0,1,1,0)',
-        60: 'cubicBezier(.35,1.08,.92,.22)',
-        70: 'cubicBezier(.33,1.2,.84,.28)',
-        80: 'cubicBezier(.37,1.24,.88,.43)',
-        90: 'cubicBezier(.28,1.3,.82,.67)',
-       100: 'cubicBezier(.12,1.12,.74,.93)'
-    }
-
-    return customCB[percentage];
+    return aRandomPlace;
 }
 
 function getDayPercentage(zero, hundred, x) {
@@ -83,22 +67,5 @@ function getDayStatus() {
     return { 
         isDay: isDay,
         percentage: circlePercentage,
-        // cbCurve: function() {
-        //     return getCbCurve(circlePercentage)
-        // }
     }
 }
-
-// function getDayPercentage() {
-//     console.log(aRandomPlace.city, moment.tz(aRandomPlace.tz).format('HH mm ss'));
-
-
-//     console.log(sunc.sunrise, sunc.sunset, now);
-
-//     // if (isDay()) {
-//     //     console.log(`We are at about ${circlePercentage}% of the day in ${aRandomPlace.city}`);
-//     // } else {
-//     //     console.log(`We are at about ${circlePercentage}% of the night in ${aRandomPlace.city}`);
-
-//     // }
-// }

@@ -57,7 +57,7 @@ export function skipInit() {
 }
 
 export function resetStyle() {
-    newRandomPlace(true);
+    newRandomPlace();
 }
 
 //Screen Saver actions

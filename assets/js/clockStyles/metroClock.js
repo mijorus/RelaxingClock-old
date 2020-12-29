@@ -10,6 +10,8 @@ import { centerContainer,
 import { newRandomPlace,
         aRandomPlace, }      from "./internationalClock/internationalClock";
 
+var selectedCity = undefined;
+
 export function loadStyle() {
     $(main).addClass('metro');
     $(centerContainer).addClass('metro');
@@ -17,20 +19,19 @@ export function loadStyle() {
 }
 
 export function beforeLoad() {
-    const metroBg = $('#metro-background');
-    $(metroBg).removeClass();
-    newRandomPlace(false);
-    $(metroBg).addClass(aRandomPlace.city.class);
+    if (!selectedCity) selectedCity = newRandomPlace();
+    $('#metro-background').removeClass().addClass(selectedCity.city.class);
 }
 
-export function unloadStyle() { }
+export function unloadStyle() {
+    selectedCity = undefined;
+}
 
 export function startProgression() {}
 
-export function skipInit() { }
+export function skipInit() {}
 
 export function resetStyle() {
-    newRandomPlace(false);
     $('#metro-background').addClass(aRandomPlace.city.class);
 }
 
@@ -42,9 +43,7 @@ export function goFullScreen() {
         easing: cbDefault,
         duration: 2000,
         delay: 50,
-        scale: () => {
-            return (($(window).height() * 0.85) / $(bigClock).height());
-        },
+        scale: ( $(window).height() * 0.85 ) / $(bigClock).height(),
         complete: function () {
             $(clockInnerCont).removeClass('metro-margin');
         }
@@ -64,7 +63,7 @@ export function leaveFullScreen() {
 
 function handleMetroClock() {
     if (sec % 2 == 0) {
-        $(bigClock).html(hours + '<br>' + '·' + '<br>' + min);
+        $(bigClock).html(hours + '<br>' + '&middot' + '<br>' + min);
     } else {
         $(bigClock).html(hours + '<br>' + ' ' + '<br>' + min);
     }
