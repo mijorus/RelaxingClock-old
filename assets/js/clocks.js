@@ -13,6 +13,7 @@ import { clockFormat,
         setClockFormat,
         currentPosition,
         setPosition }            from "./getSettings";
+import * as newyear from "./clockStyles/newYearAnimation";
 
 
 var clockInAction = false,
@@ -164,6 +165,7 @@ export function handleSelectedClock(userSelection, transition, resetClock, oldPo
     }
 
     clockStyles[userSelection].beforeLoad();
+    newyear.stopNewYearAnimation();
 
     if (transition && resetClock) {
         const animationProps = {
@@ -239,6 +241,10 @@ export function loadTime(timeFormat, zone = localTimezone) {
 
     min = now.format('mm');
     sec = now.format('ss');
+
+    if (now.dayOfYear() === 1 && now.format('HH:mm') === '00:00' && !newyear.launched) {
+        newyear.launchNewYearAnimation();
+    }
 }
 
 //This function is called once every second by startClockInterval, just before the handleClockProgression

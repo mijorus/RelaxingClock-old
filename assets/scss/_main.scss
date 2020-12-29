@@ -151,3 +151,8 @@ a {
         transform: translate(-50%, -10px);
     }
 }
+
+#canvas-new-year {
+    position: absolute;
+    z-index: -1;
+}

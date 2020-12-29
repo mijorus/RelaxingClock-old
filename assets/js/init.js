@@ -8,6 +8,7 @@ import { handleExpandIcon }                from './utils/fullScreenUtils';
 import { getSettings }                     from "./getSettings";
 import { musicBox,
         initSpotifyAuthProcess }           from "./spotify/init";
+import { launchNewYearAnimation } from './clockStyles/newYearAnimation';
 
 export const body = $('body'),
 main              = $('main'),

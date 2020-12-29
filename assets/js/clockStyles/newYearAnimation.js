@@ -2,27 +2,44 @@
     Based on a pen by @juliangarnier
     https://codepen.io/juliangarnier/pen/gmOwJX
 */
-
-window.human = false;
-
-var ctx = canvasEl.getContext('2d');
+import { main } from "../init";
+var canvasEl, ctx;
+var render;
 var numberOfParticules = 30;
-var pointerX = 0;
-var pointerY = 0;
-var tap = ('ontouchstart' in window || navigator.msMaxTouchPoints) ? 'touchstart' : 'mousedown';
 var colors = ['#FF1461', '#18FF92', '#5A87FF', '#FBF38C'];
+var stop = true;
 
-function setCanvasSize() {
-    canvasEl.width = window.innerWidth * 2;
-    canvasEl.height = window.innerHeight * 2;
-    canvasEl.style.width = window.innerWidth + 'px';
-    canvasEl.style.height = window.innerHeight + 'px';
-    canvasEl.getContext('2d').scale(2, 2);
+export var launched = false;
+
+export function launchNewYearAnimation() {
+    console.log('launching new year animation!');
+    canvasEl = $('<canvas id="canvas-new-year" class="top-left-0"></canvas>');
+    $(main).append(canvasEl)
+    setCanvasSize();
+    defineRender();
+
+    stop = false;
+    launched = true;
+
+    ctx = $(canvasEl).get(0).getContext('2d');
+
+    autoClick();
+    render.play();
+    setTimeout(stopNewYearAnimation, 40 * 1000)
 }
 
-function updateCoords(e) {
-    pointerX = e.clientX || e.touches[0].clientX;
-    pointerY = e.clientY || e.touches[0].clientY;
+export function stopNewYearAnimation() {
+    stop = true;
+    launched = false;
+    $(canvasEl).remove();
+}
+
+function setCanvasSize() {
+    $(canvasEl).get(0).width = $(main).width() * 2;
+    $(canvasEl).get(0).height = $(main).height() * 2;
+    $(canvasEl).width( $(main).width() );
+    $(canvasEl).height( $(main).height() );
+    $(canvasEl).get(0).getContext('2d').scale(2, 2);
 }
 
 function setParticuleDirection(p) {
@@ -109,32 +126,27 @@ function animateParticules(x, y) {
         });
 }
 
-var render = anime({
-    duration: Infinity,
-    update: function () {
-        ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
-    }
-});
-
-document.addEventListener(tap, function (e) {
-    window.human = true;
-    render.play();
-    updateCoords(e);
-    animateParticules(pointerX, pointerY);
-}, false);
+function defineRender() {
+    render = anime({
+        duration: Infinity,
+        update: function () {
+            ctx.clearRect(0, 0, $(canvasEl).width(), $(canvasEl).height());
+        }
+    });
+}
 
 var centerX = window.innerWidth / 2;
 var centerY = window.innerHeight / 2;
 
 function autoClick() {
-    if (window.human) return;
-    animateParticules(
-        anime.random(centerX - 50, centerX + 50),
-        anime.random(centerY - 50, centerY + 50)
-    );
-    anime({ duration: 200 }).finished.then(autoClick);
-}
+    if (stop) {
+        return
+    } else {
+        animateParticules(
+            anime.random(centerX - (centerX - 20), centerX + (centerX - 20)),
+            anime.random(centerY - (centerY - 20), centerY + (centerY - 20))
+        );
 
-autoClick();
-setCanvasSize();
-window.addEventListener('resize', setCanvasSize, false);
+        anime({ duration: 200 }).finished.then(autoClick);
+    }
+}
