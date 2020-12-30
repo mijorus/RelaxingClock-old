@@ -23,7 +23,6 @@ export function getSettings() {
 
         [
             'userHasLogged',
-            'autoplay',
             'presentation',
             'longPomodoro',
             'remoteTime',

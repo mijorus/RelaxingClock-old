@@ -63,9 +63,7 @@ export function getUserInfo() {
     spotify.getUserDetails()
         .done((res) => {
             userDetails = res;
-            [$('#autoplay-box'), $('#playlist-box')].forEach((el) => {
-                $(el).removeClass('unavailable');
-            });
+            $('#playlist-box').removeClass('unavailable');
             updateStatusText(`Logged in as ${userDetails.display_name}`);
             setTimeout(() => {
                 firstSongSelection();
@@ -80,24 +78,8 @@ function firstSongSelection() {
             $(musicBox).addClass('loaded');
             updatePlaylistBox( getElementDetails(res) );
             songSelected(true);
-            if (localStorage.autoplay === 'true') {
-                const wait = getRandomIntInclusive(4000, 7500);
-                console.log(`Autoplay is enabled, starting in ${wait / 1000} seconds`);
-
-                updatePlaceholderText('Music will<br>start soon...');
-                setTimeout(function() {
-                    if (paused) {
-                        spotifyError.removeLoader();
-                        spotify.play(deviceID, {
-                            context_uri: song.context_uri,
-                            offset: song.offset,
-                        });
-                    }
-                }, wait);
-            } else if (localStorage.autoplay === 'false') {
-                spotifyError.removeLoader();
-                updatePlaceholderText('Ready to<br>play!');
-            }
+            spotifyError.removeLoader();
+            updatePlaceholderText('Ready to<br>play!');
         })
 }
 

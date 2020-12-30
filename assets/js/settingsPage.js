@@ -32,10 +32,6 @@ function setSpotifyLoginButton() {
 function getButtonSettings() {
    [
         {
-            stored: localStorage.autoplay,
-            button: 'autoplay'
-        },
-        {
             stored: localStorage.presentation,
             button: 'presentation'
         },
@@ -94,14 +90,6 @@ export function handleSettingButtons() {
                             window.location.replace(redirectURI);
                         }
                     }
-                break;
-
-                case 'autoplay-on':
-                    localStorage.autoplay = 'true';
-                break;
-                
-                case 'autoplay-off':
-                    localStorage.autoplay = 'false';
                 break;
 
                 case 'presentation-on':
