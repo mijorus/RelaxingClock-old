@@ -2,7 +2,10 @@
 <html lang="en">
     <head>
         {{partial "head/head.html"}}
-        {{partial "head/vendor-css.html"}}
+
+        {{ $vendorsCSS := partial "head/vendor-css.html" . }}
+        <link rel="stylesheet" type="text/css" href="{{ $vendorsCSS.RelPermalink }}">
+        
         {{partial "pages/pages-css.html"}}
         <title>{{ site.Title }} - FAQ</title>
     </head>

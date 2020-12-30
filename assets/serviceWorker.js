@@ -2,7 +2,7 @@ self.addEventListener('install', event => {
     const cacheName = 'relaxingclock-v2';
 
     // Hugo's code injection
-    const cacheFiles = [ 
+    const cacheFiles = [
         '{{ delimit (.) "', '" }}',
         {{ range(readDir "./static/icons") }}'/icons/{{ .Name }}', {{ end }}
         {{ range(readDir "./static/img") }}'/img/{{ .Name }}', {{ end }}

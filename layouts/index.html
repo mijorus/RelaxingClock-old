@@ -2,8 +2,12 @@
 <html lang="en">
     <head>
         {{ partial "head/head.html" }}
-        {{ partial "head/vendor-css.html" }}
-        {{ partial "head/css.html" }}
+
+        {{ $vendorsCSS := partial "head/vendor-css.html" . }}
+        <link rel="stylesheet" type="text/css" href="{{ $vendorsCSS.RelPermalink }}">
+
+        {{ $cssBundle := partial "head/css.html" . }}
+        <link rel="stylesheet" href="{{ $cssBundle.RelPermalink }}" crossorigin="anonymous">
         <title>{{ site.Title }}</title>
     </head>
     <body>
@@ -32,7 +36,7 @@
     </script>
 
     <!-- service worker -->
-    {{ $cacheFiles := (slice $main.RelPermalink $vendorScripts.RelPermalink) }}
+    {{ $cacheFiles := (slice $main.RelPermalink $vendorScripts.RelPermalink $cssBundle.RelPermalink $vendorsCSS) }}
     {{ $sw := partial "scripts/service-worker.html" $cacheFiles }}
     <script src="{{ $sw.RelPermalink }}" 
         crossorigin="anonymous">

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     {{partial "head/head.html"}}
-    {{partial "head/css.html"}}
+    {{ $cssBundle := partial "head/css.html" . }}
+    <link rel="stylesheet" href="{{ $cssBundle.RelPermalink }}" crossorigin="anonymous">
     <title>404 - {{ site.Title }}</title>
     <body>
     <main class="full-viewport flex-center flex-col">
