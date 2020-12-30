@@ -21,7 +21,10 @@
             <div>Relaxing</div>
             <div>Clock</div>
         </section>
-        {{ partial "scripts/vendor-scripts.html" . }}
+        
+        {{ $vendorScripts := partial "scripts/vendor-scripts.html" . }}
+        <script src="{{ $vendorScripts.RelPermalink }}" crossorigin="anonymous"></script>
+        
         {{ partial "scripts/pages/pages-scripts.html" . }}
     </body>
 </html>

@@ -6,7 +6,8 @@ import { player,
         getUserInfo }           from "./player";
 import { playIcon,
         updatePlaylistBox,
-        scrollText }            from "../utils/playerUtils";
+        scrollText, 
+        changeOnlineStatus}            from "../utils/playerUtils";
 import { displaySongInfo }      from "./displaySongInfo";
 import { getElementDetails }    from "./playlists/elementDetails";
 
@@ -112,7 +113,8 @@ export function initSpotifyPlayer() {
 
     // Not Ready
     player.addListener('not_ready', function ({ device_id }) {
-        console.log('Device has gone offline', device_id);
+        console.log('Device has gone offline');
+        changeOnlineStatus();
     });
 
     // The user authenticated does not have a valid Spotify Premium subscription

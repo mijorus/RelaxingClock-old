@@ -64,6 +64,17 @@ export function updatePlaylistBox(details) {
     currentPlaylist = details;
 }
 
+export function changeOnlineStatus(online = false) {
+    if (online) {
+        return;
+    } else {
+        console.warn('Device is offline');
+        $('#spotify-status-box').addClass('unavailable');
+        updateStatusText(`You are currently offline`);
+        $(musicBox).removeClass('logged unsupported').addClass('unlogged');
+    }
+}
+
 var songTl;
 export const scrollText = {
     scrollDuration: 15000,

@@ -36,7 +36,7 @@
     </script>
 
     <!-- service worker -->
-    {{ $cacheFiles := (slice $main.RelPermalink $vendorScripts.RelPermalink $cssBundle.RelPermalink $vendorsCSS) }}
+    {{ $cacheFiles := (slice $main.RelPermalink $vendorScripts.RelPermalink $cssBundle.RelPermalink $vendorsCSS.RelPermalink) }}
     {{ $sw := partial "scripts/service-worker.html" $cacheFiles }}
     <script src="{{ $sw.RelPermalink }}" 
         crossorigin="anonymous">
@@ -45,6 +45,10 @@
 
     <!-- service worker registration -->
     <script>
+        window.addEventListener("beforeinstallprompt", (event) => {
+                event.preventDefault();
+        })
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('{{ $sw.RelPermalink }}')

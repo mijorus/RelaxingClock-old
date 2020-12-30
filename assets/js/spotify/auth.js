@@ -1,7 +1,8 @@
 import { spotifyPlaceholder, 
         musicBox }              from "./init";
 import { compatibility }        from "../compatibilityDetector";
-import { updateStatusText }     from "../utils/playerUtils";
+import { updateStatusText,
+        changeOnlineStatus }    from "../utils/playerUtils";
 import { createNewSpotifyPlayer, 
         player }                from "./player";
 import { generateUrl, 
@@ -26,7 +27,6 @@ export function login () {
                 //The user comes from the Spotify's authentication page
                 //without errors
                 if (params.state === localStorage.state) {
-                    console.log(params)
                     //The state variables match, the authentication is completed,
                     //the app will reload the page to clean the address bar
                     localStorage.userHasLogged = 'true';
@@ -42,8 +42,8 @@ export function login () {
                 throwAuthError(params.error);
             }
         } else if (localStorage.userHasLogged === 'true' && compatibility.login) {
-            $(musicBox).removeClass('unlogged').addClass('logged');
             window.onSpotifyWebPlaybackSDKReady = () => {
+                $(musicBox).removeClass('unlogged').addClass('logged');
                 createNewSpotifyPlayer();
             }
         }
@@ -62,6 +62,8 @@ export function logout(redirect = true) {
     localStorage.removeItem('state');
     if (redirect) window.location.replace(redirectURI);
 }
+
+
 
 function throwAuthError(error) {
     console.error(`Authentication Error, ${error}!`);
@@ -86,8 +88,7 @@ function throwUncompatibilityErr() {
             console.error('Unsupported device: Base64 encoding is not supported!');
         }
     } else {
-        console.warn('Device is offline')
-        updateStatusText(`You are currently offline`);
+        changeOnlineStatus();
     }
 }
 

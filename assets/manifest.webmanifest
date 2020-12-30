@@ -2,7 +2,9 @@
     "background_color": "#1d1d1d",
     "theme_color": "#1d1d1d",
     "display": "standalone",
-    "name": "Relaxing ",
+    "name": "Relaxing Clock",
+    "lang": "en-US",
+    "version": "{{ site.Params.version }}",
     "icons": [
       {
         "src": "/icons/android-chrome-192x192.png",

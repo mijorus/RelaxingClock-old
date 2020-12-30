@@ -1,3 +1,5 @@
+import { changeOnlineStatus } from "./utils/playerUtils";
+
 export const compatibility = {
     login: false,
     isMobile: false,
@@ -35,5 +37,7 @@ export function runCompatibilityDetector() {
 
 
 function updateOnlineStatus() {
+    console.log('Network status changed');
     compatibility.onlineStatus = navigator.onLine;
+    if (!navigator.onLine) changeOnlineStatus();
 }
