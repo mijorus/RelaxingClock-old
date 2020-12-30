@@ -139,7 +139,7 @@ export function getPlaylistData(playlistURL) {
         headers: requestHeader
     })
         .fail(function(error) {
-            spotifyError.logError('CANNOT SELECT A SONG TO PLAY:', error);
+            spotifyError.logError('CANNOT GET PLAYLIST DATA:', error);
         });
 }
 

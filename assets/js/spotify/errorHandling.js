@@ -56,8 +56,8 @@ export const spotifyError = {
         $(musicBox).addClass('error');
 
         if (message === 'default') {
-            updatePlaceholderText(
-                `Something went<br>wrong :( <a href="${redirectURI}">Try again</a>`, true);
+            localStorage.removeItem('defaultPlaylist');
+            updatePlaceholderText(`Something went<br>wrong :( <a href="${redirectURI}">Try again</a>`, true);
         } else {
             updatePlaceholderText(message, true);
         }

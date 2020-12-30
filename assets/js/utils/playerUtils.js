@@ -1,6 +1,5 @@
 import { likeBtn }               from "../spotify/userEvents";
 import { playbackIcon }          from "../spotify/playerListeners";
-import { playlistURL }           from "../spotify/player";
 import { spotifyPlaceholder, 
         musicBox }               from "../spotify/init";
 import { getRandomIntInclusive,
@@ -29,7 +28,7 @@ export function songSelection(playlist, random = true) {
     console.log(`There are ${playlistLength} songs in the playlist, I have selected the #${playlistOffset}`);
 
     return {
-        'context_uri': `spotify:playlist:${playlistURL}`,
+        'context_uri': `spotify:playlist:${playlist.uri}`,
         'offset': {
             'position': playlistOffset
         }

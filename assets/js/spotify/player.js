@@ -7,17 +7,14 @@ import { updateStatusText,
         songSelected,
         updatePlaylistBox,
         updatePlaceholderText }  from "../utils/playerUtils";
-import { getRandomIntInclusive,
-        changeBtnLable }         from '../utils/utils';
+import { getRandomIntInclusive } from '../utils/utils';
 import { initSpotifyPlayer,
         deviceID,
         playerIsReady,
         paused }                 from "./playerListeners";
-import { getElementDetails } from "./playlists/elementDetails";
+import { getElementDetails }     from "./playlists/elementDetails";
+import { defaultPlaylist }       from "./playlists/defaultPlaylist";
 
-export const defaultPlaylist = ['4ZTZhFPPyRzpfHZsWEXAW9', '3gDup3YFG9AXol9jEFqAax'];
-
-export const playlistURL = getDefaultPlaylist();
 
 export var player = undefined,
 song              = undefined;
@@ -77,7 +74,7 @@ export function getUserInfo() {
 }
 
 function firstSongSelection() {
-    spotify.getPlaylistData(playlistURL)
+    spotify.getPlaylistData(defaultPlaylist())
         .done((res) => {
             song = songSelection(res);
             $(musicBox).addClass('loaded');
@@ -104,12 +101,4 @@ function firstSongSelection() {
         })
 }
 
-function getDefaultPlaylist() {
-    if(localStorage.getItem('defaultPlaylist') === null) {
-        localStorage.setItem('defaultPlaylist', defaultPlaylist[0]);
-        return localStorage.defaultPlaylist;
-    } else {
-        return localStorage.defaultPlaylist;
-    }
-}
 
