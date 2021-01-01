@@ -6,10 +6,13 @@ import { player,
         getUserInfo }           from "./player";
 import { playIcon,
         updatePlaylistBox,
-        scrollText, 
-        changeOnlineStatus}            from "../utils/playerUtils";
+        scrollText,
+        updateSpotifyIcon,
+        changeOnlineStatus,
+        updatePlaceholderText}     from "../utils/playerUtils";
 import { displaySongInfo }      from "./displaySongInfo";
 import { getElementDetails }    from "./playlists/elementDetails";
+import { startPeriodicDeviceCheck } from "./reconnect";
 
 export const playbackIcon = $('#playback-icon'),
     spotifyIcon           = $('#spotify-icon');
@@ -42,7 +45,6 @@ export function initSpotifyPlayer() {
     player.addListener('player_state_changed', function (state) {
         if (state) {
             const thisTrack = state.track_window.current_track;
-            let currentStateContext = state.context;
             currentTrack = (thisTrack) ? thisTrack : currentTrack;
 
             if (state.paused) {
@@ -56,16 +58,11 @@ export function initSpotifyPlayer() {
             if (currentTrack.uri !== currentTrackUri) {
                 console.log('Playing a new track...');
                 $(spotifyTrackInfo).removeClass('hide');
-                $(spotifyPlaceholder).css('opacity', 0);
-
+                updatePlaceholderText('a', false, true);
                 updatePlaylistBox( getElementDetails({...state, type: 'context'}) )
                 
                 const albumImage = currentTrack.album.images[1] || currentTrack.album.images[0];
-                if (albumImage.url) {
-                    $(spotifyIcon).addClass('has-cover').css({
-                        'background-image': `url(${albumImage.url})`
-                    });
-                }
+                if (albumImage.url) updateSpotifyIcon(albumImage.url, 'image');
 
                 currentTrackUri = currentTrack.uri;
                 scrollText.stop($(trackName), $(artistName));
@@ -105,6 +102,7 @@ export function initSpotifyPlayer() {
         playerIsReady = true;
         deviceID = device_id;
         console.log('Ready with Device ID', deviceID);
+        startPeriodicDeviceCheck();
 
         if (localStorage.getItem('premium') === null) {
             getUserInfo();

@@ -7,11 +7,8 @@ import { updateStatusText,
         songSelected,
         updatePlaylistBox,
         updatePlaceholderText }  from "../utils/playerUtils";
-import { getRandomIntInclusive } from '../utils/utils';
 import { initSpotifyPlayer,
-        deviceID,
-        playerIsReady,
-        paused }                 from "./playerListeners";
+        playerIsReady }          from "./playerListeners";
 import { getElementDetails }     from "./playlists/elementDetails";
 import { defaultPlaylist }       from "./playlists/defaultPlaylist";
 

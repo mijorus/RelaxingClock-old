@@ -69,7 +69,7 @@ export function refreshToken() {
 export function findDevices() {
     return $.ajax({
         method: 'GET',
-        url: spotifyBaseURL + '/player/devices',
+        url: spotifyBaseURL + '/me/player/devices',
         headers: requestHeader,
     })
 }

@@ -220,12 +220,14 @@
 
     #spotify-link {
         left: 0;
+        flex-grow: 0;
 
         &.screen-saving {
             color: inherit !important;
         }
         
         .spotify-icon {
+            width: fit-content;
             margin-right: .5vw;
             transition: opacity 1s linear;
             border-radius: 3px;
@@ -245,7 +247,10 @@
     }
     
     #spotify-text {
-        flex-grow: 20;
+        flex-grow: 1;
+        min-height: 5vh;
+        display: flex;
+        align-items: center;
         
         #spotify-placeholder {
             opacity: 1;

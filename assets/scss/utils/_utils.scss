@@ -222,17 +222,22 @@
 
 .feature-icon {
     font-size: $sp-icon-fs;
+    min-width: $sp-icon-fs;
+    width: fit-content;
 
     @include md-screen {
         font-size: 3vw;
+        min-width: 3vw;
     }
 
     @include phones {
         font-size: $sp-icon-fs * 2;
+        min-width: $sp-icon-fs * 2;
     }
 
     @include xs-phone {
         font-size: $sp-icon-fs * 2.5;
+        min-width: $sp-icon-fs * 2.5;
     }
 }
 

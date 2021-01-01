@@ -1,8 +1,8 @@
-import { spotifyPlaceholder, 
-        musicBox }              from "./init";
+import { musicBox }             from "./init";
 import { compatibility }        from "../compatibilityDetector";
 import { updateStatusText,
-        changeOnlineStatus }    from "../utils/playerUtils";
+        changeOnlineStatus, 
+        updatePlaceholderText}  from "../utils/playerUtils";
 import { createNewSpotifyPlayer, 
         player }                from "./player";
 import { generateUrl, 
@@ -20,7 +20,7 @@ export function login () {
                 //The user has never logged before to the app
                 putURL()
                     .then(() => {
-                        $(spotifyPlaceholder).html('Login with <br> Spotify');
+                        updatePlaceholderText('Login with <br> Spotify')
                         updateStatusText('Login with Spotify to listen some relaxing beats');
                     })
             } else if (params.state && params.error === undefined) {
@@ -69,7 +69,7 @@ function throwAuthError(error) {
     console.error(`Authentication Error, ${error}!`);
 
     accessDenied = true;
-    $(spotifyPlaceholder).html('Authentication<br>Error').addClass('error');
+    updatePlaceholderText('Authentication<br>Error', true, false);
     (error === 'access_denied') 
         ? updateStatusText(`Access denied! :(`)
         : updateStatusText(`Authentication Error :(`);

@@ -1,6 +1,7 @@
 import { likeBtn }               from "../spotify/userEvents";
-import { playbackIcon }          from "../spotify/playerListeners";
-import { spotifyPlaceholder, 
+import { playbackIcon,
+        spotifyIcon }            from "../spotify/playerListeners";
+import { spotifyPlaceholder,
         musicBox }               from "../spotify/init";
 import { getRandomIntInclusive,
         changeBtnLable }         from "./utils";
@@ -11,6 +12,7 @@ export function songSelected(status) {
     songIsSelected = status; 
 }
 
+// Change the icon of the play button
 export function playIcon(musicIsPlaying) {
     if (musicIsPlaying) {
         $(playbackIcon).removeClass('fa-play').addClass('fa-pause');
@@ -19,6 +21,8 @@ export function playIcon(musicIsPlaying) {
     }
 }
 
+// Select a random track from a playlist before 
+// starting the playback
 export function songSelection(playlist, random = true) {
     const playlistLength = playlist.tracks.total;
     const playlistOffset = (random)
@@ -28,13 +32,14 @@ export function songSelection(playlist, random = true) {
     console.log(`There are ${playlistLength} songs in the playlist, I have selected the #${playlistOffset}`);
 
     return {
-        'context_uri': `spotify:playlist:${playlist.uri}`,
+        'context_uri': `spotify:playlist:${playlist.id}`,
         'offset': {
             'position': playlistOffset
         }
     }
 }
 
+// Change the icon of the heart button in the music box
 export function handleHeartButton(songIsLiked) {
     if (songIsLiked) {
         $(likeBtn).children('#like-icon')
@@ -45,14 +50,23 @@ export function handleHeartButton(songIsLiked) {
     }
 }
 
+// Change the content of the status text
 const spotifyStatusText = $('#spotify-status-text');
 export function updateStatusText (message) {
     $(spotifyStatusText).text(message);
 }
 
-export function updatePlaceholderText(text, error = false) {
+export function updatePlaceholderText(text, error = false, hide = false) {
     $(spotifyPlaceholder).html(text);
     if (error) $(musicBox).addClass('error');
+
+    if (hide) {
+        $(spotifyPlaceholder).css('opacity', 0);
+        $('#spotify-track-info').css('opacity', 1);
+    } else {
+        $(spotifyPlaceholder).css('opacity', 1);
+        $('#spotify-track-info').css('opacity', 0);
+    }
 }
 
 export var currentPlaylist = undefined;
@@ -63,6 +77,7 @@ export function updatePlaylistBox(details) {
     currentPlaylist = details;
 }
 
+// Dims the color of the Spotify Box if the PWA is running offline
 export function changeOnlineStatus(online = false) {
     if (online) {
         return;
@@ -74,6 +89,32 @@ export function changeOnlineStatus(online = false) {
     }
 }
 
+
+const defaultSpotifyIconClass = $(spotifyIcon).attr('class').split(/\s+/);
+/**
+ * 
+ * @param {String} content 
+ * @param {String} type image, icon, default
+ */
+export function updateSpotifyIcon(content, type = 'image') {
+    switch (type) {
+        case 'image':
+            $(spotifyIcon).addClass('has-cover').css({
+                'background-image': `url(${content})`
+            });
+            break;
+        
+        case 'icon':
+            $(spotifyIcon).removeClass('has-cover fab fa-spotify')
+                .addClass(content);
+            break;
+
+        case 'default': 
+            $(spotifyIcon).removeClass('has-cover')
+                .addClass(defaultSpotifyIconClass)
+            break;
+    }
+}
 var songTl;
 export const scrollText = {
     scrollDuration: 15000,
