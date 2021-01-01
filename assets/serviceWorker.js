@@ -1,4 +1,4 @@
-const cacheName = 'relaxingclock-v{{ site.Params.version }}';
+const cacheName = 'relaxingclock-{{ now.Unix }}';
 
 // Hugo's code injection
 const cacheFiles = [
