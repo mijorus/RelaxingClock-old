@@ -1,6 +1,7 @@
 import { updatePlaceholderText, updateSpotifyIcon } from "js/utils/playerUtils";
-import { spotifyPlaceholder } from "./init";
-import { deviceID } from "./playerListeners";
+import { displaySongInfo } from "./displaySongInfo";
+import { musicBox, spotifyPlaceholder } from "./init";
+import { deviceID, updateMusicBox } from "./playerListeners";
 import { findDevices } from "./requests";
 
 export function reconnect(play = false) {
@@ -45,15 +46,19 @@ var deviceCheckInterval;
 export function startPeriodicDeviceCheck(start = true) {
     if (start && deviceID) {
         periodicDeviceCheck(deviceID);
+        console.log('Starting periodic device control...');
     } else {
         clearInterval(deviceCheckInterval);
+        console.log('Stopped periodic device control');
     }
 }
 
+var external_device_active = false;
 function periodicDeviceCheck(localDeviceID) {
     deviceCheckInterval = setInterval(() => {
         findDevices()
             .done((res) => {
+                console.log('Periodic device control', res);
                 const activeDevice = res.devices.find((device) => {
                     return device.is_active === true;
                 })
@@ -61,12 +66,22 @@ function periodicDeviceCheck(localDeviceID) {
                 if (activeDevice && localDeviceID !== activeDevice.id) {
                     console.warn('User is currently playing on a different device');
 
+                    displaySongInfo(null);
+                    external_device_active = true;
+                    $(musicBox).addClass('busy');
                     updateSpotifyIcon(getDeviceIcon(activeDevice.type), 'icon');
                     if (activeDevice.name) updatePlaceholderText(`${activeDevice.name}`, false, false);
+                } else {
+                    if (external_device_active) {
+                        updateMusicBox();
+                        external_device_active = false;
+                    }
                 }
             })
     }, 15 * 1000)
 }
+
+
 
 function getDeviceIcon(type) {
     switch (type) {

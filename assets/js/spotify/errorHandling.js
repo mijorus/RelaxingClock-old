@@ -7,6 +7,7 @@ import { updatePlaceholderText,
 import { redirectURI, 
         generateUrl }            from "../utils/generateSpotifyUrl";
 import { logout }                from "./auth";
+import { startPeriodicDeviceCheck } from "./reconnect";
 
 export const spotifyError = {
      throwTokenError: function() {
@@ -54,6 +55,7 @@ export const spotifyError = {
         player.disconnect();
         this.removeLoader();
         $(musicBox).addClass('error');
+        startPeriodicDeviceCheck(false);
 
         if (message === 'default') {
             localStorage.removeItem('defaultPlaylist');

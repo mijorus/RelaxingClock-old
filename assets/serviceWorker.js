@@ -1,13 +1,12 @@
-const cacheName = 'relaxingclock-{{ now.Unix }}';
+const cacheName = 'relaxingclock-v{{ now.Unix }}';
 
 // Hugo's code injection
-const cacheFiles = [
+const cacheFiles = [ 
     '{{ delimit (.) "', '" }}',
     '/cookie/index.html',
     '/credits/index.html',
     '/faq/index.html',
     '/',
-    'index.html',
     {{ range(readDir "./static/icons") }}'/icons/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/img") }} '/img/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/media") }} '/media/{{ .Name }}', {{ end }}
@@ -37,5 +36,17 @@ self.addEventListener('fetch', (event) => {
             .catch((err) => {
                 console.error(err.statusText)
             })
+    );
+});
+
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((keyList) => {
+            return Promise.all(keyList.map((key) => {
+                if (cacheName.indexOf(key) === -1) {
+                    return caches.delete(key);
+                }
+            }));
+        })
     );
 });

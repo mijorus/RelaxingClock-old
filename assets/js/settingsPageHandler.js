@@ -7,6 +7,7 @@ export function userInSettings(status) {
     inSettings = status;
 }
 
+    
 export const settingsPageHandler = {
     openSettings: function (moveDown) {
         settingsIsAnimating = true;

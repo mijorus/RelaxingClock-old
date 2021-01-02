@@ -48,6 +48,13 @@
         &.loaded {
             border-color: $color-white;
 
+            &.busy {
+                button {
+                    opacity: 0.5;
+                    pointer-events: none !important;
+                }
+            }
+
             #song-info {
                 display: block;
                 position: absolute;

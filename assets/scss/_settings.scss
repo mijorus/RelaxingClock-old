@@ -5,6 +5,7 @@
     .brand-image {
         margin: auto;
         display: block;
+        width: auto;
         height: $settings-title-font-size;
 
         @include phones {

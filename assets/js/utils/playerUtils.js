@@ -106,11 +106,13 @@ export function updateSpotifyIcon(content, type = 'image') {
         
         case 'icon':
             $(spotifyIcon).removeClass('has-cover fab fa-spotify')
+                .css('background-image', 'none')
                 .addClass(content);
             break;
 
         case 'default': 
             $(spotifyIcon).removeClass('has-cover')
+                .css('background-image', 'none')
                 .addClass(defaultSpotifyIconClass)
             break;
     }
