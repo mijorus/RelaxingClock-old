@@ -31,7 +31,7 @@ console.log(event)
         }
     } else {
         return {
-            statusCode: 501,
+            statusCode: 405,
             body: 'Method not supported'
         }
     }
