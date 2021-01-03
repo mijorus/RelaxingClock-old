@@ -86,10 +86,11 @@ export function initSpotifyPlayer() {
 }
 
 export function updateMusicBox(state = savedState, track = currentTrack) {
+    $(musicBox).removeClass('busy');
+    
     if (state && track) {
         console.log('Playing a new track...');
 
-        $(musicBox).removeClass('busy');
         $(spotifyTrackInfo).removeClass('hide');
         utils.updatePlaceholderText('', false, true);
         utils.updatePlaylistBox(getElementDetails({ ...state, type: 'context' }))
