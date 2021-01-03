@@ -85,7 +85,7 @@ export function changeOnlineStatus(online = false) {
         console.warn('Device is offline');
         $('#spotify-status-box').addClass('unavailable');
         updateStatusText(`You are currently offline`);
-        $(musicBox).removeClass('logged unsupported').addClass('unlogged');
+        $(musicBox).removeClass('logged unlogged').addClass('unsupported');
     }
 }
 

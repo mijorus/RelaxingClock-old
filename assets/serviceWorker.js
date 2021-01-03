@@ -1,4 +1,4 @@
-const cacheName = 'relaxingclock-v{{ now.Unix }}';
+const cacheName = 'relaxingclock-v{{ site.Params.version }}';
 
 // Hugo's code injection
 const cacheFiles = [ 
@@ -6,16 +6,18 @@ const cacheFiles = [
     '/cookie/index.html',
     '/credits/index.html',
     '/faq/index.html',
+    '/manifest.webmanifest',
     '/',
     {{ range(readDir "./static/icons") }}'/icons/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/img") }} '/img/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/media") }} '/media/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/font") }} '/font/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/font/fa-webfonts") }} '/font/fa-webfonts/{{ .Name }}', {{ end }}
+    {{ range(readDir "./static/font/linearicons") }} '/font/linearicons/{{ .Name }}', {{ end }}
 ];
 
 self.addEventListener('install', (event) => {
-        console.warn('Service Worker Installed');
+        console.warn('Installing Service Worker...');
         event.waitUntil(
             caches.open(cacheName)
                 .then((cache) => {
@@ -29,17 +31,15 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        caches.match(event.request)
-            .then((res) => {
-                return res || fetch(event.request);
-            })
-            .catch((err) => {
-                console.error(err.statusText)
+        fetch(event.request)
+            .catch(() => {
+                return caches.match(event.request)
             })
     );
 });
 
 self.addEventListener('activate', (event) => {
+    // Remove old files from cache 
     event.waitUntil(
         caches.keys().then((keyList) => {
             return Promise.all(keyList.map((key) => {
