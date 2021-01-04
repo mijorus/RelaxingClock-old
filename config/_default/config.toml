@@ -7,7 +7,7 @@ enableRobotsTXT = true
   noJSConfigInAssets = true
 
 [params]
-  version   = "2.0.1"
+  version   = "2.0.2"
   author    = "mijorus"
   desc      = "Relaxing Clock is just an awesome way to relax yourself - Powered by Spotify. It can play a great selection of Lo-Fi music with a minimalistic UI. You can also set alarms, start the Pomodoro Timer and sync the clock with the Internet to get the right time" 
   github    = "https://github.com/mijorus/RelaxingClock"
