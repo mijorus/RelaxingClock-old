@@ -1,4 +1,4 @@
-export const defaultPlaylistsArray = ['4ZTZhFPPyRzpfHZsWEXAW9', '3gDup3YFG9AXol9jEFqAax'];
+export const defaultPlaylistsArray = ['4ZTZhFPPyRzpfHZsWEXAW9'];
 
 export function defaultPlaylist(uri = undefined) {
     if (uri === undefined) {
