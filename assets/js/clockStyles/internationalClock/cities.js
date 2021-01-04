@@ -42,6 +42,13 @@ export const cities = [
         class: 'london'
     },
     {
+        name: 'Shanghai',
+        tz: 'Asia/Shanghai',
+        lat: 31,
+        long: 121,
+        class: 'shanghai'
+    },
+    {
         name: 'Rome',
         tz: 'Europe/Paris',
         lat: 41,
@@ -61,5 +68,40 @@ export const cities = [
         lat: 43,
         long: -79,
         class: 'toronto'
+    },
+    {
+        name: 'Berlin',
+        tz: 'Europe/Berlin',
+        lat: 52,
+        long: 13,
+        class: 'berlin'
+    },
+    {
+        name: 'Johannesburg',
+        tz: 'Africa/Johannesburg',
+        lat: -26,
+        long: 28,
+        class: 'johannesburg'
+    },
+    {
+        name: 'Shanghai',
+        tz: 'Asia/Shanghai',
+        lat: 31,
+        long: 121,
+        class: 'shanghai'
+    },
+    {
+        name: 'Seoul',
+        tz: 'Asia/Seoul',
+        lat: 37,
+        long: 126,
+        class: 'seoul'
+    },
+    {
+        name: 'Sao Paulo',
+        tz: 'America/Sao_Paulo',
+        lat: -23,
+        long: 46,
+        class: 'saopaulo'
     },
 ]

@@ -30,4 +30,22 @@
     .toronto {
         background-image: url('{{ $citiesCDN }}/toronto.svg');
     }
+    .berlin {
+        background-image: url('{{ $citiesCDN }}/berlin.svg');
+    }
+    .shanghai {
+        background-image: url('{{ $citiesCDN }}/shanghai.svg');
+    }
+    .seoul {
+        background-image: url('{{ $citiesCDN }}/seoul.svg');
+    }
+    .saopaulo {
+        background-image: url('{{ $citiesCDN }}/saopaulo.svg');
+    }
+    .shanghai {
+        background-image: url('{{ $citiesCDN }}/shanghai.svg');
+    }
+    .johannesburg {
+        background-image: url('{{ $citiesCDN }}/johannesburg.svg');
+    }
 {{ end }}

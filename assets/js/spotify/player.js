@@ -1,12 +1,7 @@
 import { musicBox }              from "./init";
 import * as spotify              from "./requests";
 import { spotifyError }          from "./errorHandling";
-import { updateStatusText,
-        songIsSelected,
-        songSelection,
-        songSelected,
-        updatePlaylistBox,
-        updatePlaceholderText }  from "../utils/playerUtils";
+import * as utils                from "../utils/playerUtils";
 import { initSpotifyPlayer,
         playerIsReady }          from "./playerListeners";
 import { getElementDetails }     from "./playlists/elementDetails";
@@ -19,7 +14,7 @@ song              = undefined;
 export var userDetails   = {};
 // *** Spotify Player *** //
 export function playerIsBusy() {
-    if (playerIsReady && songIsSelected) {
+    if (playerIsReady && utils.songIsSelected) {
         return false
     } else {
         return true
@@ -61,7 +56,7 @@ export function getUserInfo() {
         .done((res) => {
             userDetails = res;
             $('#playlist-box').removeClass('unavailable');
-            updateStatusText(`Logged in as ${userDetails.display_name}`);
+            utils.updateStatusText(`Logged in as ${userDetails.display_name}`);
             setTimeout(() => {
                 firstSongSelection();
             }, 1000);
@@ -72,12 +67,12 @@ var firstTry = true;
 function firstSongSelection() {
     spotify.getPlaylistData(defaultPlaylist())
         .done((res) => {
-            song = songSelection(res);
+            song =utils.songSelection(res);
             $(musicBox).addClass('loaded');
-            updatePlaylistBox( getElementDetails(res) );
-            songSelected(true);
+            utils.updatePlaylistBox( getElementDetails(res) );
+            utils.songSelected(true);
             spotifyError.removeLoader();
-            updatePlaceholderText('Ready to<br>play!');
+            utils.updatePlaceholderText('Ready to<br>play!');
         })
         .catch(() => {
             if (firstTry) {
