@@ -30,8 +30,7 @@ export function initSpotifyPlayer() {
 
     // Error handling
     player.addListener('initialization_error', function ({ message }) {
-        console.error(message);
-        spotify.throwGenericError();
+        spotifyError.logError('initialization error: ', message, true);
     });
     player.addListener('playback_error', function ({ message }) {
         console.error(message);

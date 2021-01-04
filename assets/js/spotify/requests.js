@@ -58,8 +58,7 @@ export function refreshToken() {
                 break;
             
                 default:
-                    spotifyError.throwGenericError();
-                    spotifyError.logError("Can't refresh token from Spotify", error);
+                    spotifyError.logError("Can't refresh token from Spotify", error, true);
                 break;
             }
 
@@ -81,9 +80,8 @@ export function getUserDetails() {
             headers: requestHeader,
         })
             .fail(function(error) {
-                spotifyError.logError('CANNOT GET YOUR USERNAME:', error);
+                spotifyError.logError('CANNOT GET YOUR USERNAME:', error, true);
                 updateStatusText(`Cannot get your your profile infos :(`);
-                spotifyError.throwGenericError();
             })
 }
 
@@ -139,7 +137,7 @@ export function getPlaylistData(playlistURL) {
         headers: requestHeader
     })
         .fail(function(error) {
-            spotifyError.logError('CANNOT GET PLAYLIST DATA:', error);
+            spotifyError.logError('CANNOT GET PLAYLIST DATA:', error, false);
         });
 }
 
@@ -175,12 +173,12 @@ export function play(device_id, params = {}) {
                     if (error.reason === 'PREMIUM_REQUIRED') {
                         spotifyError.throwPremiumError();
                     } else {
-                        spotifyError.throwGenericError();
+                        spotifyError.logError('Login error: ', error.reason || '', true);
                     }
                 break;
 
                 default:
-                    spotifyError.throwGenericError();
+                    spotifyError.logError('Login error: ', error.reason || '', true);
                 break;
             }
         })

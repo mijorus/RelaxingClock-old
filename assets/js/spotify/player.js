@@ -68,6 +68,7 @@ export function getUserInfo() {
         })
 }
 
+var firstTry = true;
 function firstSongSelection() {
     spotify.getPlaylistData(defaultPlaylist())
         .done((res) => {
@@ -77,6 +78,13 @@ function firstSongSelection() {
             songSelected(true);
             spotifyError.removeLoader();
             updatePlaceholderText('Ready to<br>play!');
+        })
+        .catch(() => {
+            if (firstTry) {
+               firstTry = false;
+               localStorage.removeItem('defaultPlaylist');
+               firstSongSelection();
+           }
         })
 }
 

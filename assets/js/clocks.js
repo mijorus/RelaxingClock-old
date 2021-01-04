@@ -5,7 +5,8 @@ import { clockContainer,
         cbDefault }              from "./init";
 import { enableClockListeners }  from "./clockListeners";
 import * as screenSaver          from './screenSaver'
-import { aRandomPlace, newRandomPlace }          from './clockStyles/internationalClock/internationalClock';
+import { aRandomPlace, 
+        newRandomPlace }         from './clockStyles/internationalClock/internationalClock';
 import { handleLoader }          from "./utils/utils";
 import { remoteTime }            from './remoteTime';
 import { clockStyles }           from "./clockStyles/styles";

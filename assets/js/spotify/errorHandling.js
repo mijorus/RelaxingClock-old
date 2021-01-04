@@ -28,10 +28,9 @@ export const spotifyError = {
 
     //Logs an error to the console
      logError: function(message, error, throwError = true) {
-        console.error(`${message}`);
-        const responseError = error.responseJSON.error.message || error.message || error;
-        console.error(responseError);
-        if (throwError) this.throwGenericError();
+        const responseError = error.responseJSON.error.message || error.message || error || '';
+        console.error(message + ' : ' + responseError);
+        if (throwError) throwGenericError();
     },
 
     throwPremiumError: function(username) {
@@ -51,17 +50,19 @@ export const spotifyError = {
         }
     },
 
-    throwGenericError: function(message = 'default') {
-        player.disconnect();
-        this.removeLoader();
-        $(musicBox).addClass('error');
-        startPeriodicDeviceCheck(false);
+    
+}
 
-        if (message === 'default') {
-            localStorage.removeItem('defaultPlaylist');
-            updatePlaceholderText(`Something went<br>wrong :( <a href="${redirectURI}">Try again</a>`, true);
-        } else {
-            updatePlaceholderText(message, true);
-        }
-    },
+function throwGenericError(message = 'default') {
+    player.disconnect();
+    this.removeLoader();
+    $(musicBox).addClass('error');
+    startPeriodicDeviceCheck(false);
+    localStorage.removeItem('defaultPlaylist');
+
+    if (message === 'default') {
+        updatePlaceholderText(`Something went<br>wrong :( <a href="${redirectURI}">Try again</a>`, true);
+    } else {
+        updatePlaceholderText(message, true);
+    }
 }
