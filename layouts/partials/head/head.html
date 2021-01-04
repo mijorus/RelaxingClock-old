@@ -4,7 +4,8 @@
 {{ $manifest := resources.Get "manifest.webmanifest" | resources.ExecuteAsTemplate "manifest.webmanifest" . }}
 <link rel="manifest" href="{{ $manifest.RelPermalink }}">
 <meta name="author" content="mijorus">
-<meta name="keywords" content="Spotify, LoFi, Relax, Alarm, Clock, Music">
+<meta name="robots" content="index, follow">
+<meta name="keywords" content="Spotify, LoFi, Relax, Alarm, Clock, Music, spotify, alarm, relax, relaxing, time, clock, worldclock, styles, screensaver, black, pwa, offline">
 <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
