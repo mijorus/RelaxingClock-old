@@ -11,7 +11,7 @@ const cacheFiles = [
     {{ range(readDir "./static/icons") }}'/icons/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/img") }} '/img/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/media") }} '/media/{{ .Name }}', {{ end }}
-    {{ range(readDir "./static/font/webfonts") }} '/font/{{ .Name }}', {{ end }}
+    {{ range(readDir "./static/font/webfonts") }} '/font/webfonts/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/font/fa-webfonts") }} '/font/fa-webfonts/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/font/linearicons") }} '/font/linearicons/{{ .Name }}', {{ end }}
 ];
