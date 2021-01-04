@@ -55,7 +55,7 @@ export const spotifyError = {
 
 function throwGenericError(message = 'default') {
     player.disconnect();
-    this.removeLoader();
+    spotifyError.removeLoader();
     $(musicBox).addClass('error');
     startPeriodicDeviceCheck(false);
     localStorage.removeItem('defaultPlaylist');
