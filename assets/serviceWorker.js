@@ -3,15 +3,15 @@ const cacheName = 'relaxingclock-v{{ site.Params.version }}';
 // Hugo's code injection
 const cacheFiles = [ 
     '{{ delimit (.) "', '" }}',
-    '/cookie/index.html',
-    '/credits/index.html',
-    '/faq/index.html',
+    '/cookie/',
+    '/credits/',
+    '/faq/',
     '/manifest.webmanifest',
     '/',
     {{ range(readDir "./static/icons") }}'/icons/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/img") }} '/img/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/media") }} '/media/{{ .Name }}', {{ end }}
-    {{ range(readDir "./static/font") }} '/font/{{ .Name }}', {{ end }}
+    {{ range(readDir "./static/font/webfonts") }} '/font/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/font/fa-webfonts") }} '/font/fa-webfonts/{{ .Name }}', {{ end }}
     {{ range(readDir "./static/font/linearicons") }} '/font/linearicons/{{ .Name }}', {{ end }}
 ];
@@ -23,6 +23,7 @@ self.addEventListener('install', (event) => {
                 .then((cache) => {
                     return cache.addAll(cacheFiles);
                 })
+                .catch((err) => console.error(err))
         );
     }, (error) => {
         console.error(`Service Worker installation failed: ${error}`);
