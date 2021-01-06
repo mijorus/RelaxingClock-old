@@ -2,6 +2,7 @@ import { checkNotificationStatus,
         changeBtnLable }            from "./utils/utils";
 import { pomodoroBox }              from "./init";
 import { compatibility }            from "./compatibilityDetector";
+import { redirectURI }              from "./utils/generateSpotifyUrl";
 
 export const pomodoro = {
 

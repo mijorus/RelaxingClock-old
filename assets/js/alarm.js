@@ -5,6 +5,8 @@ import { clockFormat }            from "./getSettings";
 import { body,
         cbDefault }               from "./init";
 import { compatibility }          from "./compatibilityDetector";
+import { redirectURI }            from "./utils/generateSpotifyUrl";
+
 
 const arrows     = $('#alarm-big-clock').find('.arrow'),
     alarmSection = $('#alarm-section');
