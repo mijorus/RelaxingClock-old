@@ -12,6 +12,8 @@ export const pomodoro = {
 
     notificationStatus: false,
 
+    nextCycleEnd: undefined,
+
     notifications: function(status) {
         const pomodoroNotifBox = $('#pomodoro-notif-box span');
         const notifText = 'Send a notification on each cycle';
@@ -62,8 +64,11 @@ export const pomodoro = {
         $('#pomodoro-long-box').addClass('unavailable');
         $('#set-pomodoro-btn').addClass('btn-dismiss');
         const cycleLenght = this.workingCycle();
+        this.hoverEvent(true, cycleLenght);
+
         console.log(`Starting Pomodoro Timer for ${cycleLenght / (60 * 1000)} minutes...`);
         changeBtnLable($('#pomodoro-lable'), `Focus on your work!`);
+
         this.timeout = setTimeout(() => {
             pomodoro.relax();
             document.querySelector('#pomodoro-sound').play();
@@ -86,8 +91,11 @@ export const pomodoro = {
         });
         
         const cycleLenght = this.relaxingCycle();
+        this.hoverEvent(true, cycleLenght);
+        
         console.log(`Starting Pomodoro Timer for ${cycleLenght / (60 * 1000)} minutes...`);
         changeBtnLable($('#pomodoro-lable'), `Time to relax! Empty your mind :)`);
+        
         this.timeout = setTimeout(() => {
             pomodoro.start();
             document.querySelector('#pomodoro-sound').play();
@@ -106,13 +114,38 @@ export const pomodoro = {
         this.running = false;
         clearTimeout(this.timeout);
         console.log('Dismissed pomodoro timer');
+
+        this.hoverEvent(false);
         
         [$(pomodoroBox), $('#pomodoro-lable-box')].forEach((el) => {
             $(el).removeClass('working relaxing') });
-        $(pomodoroBox).addClass('force-hide')
+        $(pomodoroBox).addClass('force-hide');
         $('#pomodoro-long-box').removeClass('unavailable');
         $('#set-pomodoro-btn').removeClass('btn-dismiss');
         $('#pomodoro-notif-box').addClass('unavailable');
         changeBtnLable($('#pomodoro-lable'), `Start the timer`);
+    },
+
+    hoverEvent: function(toggle, cycleLenght = null) {
+        this.nextCycleEnd = (cycleLenght)
+            ? moment().add(cycleLenght, 'ms')
+            : null
+
+        $(pomodoroBox).off('mouseenter mouseleave');
+
+        if (toggle && this.nextCycleEnd) {
+
+            $(pomodoroBox)
+                .on('mouseenter', () => {
+                    $('#pomodoro-time-left')
+                        .empty()
+                        .text(`${this.nextCycleEnd.diff(moment(), 'm')} min left`)
+                        .addClass('show');
+                })
+                .on('mouseleave', () => {
+                    $('#pomodoro-time-left')
+                        .removeClass('show');
+                })
+        }
     }
 }

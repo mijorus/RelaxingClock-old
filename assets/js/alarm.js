@@ -120,7 +120,7 @@ export const alarm = {
                     changeBtnLable($(alarm.alarmLable), `Rings ${left}`);
                 }
 
-            }, 1000);
+            }, 5 * 1000);
         }
 
         this.closePage();
