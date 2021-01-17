@@ -8,6 +8,7 @@ import { handleExpandIcon }                from './utils/fullScreenUtils';
 import { getSettings }                     from "./getSettings";
 import { musicBox,
         initSpotifyAuthProcess }           from "./spotify/init";
+import { handleReviewFrom }                from "./pages/reviewForm";
 import { launchNewYearAnimation } from './clockStyles/newYearAnimation';
 
 export const body = $('body'),
@@ -46,6 +47,7 @@ export function init() {
 
   //Get user settings
   getSettings();
+  handleReviewFrom();
 
   //Initialize the clock
   displayDefaultClock();

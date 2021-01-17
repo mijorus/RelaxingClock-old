@@ -3,11 +3,11 @@ footer {
     display: flex;
     flex-flow: column;
     align-items: center;
-    height: 50vh;
+    height: 70vh;
     justify-content: space-around;
 
     @include phones {
-        height: 300px;
+        height: 400px;
     }
 
     h1 {

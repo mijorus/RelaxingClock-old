@@ -1,4 +1,4 @@
-{{ $params := (dict "client_id" (getenv "HUGO_SPOTIFY_CLIENT_ID") "base_url" site.BaseURL) }}
+{{ $params := (dict "client_id" (getenv "HUGO_SPOTIFY_CLIENT_ID") "base_url" site.BaseURL "site_version" site.Params.version) }}
 {{ $commonOpt := (dict "target" "esnext" "avoidTDZ" true "params" $params) }}
 
 {{ $minify := (dict "minify" false) }}

@@ -1,0 +1,20 @@
+.star {
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    &.reviewed {
+        pointer-events: none;
+    }
+
+    .star-icon i {
+        color: rgb(97, 97, 97);
+        transition: color .2s $cb-default;
+
+        &.is-hover {
+            color: rgb(255, 238, 0);
+        }
+    }
+}
