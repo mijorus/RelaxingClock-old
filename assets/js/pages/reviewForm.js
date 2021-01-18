@@ -26,23 +26,12 @@ function sendReview(event) {
     const rate = $(event.currentTarget).data('value');
     if (!(parseInt(rate) <= 5)) return;
     $(`.star :input[value=${rate}]`).attr('checked', true);
-    console.log( $('#review-form').serialize() );
 
     if ( !localStorage.getItem('review-version') || (localStorage.getItem('review-version') !== siteParams.site_version) ) {
-        $.ajax({
-            method:'POST',
-            url: '/',
-            contentType: 'application/x-www-form-urlencoded',
-            body: $('#review-form').serialize(),
-        })
-            .done(() => {
-                reviewed(rate);
-                localStorage.setItem('review-version', siteParams.site_version);
-                localStorage.setItem('review', rate.toString());
-            })
-            .fail((err) => {
-                console.error(err);
-            })
+        reviewed(rate);
+        localStorage.setItem('review-version', siteParams.site_version);
+        localStorage.setItem('review', rate.toString());
+        $('#review-form').trigger( "submit" );
     }
 }
 
