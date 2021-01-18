@@ -1,5 +1,5 @@
 <div>
-    <form data-netlify="true" name="review">
+    <form id="review-form" data-netlify="true" name="review">
         {{ range $i, $sequence := (seq 5) }}
         <label class="star" data-value="{{ $sequence }}">
             <input type="radio" checked="false" name="radio" value="{{ $sequence }}">
@@ -9,5 +9,5 @@
         </label>
         {{ end }}
     </form>
-    <p id="thank-you-box" class="flex-center">Rate Relaxing Clock</p>
+    <p id="thank-you-box" class="flex-center footer-text">Rate Relaxing Clock</p>
 </div>

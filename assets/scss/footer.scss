@@ -10,6 +10,18 @@ footer {
         height: 400px;
     }
 
+    .footer-text {
+        font-size: $settings-font-size - .1vw;
+
+        @include md-screen {
+            font-size: $settings-font-size-md;
+        }
+
+        @include phones {
+            font-size: $settings-font-size-phone;
+        }
+    }
+
     h1 {
         font-weight: 600;
         text-align: center;
@@ -18,7 +30,6 @@ footer {
     }
 
     #made-with-love {
-        font-size: $settings-font-size - .1vw;
         text-align: center;
 
         #log-switch {
@@ -27,18 +38,10 @@ footer {
             cursor: pointer;
         }
 
-            .fa-heart {
-                color: #ff0000;
-            }
-
-            @include md-screen {
-                font-size: $settings-font-size-md;
-            }
-
-            @include phones {
-                font-size: $settings-font-size-phone;
-            }
+        .fa-heart {
+            color: #ff0000;
         }
+    }
 
     #social-icons-container {
         display: flex;
@@ -84,8 +87,6 @@ footer {
     }
 
     #link-list {
-        margin: 0;
-        padding: 0;
         display: flex;
         flex-flow: row;
         flex-wrap: nowrap;
@@ -101,12 +102,10 @@ footer {
             text-align: center;
             display: inline-block;
             width: 5vw;
-            font-size: $settings-font-size - .1vw;
 
             @include phones {
                 display: block;
                 width: auto;
-                font-size: $settings-font-size-phone !important;
                 margin: {
                     left: 0 !important;
                     right: 0 !important;
@@ -135,11 +134,6 @@ footer {
                     border-color: $color-white;
                 }
             }
-
-
-            @include md-screen {
-                font-size: $settings-font-size-md;
-            }
         }
     }
 
@@ -147,13 +141,5 @@ footer {
         width: 100%;
         color: $color-white;
         text-align: center;
-
-        @include md-screen {
-            font-size: $settings-font-size-md;
-        }
-
-        @include phones {
-            font-size: $settings-font-size-phone;
-        }
     }
 }

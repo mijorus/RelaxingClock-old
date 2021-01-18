@@ -25,15 +25,17 @@ function sendReview(event) {
     event.preventDefault();
     const rate = $(event.currentTarget).data('value');
     if (!(parseInt(rate) <= 5)) return;
+    const formData = new FormData();
+    formData.append('review', rate);
 
     if ( !localStorage.getItem('review-version') || (localStorage.getItem('review-version') !== siteParams.site_version) ) {
         $.ajax({
             method:'POST',
             url: '/',
             contentType: 'application/x-www-form-urlencoded',
-            body: { review:  review }
+            body: new URLSearchParams(formData).toString(),
         })
-            .done((res) => {
+            .done(() => {
                 reviewed(rate);
                 localStorage.setItem('review-version', siteParams.site_version);
                 localStorage.setItem('review', rate.toString());
