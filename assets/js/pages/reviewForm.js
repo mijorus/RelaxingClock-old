@@ -22,7 +22,7 @@ function starUnfocus() {
 }
 
 function sendReview(event) {
-    event.preventDefault();
+    // event.preventDefault();
     const rate = $(event.currentTarget).data('value');
     if (!(parseInt(rate) <= 5)) return;
     $(`.star :input[value=${rate}]`).attr('checked', true);

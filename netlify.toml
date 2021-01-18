@@ -1,6 +1,6 @@
 [build]
 publish = "public"
 command = "hugo --gc --environment production"
-functions = "netlify/functions"
+functions = "server/functions"
 [context.production.environment]
 HUGO_VERSION = "0.79.0"
