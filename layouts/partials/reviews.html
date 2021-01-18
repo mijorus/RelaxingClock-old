@@ -1,5 +1,7 @@
 <div>
-    <form id="review-form" data-netlify="true" name="review">
+    <form id="review-form" data-netlify="true" name="review" netlify-honeypot="gander">
+        <input type="hidden" name="form-name" value="review" />
+        <input name="gender" class="gender"/>
         {{ range $i, $sequence := (seq 5) }}
         <label class="star" data-value="{{ $sequence }}">
             <input type="radio" checked="false" name="radio" value="{{ $sequence }}">
