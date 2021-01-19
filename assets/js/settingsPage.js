@@ -7,6 +7,7 @@ import { compatibility }        from "./compatibilityDetector";
 import { logout }               from "./spotify/auth";
 import { generateUrl, 
         redirectURI }           from "./utils/generateSpotifyUrl";
+import { setBlink }             from './getSettings';
 
 const settingsSection = $('#settings-section');
 var btns = settingsSection.find('button');
@@ -44,6 +45,10 @@ function getButtonSettings() {
             stored: localStorage.longPomodoro,
             button: 'pom-long',
         },
+        {
+            stored: localStorage.blink,
+            button: 'blink',
+        },
    ].forEach((setting) => {
         const val = (setting.button).toLocaleLowerCase();
         if (setting.stored === 'true') {
@@ -71,7 +76,6 @@ function setButtonSelection(target, callback) {
 export function handleSettingButtons() {
     for (btn of $(btns)) {
         $(btn).on('click', function(event) {
-            //console.log(event);
             event.stopPropagation();
             setButtonSelection(event.target);
 
@@ -166,6 +170,14 @@ export function handleSettingButtons() {
                 case 'remote-time-off':
                     getRemoteTime(false);
                     localStorage.remoteTime = 'false';
+                break;
+
+                case 'blink-on':
+                    setBlink('true');
+                break;
+
+                case 'blink-off':
+                    setBlink('false');
                 break;
             }
         });

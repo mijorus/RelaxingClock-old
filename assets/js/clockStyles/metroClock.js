@@ -9,6 +9,7 @@ import { centerContainer,
         sec  }               from "../clocks";
 import { newRandomPlace,
         aRandomPlace, }      from "./internationalClock/internationalClock";
+import { blink }             from "../getSettings";
 
 var selectedCity = undefined;
 
@@ -62,7 +63,7 @@ export function leaveFullScreen() {
 //
 
 function handleMetroClock() {
-    if (sec % 2 == 0) {
+    if (sec % 2 == 0 || !blink) {
         $(bigClock).html(hours + '<br>' + '&middot' + '<br>' + min);
     } else {
         $(bigClock).html(hours + '<br>' + ' ' + '<br>' + min);

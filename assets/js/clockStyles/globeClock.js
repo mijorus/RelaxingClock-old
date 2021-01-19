@@ -12,7 +12,8 @@ import { format12,
         sec  }              from "../clocks";
 import { aRandomPlace, 
         newRandomPlace  }   from "./internationalClock/internationalClock";
-import { polarToCartesian }      from "./svgArc/describeArc";
+import { polarToCartesian } from "./svgArc/describeArc";
+import { blink }            from "../getSettings";
 
 const halfCircleHtml = 
 `<div id="globe-path-container">
@@ -69,7 +70,7 @@ export function resetStyle() {
 function handleGlobeClock() {
     $(cityIcon).addClass(aRandomPlace.city.class);
     $(cityName).text(aRandomPlace.city.name);
-    if (sec % 2 == 0) {
+    if (sec % 2 == 0 || !blink) {
         $(bigClock).text(hours + ':' + min + ':' + sec);
     } else {
         $(bigClock).text(hours + ' ' + min + ' ' + sec);

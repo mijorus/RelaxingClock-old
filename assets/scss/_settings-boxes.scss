@@ -114,6 +114,25 @@
     }
 }
 
+#blink-box {
+    $blink-off: #5e5e5e;
+    dt i {
+        color: $blink-off;
+
+        &.blink {
+            animation: blink .5s linear;
+            animation-direction: alternate;
+            animation-iteration-count: 3;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes blink {
+            0% { color: $blink-off; }
+            100% { color: #fff; }
+        }
+    }
+}
+
 #alarm-box {
     #set-alarm-btn {
 

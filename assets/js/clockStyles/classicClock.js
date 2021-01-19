@@ -4,6 +4,8 @@ import { centerContainer,
         min,
         sec }              from "../clocks";
 
+import { blink }           from "../getSettings";
+
 export function loadStyle() {
     $(centerContainer).addClass('classic');
     handleClassicClock();
@@ -31,7 +33,7 @@ function handleClassicClock() {
         mySec = '69';
     }
 
-    if (sec % 2 == 0) {
+    if (sec % 2 == 0 || !blink) {
         $(bigClock).text(hours + ':' + min + ':' + mySec);
     } else {
         $(bigClock).text(hours + ' ' + min + ' ' + mySec);

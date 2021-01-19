@@ -9,7 +9,7 @@ import { getSettings }                     from "./getSettings";
 import { musicBox,
         initSpotifyAuthProcess }           from "./spotify/init";
 import { handleReviewFrom }                from "./pages/reviewForm";
-import { launchNewYearAnimation } from './clockStyles/newYearAnimation';
+// import { launchNewYearAnimation } from './clockStyles/newYearAnimation';
 
 export const body = $('body'),
 main              = $('main'),
@@ -72,7 +72,7 @@ function cookieBanner() {
 const bgColor = 'rgb(245, 245, 245)';
 function handleLogSwitch() {
   if (localStorage.getItem('logs') === null) {
-    //console.log = function () { };
+    console.log = function () { };
     const logSwitch = $('#log-switch');
 
     let logsClickCounter = 0, logsTimeout;

@@ -3,6 +3,7 @@ import { centerContainer,
         hours,
         min,
         sec  }             from "../clocks";
+import { blink }           from "../getSettings";
 
 export function loadStyle() {
     $(centerContainer).addClass('focused');
@@ -26,7 +27,7 @@ export function resetStyle() { }
 //
 
 function handleFocusedClock() {
-    if (sec % 2 == 0) {
+    if (sec % 2 == 0 || !blink) {
         $(bigClock).text(hours + ':' + min);
     } else {
         $(bigClock).text(hours + ' ' + min);
