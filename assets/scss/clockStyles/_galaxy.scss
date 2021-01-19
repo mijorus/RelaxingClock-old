@@ -70,6 +70,10 @@
             left: 25%;
             transform: translate(-50%, -50%);
 
+            .galaxy-orbit {
+                max-width: 100%;
+            }
+
             .galaxy-time-n {
                 display: inline-block;
                 transform: translate(-50%, -50%);
