@@ -63,7 +63,6 @@
                 left: - $sp-border-box;
                 width: 25vw;
                 height: 10vw;
-                overflow: hidden;
                 transition: opacity .2s $cb-default;
                 border-radius: 0.7vw;
                 font-size: $sp-art-fs;
@@ -93,6 +92,8 @@
 
                 #song-details {
                     width: 48%;
+                    max-height: 100%;
+                    overflow-y: scroll;
                     display: flex;
                     position: absolute;
                     right: 0;
@@ -168,7 +169,6 @@
                 opacity: inherit;
 
                 .loader {
-                    overflow: hidden;
                     white-space: nowrap;
                     position: relative;
                     z-index: 2;
@@ -277,7 +277,6 @@
             justify-items: center;
             position: absolute;
             white-space: nowrap;
-            overflow: hidden;
 
             #track-name {
                 flex-grow: 20;
