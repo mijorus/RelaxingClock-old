@@ -1,10 +1,13 @@
 title           = "Relaxing Clock"
 languageCode    = "en-us"
-disableKinds    = ["taxonomy", "term","RSS"]
 enableRobotsTXT = true
 
 [build]
   noJSConfigInAssets = true
+
+[sitemap]
+  changefreq = "monthly"
+  filename = "sitemap.xml"
 
 [params]
   version   = "2.2.1"
