@@ -74,7 +74,7 @@ function firstSongSelection() {
             spotifyError.removeLoader();
             utils.updatePlaceholderText('Ready to<br>play!');
         })
-        .catch(() => {
+        .fail(() => {
             if (firstTry) {
                firstTry = false;
                localStorage.removeItem('defaultPlaylist');
