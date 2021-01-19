@@ -2,7 +2,7 @@ import { checkAndRestoreAlarm } from "./alarm";
 import { handleSettingButtons } from "./settingsPage";
 
 //User settings
-export var clockFormat, currentPosition, blink; 
+export var clockFormat, currentPosition, blink = true; 
 
 //Set or get default values from local storage
 export function getSettings() {
