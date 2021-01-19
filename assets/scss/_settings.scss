@@ -215,11 +215,11 @@
         }
     }
 
-    @include phones {
-        width: 95%;
-    }
-
     @include md-screen {
         width: 70%;
+    }
+    
+    @include phones {
+        width: 85%;
     }
 }
