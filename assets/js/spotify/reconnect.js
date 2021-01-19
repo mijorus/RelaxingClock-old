@@ -1,6 +1,6 @@
 import { updatePlaceholderText, updateSpotifyIcon } from "js/utils/playerUtils";
 import { displaySongInfo } from "./displaySongInfo";
-import { musicBox, spotifyPlaceholder } from "./init";
+import { musicBox } from "./init";
 import { deviceID, updateMusicBox } from "./playerListeners";
 import { findDevices } from "./requests";
 
@@ -55,6 +55,7 @@ export function startPeriodicDeviceCheck(start = true) {
 
 var external_device_active = false;
 function periodicDeviceCheck(localDeviceID) {
+    const checkInterval = 30;
     deviceCheckInterval = setInterval(() => {
         findDevices()
             .done((res) => {
@@ -78,7 +79,7 @@ function periodicDeviceCheck(localDeviceID) {
                     }
                 }
             })
-    }, 15 * 1000)
+    }, checkInterval * 1000)
 }
 
 

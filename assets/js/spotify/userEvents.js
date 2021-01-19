@@ -8,7 +8,6 @@ import { play,
         playbackStarted } from "./requests";
 import { deviceID,
         currentTrack }  from "./playerListeners";
-import { reconnect }      from "./reconnect";
 import { cbDefault }      from "js/init";
 import { toggleArrow }    from '../utils/utils'
 import { playlistLoader } from "./playlists/playlistLoader";

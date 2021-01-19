@@ -1,4 +1,4 @@
-import { musicBox, spotifyPlaceholder }   from "./init";
+import { musicBox }   from "./init";
 import * as spotify             from "./requests";
 import { initPlayerEvents }     from "./userEvents";
 import { spotifyError }         from "./errorHandling";
