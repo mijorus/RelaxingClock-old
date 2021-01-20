@@ -53,7 +53,7 @@ export function startPeriodicDeviceCheck(start = true) {
     }
 }
 
-var external_device_active = false;
+var external_device_active = false, checkErrors = 0;
 function periodicDeviceCheck(localDeviceID) {
     const checkInterval = 30;
     deviceCheckInterval = setInterval(() => {
@@ -78,6 +78,10 @@ function periodicDeviceCheck(localDeviceID) {
                         external_device_active = false;
                     }
                 }
+            })
+            .fail(() => {
+                checkErrors++;
+                if (checkErrors > 10) startPeriodicDeviceCheck(false);
             })
     }, checkInterval * 1000)
 }
