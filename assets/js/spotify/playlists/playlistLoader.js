@@ -25,7 +25,7 @@ export var listContainer = undefined;
 export function playlistLoader(container) {
     listContainer = container;
     if (userLibrary.length === 0 || defaultLibrary.length === 0) {
-        $.when(getPlaylistList(), getShowList(), getPlaylistData(defaultPlaylistsArray[0]))
+        $.when(getPlaylistList(), getShowList(), getPlaylistData(defaultPlaylistsArray[0]), getPlaylistData(defaultPlaylistsArray[1]))
             .done((playlists, shows, default1) => {
                 userLibrary.push(playlists[0].items, shows[0].items);
                 defaultLibrary.push(default1[0]);
