@@ -61,6 +61,10 @@
                 stroke: $color-white;
                 stroke-width: 2px;
                 fill: none;
+
+                @include phones {
+                    stroke-width: 1px;
+                }
             }
         }
 
