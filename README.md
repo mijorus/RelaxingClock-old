@@ -1,3 +1,4 @@
+![relaxing clock hero](https://res.cloudinary.com/dwdxct1u5/image/upload/v1611696123/Relaxing%20Clock/relaxing-clock-hero_tn7dbw.svg)
 # What is RelaxingClock
 Relaxing Clock is an **awesome** website that uses Spotify's WEB PLAYBACK SDK to play **awesome** relaxing music to chill you out, and it looks **awesome** 
 on your desktop display as screensaver.
