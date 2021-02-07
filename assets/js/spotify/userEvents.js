@@ -69,7 +69,7 @@ function playBtnListener() {
 }
 
 function likeBtnListener() {
-    $(likeBtn).on('click', function (event) {
+    $(likeBtn).on('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
         if (!playerIsBusy() && playbackStarted) {

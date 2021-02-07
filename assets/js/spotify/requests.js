@@ -227,12 +227,12 @@ export function isLiked(song, changeState) {
             if (response[0]) {
                 console.log('This song is in your library');
                 (changeState) 
-                    ? spotify.likeSong(song, false) 
+                    ? likeSong(song, false) 
                     : handleHeartButton(true);
             } else {
                 console.log('This song is NOT in your library');
                 (changeState) 
-                    ? spotify.likeSong(song, true) 
+                    ? likeSong(song, true) 
                     : handleHeartButton(false);
             }
         })
