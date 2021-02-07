@@ -1,14 +1,11 @@
 <div>
-    <form id="review-form" data-netlify="true" name="review" netlify-honeypot="gender" action="/thankyou">
+    <form id="review-form" method="GET" data-netlify="true" name="review" netlify-honeypot="gender" action="/thankyou">
         <input type="hidden" name="form-name" value="review" />
         <input type="hidden" name="version" value="{{ site.Params.version }}" />
         <input name="gender" class="gender"/>
         {{ range $i, $sequence := (seq 5) }}
-        <label class="star" data-value="{{ $sequence }}">
-            <input type="radio" checked="false" name="review" value="{{ $sequence }}">
-            <button class="checkmark star-icon transp-btn">
-                <i class="fas fa-star settings-icon"></i>
-            </button>
+        <label class="star fas fa-star settings-icon pointer" data-value="{{ $sequence }}">
+            <input type="radio" name="review" value="{{ $sequence }}">
         </label>
         {{ end }}
     </form>

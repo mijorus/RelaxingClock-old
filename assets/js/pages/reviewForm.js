@@ -18,7 +18,7 @@ function starFocus(event) {
 }
 
 function starUnfocus() {
-    $('.star').each((index, el) => { $(el).find('.star-icon i').removeClass('is-hover') });
+    $('.star').each((index, el) => { $(el).removeClass('is-hover') });
 }
 
 function sendReview(event) {
@@ -38,7 +38,7 @@ function sendReview(event) {
 function colorStar(toValue) {
     $('.star').each((index, el) => {
         if ( $(el).data('value') <= toValue ) {
-            $(el).find('.star-icon i').addClass('is-hover');
+            $(el).addClass('is-hover');
         }
     })
 }
