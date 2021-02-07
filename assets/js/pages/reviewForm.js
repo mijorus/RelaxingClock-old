@@ -22,7 +22,7 @@ function starUnfocus() {
 }
 
 function sendReview(event) {
-    // event.preventDefault();
+    event.preventDefault();
     const rate = $(event.currentTarget).data('value');
     if (!(parseInt(rate) <= 5)) return;
     $(`.star :input[value=${rate}]`).attr('checked', true);
@@ -31,7 +31,7 @@ function sendReview(event) {
         reviewed(rate);
         localStorage.setItem('review-version', siteParams.site_version);
         localStorage.setItem('review', rate.toString());
-        $('#review-form').trigger( "submit" );
+        $('#review-form').trigger("submit");
     }
 }
 
