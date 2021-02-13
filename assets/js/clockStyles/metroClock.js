@@ -21,7 +21,7 @@ export function loadStyle() {
 
 export function beforeLoad() {
     if (!selectedCity) selectedCity = newRandomPlace();
-    $('#metro-background').removeClass().addClass(selectedCity.city.class);
+    $('#clock-background').removeClass().addClass(selectedCity.city.class);
 }
 
 export function unloadStyle() {
@@ -33,7 +33,7 @@ export function startProgression() {}
 export function skipInit() {}
 
 export function resetStyle() {
-    $('#metro-background').addClass(aRandomPlace.city.class);
+    $('#clock-background').addClass(aRandomPlace.city.class);
 }
 
 //Screen Saver actions

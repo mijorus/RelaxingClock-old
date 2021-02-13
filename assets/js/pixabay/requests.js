@@ -1,8 +1,10 @@
-let apiKey = undefined;
+let apiKey = '20260573-2eafd6a566d87c22e06be61bf';
 
 export function getKey() {
     if (apiKey) {
-        return $.Deferred.done(() => true);
+        return $.Deferred()
+            .done(() => true)
+            .resolve()
     }
     
     return $.ajax({
@@ -27,7 +29,7 @@ export function getKey() {
  * @param {string} category 
  * @param {Object} additionalParams
  */
-export function getVideos(query, category, additionalParams = {}, order = 'popular', video_type = 'film') {
+export function getVideos(query = [], category, additionalParams = {}, order = 'popular', video_type = 'film') {
     if (!apiKey) return [];
 
     let queryString = '';
@@ -41,15 +43,19 @@ export function getVideos(query, category, additionalParams = {}, order = 'popul
         url: 'https://pixabay.com/api/videos',
         data: {
             key: apiKey,
-            q: query,
+            q: queryString,
             category: category,
             order: order,
+            lang: 'en',
             video_type: video_type,
             safesearch: true,
             ...additionalParams,
         }
-    })
-        .fail(function (error) {
+    })  
+        .done((res) => {
+            return res;
+        })
+        .fail((error) => {
             console.error(error.responseText);
         })
 }

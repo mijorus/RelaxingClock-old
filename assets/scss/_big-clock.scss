@@ -7,12 +7,18 @@
 
 main {
     &.metro {
-        #metro-background  {
+        #clock-background  {
             opacity: 0.1 !important;
         }
     }
 
-    #metro-background {
+    &.landscape {
+        #clock-background  {
+            opacity: 1 !important;
+        }
+    }
+
+    #clock-background {
         opacity: 0;
         display: block !important;
         width: 100%;
