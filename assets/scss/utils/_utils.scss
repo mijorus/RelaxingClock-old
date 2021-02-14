@@ -44,6 +44,11 @@
     left: 0;
 }
 
+.bottom-left-0 {
+    top: 0;
+    left: 0;
+}
+
 .no-scrollbar {
     scrollbar-width: none;  /* Firefox */
     -ms-overflow-style: none;  /* IE and Edge */
@@ -73,6 +78,10 @@
 
 .relative {
     position: relative;
+}
+
+.absolute {
+    position: absolute;
 }
 
 .upper {

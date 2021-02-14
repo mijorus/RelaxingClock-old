@@ -4,20 +4,9 @@
 @import './clockStyles/globe';
 @import './clockStyles/metro';
 @import './clockStyles/galaxy';
+@import './clockStyles/landscapes';
 
 main {
-    &.metro {
-        #clock-background  {
-            opacity: 0.1 !important;
-        }
-    }
-
-    &.landscape {
-        #clock-background  {
-            opacity: 1 !important;
-        }
-    }
-
     #clock-background {
         opacity: 0;
         display: block !important;

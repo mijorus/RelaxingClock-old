@@ -9,7 +9,7 @@
 //ASSETS
 {{ $cities := resources.Get "scss/_cities.scss" | resources.ExecuteAsTemplate "css/cities.css" . | resources.ToCSS }}
 @import 'custom-fonts';
-@import 'main.scss';
+@import 'main';
 @import '{{ $cities.RelPermalink }}';
 @import 'big-clock';
 @import 'cookie-banner';

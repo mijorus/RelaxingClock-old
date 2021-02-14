@@ -14,9 +14,15 @@ export function loadStyle() {
     handleLandscapeClock();
 }
 
-export function beforeLoad() { }
+export function beforeLoad() { 
+    $('#clock-background')
+        .removeClass()
+        .addClass('landscape-background');
+}
 
-export function unloadStyle() { }
+export function unloadStyle() { 
+    $('#clock-background').removeClass();
+}
 
 export function startProgression() { 
     pixabay.getKey().done(() => loadVideos())
@@ -42,7 +48,7 @@ function handleLandscapeClock() {
     }
 }
 
-async function loadVideos() {
+function loadVideos() {
     const tags = generateTags();
     pixabay.getVideos(tags)
         .done((res) => {

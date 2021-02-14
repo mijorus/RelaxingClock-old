@@ -20,12 +20,15 @@ export function loadStyle() {
 }
 
 export function beforeLoad() {
-    if (!selectedCity) selectedCity = newRandomPlace();
-    $('#clock-background').removeClass().addClass(selectedCity.city.class);
+    selectedCity = selectedCity || newRandomPlace();
+    $('#clock-background')
+        .removeClass()
+        .addClass(`${selectedCity.city.class} metro-background`);
 }
 
 export function unloadStyle() {
     selectedCity = undefined;
+    $('#clock-background').removeClass('metro-background');
 }
 
 export function startProgression() {}
