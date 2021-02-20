@@ -63,7 +63,7 @@
             border: none;
             cursor: pointer;
             opacity: 1;
-            transition: opacity .2s linear;
+            
             z-index: 2;
         
             &.overscroll{
@@ -114,7 +114,6 @@
     font-weight: 600;
     opacity: 0;
     border: none;
-    transition: opacity .2s linear;
 
     @include phones {
         font-size: $selection-box-font-phone;
@@ -155,7 +154,6 @@
         border: none;
         cursor: pointer;
         opacity: 1;
-        transition: opacity .2s linear;
         padding: 0px .3vw;
 
         &.unfocus {

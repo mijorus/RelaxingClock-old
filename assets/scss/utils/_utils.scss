@@ -140,6 +140,10 @@
     overflow: visible;
 }
 
+.soft-show {
+    transition: opacity .2s linear;
+}
+
 .bg-center {
     background-repeat: no-repeat;
     background-position: center;

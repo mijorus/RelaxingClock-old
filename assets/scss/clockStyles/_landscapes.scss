@@ -1,3 +1,22 @@
 .landscape-background {
     opacity: 1 !important;
+
+    video {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.landscape {
+    .big-clock {
+        
+        &.video-loaded {
+            color: black !important;
+        }
+
+        @include phones {
+            font-size: 25vw;
+            font-weight: 500;
+        }
+    }
 }

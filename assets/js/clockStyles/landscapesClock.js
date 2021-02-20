@@ -21,7 +21,10 @@ export function beforeLoad() {
 }
 
 export function unloadStyle() { 
+    $(main).removeClass('landscape');
+    $(bigClock).removeClass('video-loaded');
     $('#clock-background').removeClass();
+    bgVideo.remove();
 }
 
 export function startProgression() { 
@@ -39,31 +42,22 @@ export function resetStyle() { }
 //
 
 function handleLandscapeClock() {
-    let mySec = sec;
-
     if (sec % 2 == 0 || !blink) {
-        $(bigClock).text(hours + ':' + min + ':' + mySec);
+        $(bigClock).text(hours + ':' + min);
     } else {
-        $(bigClock).text(hours + ' ' + min + ' ' + mySec);
+        $(bigClock).text(hours + ' ' + min);
     }
 }
 
 function loadVideos() {
-    const tags = generateTags();
-    pixabay.getVideos(tags)
+    pixabay.getVideos( generateTags() )
         .done((res) => {
             console.log(res);
-            $('#clock-background').append($('<video />', {
-                autoplay: true,
-                controls: true, 
-                loop: true,
+            const randomVideo = getRandomIntInclusive(0, res.hits.length);
+            bgVideo.create(res.hits[randomVideo].videos.medium.url)
+            $(bgVideo.element).on('ended', function() {
+                console.log('end');
             })
-                .append(
-                    $(`<source />`, {
-                        src: res.hits[0].videos.small.url,
-                        type: 'video/mp4',
-                    })
-                ))
         })
 }
 
@@ -76,4 +70,38 @@ function generateTags() {
     ]
 
     return tags[getRandomIntInclusive(0, (tags.length - 1))];
+}
+
+const bgVideo = {
+    element: undefined,
+
+    create: function(src, autoplay = true) {
+        this.element = $('<video />', {
+            id: 'pixabay-video',
+            controls: false,
+            muted: true,
+            loop: false,
+            class: 'hide soft-show',
+        })
+            .append( $(`<source />`, { src: src, type: 'video/mp4' }) )
+            .on('canplaythrough ', () => this.play())
+
+        $('#clock-background').append(this.element)
+            
+
+        return this;
+    },
+
+    play: function() {
+        $(bigClock).addClass('video-loaded');
+        $(this.element)
+            .removeClass('hide')
+            .get(0).play(); 
+    },
+
+    remove: function() {
+        if (this.element) {
+            $(this.element).remove();
+        }
+    }
 }
