@@ -25,7 +25,7 @@ export function unloadStyle() {
     $(main).removeClass('landscape');
     $('#clock-background').removeClass();
     $(bigClock)
-        .on('queueForward')
+        .off('queueForward')
         .removeClass('video-loaded');
 }
 
@@ -51,17 +51,27 @@ function handleLandscapeClock() {
     }
 }
 
+var currentVideoIndex = undefined;
+function selectNextVideo({ length }) {
+    if (currentVideoIndex === undefined) {
+        currentVideoIndex = getRandomIntInclusive(0, length - 1);
+        return currentVideoIndex;
+    } else if (currentVideoIndex === length - 1) {
+        return  0;
+    } else {
+        return currentVideoIndex++;
+    }
+}
+
 function loadVideos() {
     pixabay.getVideos( generateTags() )
         .done((res) => {
-            console.log(res);
-            const randomVideo = getRandomIntInclusive(0, res.hits.length);
             bgVideo
                 .create()
-                .play(res.hits[randomVideo].videos.medium.url)
-                .preload(res.hits[randomVideo + 1].videos.medium.url)
+                .load(res.hits[selectNextVideo(res.hits)].videos.medium.url)
+                .preload(res.hits[selectNextVideo(res.hits)].videos.medium.url)
             
-            $(bigClock).on('queueForward', () => bgVideo.preload(res.hits[randomVideo + 2].videos.medium.url))
+            $(bigClock).on('queueForward', () => bgVideo.preload(res.hits[selectNextVideo(res.hits)].videos.medium.url))
         })
 }
 
@@ -79,15 +89,13 @@ function generateTags() {
 const bgVideo = {    
     videos: [],
 
-    activeVideo: function() {
+    findVideo: function(state) {
         if (this.videos.length) {
-            return this.videos.find((el) => $(el).css('z-index') === 1) || this.videos[0];
-        }
-    },
-
-    hiddenVideo: function() {
-        if (this.videos.length) {
-            return this.videos.find((el) => $(el).css('z-index') == 0) || this.videos[1];
+            if (state === 'active') {
+                return this.videos.find((el) => $(el).css('z-index') == 1) || this.videos[0];
+            } else if (state === 'hidden') {
+                return this.videos.find((el) => $(el).css('z-index') == 0) || this.videos[1];
+            }
         }
     },
 
@@ -113,38 +121,56 @@ const bgVideo = {
         return this;
     },
 
-    play: function(src) {
-        $(bigClock).addClass('video-loaded');
-        $(this.activeVideo())
-            .attr('src', src)
-            .on('canplaythrough', ({ target }) => $(target).triggerBgVideoPlay())
-            .on('ended', () => this.playNext());
+    play: function() {
+        console.log('playing on', this.findVideo('active').attr('id'));
+
+        $(this.findVideo('active'))
+            .trigger('play')
+            .removeClass('hide')
+            .on('ended', ({ target }) => {
+                $(target).off('ended');
+                this.playNext();
+            });
 
         return this;
     },
 
     playNext: function() {
-        $(this.hiddenVideo())
-            .trigger('play')
-            .removeClass('hide')
-            .css('z-index', 1);
+        const oldActiveVideo = this.findVideo('active');
 
-        $(this.activeVideo())
-            .css('z-index', 0)
+        $(this.findVideo('hidden'))
+            .css('z-index', '1');
+
+        $(oldActiveVideo)
+            .css('z-index', '0')
             .addClass('hide');
 
         $(bigClock).trigger('queueForward');
+        this.play();
     },
 
+    load: function(src) {
+        $(this.findVideo('active'))
+            .attr('src', src)
+            .on('canplaythrough', ({ target }) => {
+                $(target).off('canplaythrough');
+                $(bigClock).addClass('video-loaded');
+                this.play();
+            });
+
+        return this;
+    },
+ 
     preload: function(src) {
-        console.log(this.hiddenVideo());
-        $(this.hiddenVideo())
+        console.log('preloading on', $(this.findVideo('hidden')).attr('id'));
+        $(this.findVideo('hidden'))
             .attr('src', src);
 
         return this;
     },
 
     remove: function() {
+        $(this.findVideo('active')).trigger('pause');
         $('.pixabay-bg-video').remove();
         this.videos = [];
     }

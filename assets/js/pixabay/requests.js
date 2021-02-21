@@ -47,6 +47,7 @@ export function getVideos(query = [], category, additionalParams = {}, order = '
             category: category,
             order: order,
             lang: 'en',
+            per_page: 200,
             video_type: video_type,
             safesearch: true,
             ...additionalParams,

@@ -125,14 +125,3 @@ function handleWindowScrolling() {
     }, 250)
   });
 }
-
-$.fn.extend({
-  triggerBgVideoPlay: function () {
-    this
-      .trigger('play')
-      .removeClass('hide')
-      .css('z-index', 1);
-
-    return this;
-  }
-})
