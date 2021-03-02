@@ -55,11 +55,11 @@ function loadVideos() {
         .done((res) => {
             bgVideo
                 .create()
-                .load(res.hits[pixabay.videos.selectNextVideo(res.hits)])
-                .preload(res.hits[pixabay.videos.selectNextVideo(res.hits)])
+                .load(res.hits[pixabay.videos.selectNextVideo(res.hits.length)])
+                .preload(res.hits[pixabay.videos.selectNextVideo(res.hits.length)])
             
             $(bigClock).on('queueForward', () => {
-                bgVideo.preload(res.hits[pixabay.videos.selectNextVideo(res.hits)]);
+                bgVideo.preload(res.hits[pixabay.videos.selectNextVideo(res.hits.length)]);
             });
         });
 }

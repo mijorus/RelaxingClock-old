@@ -12,14 +12,14 @@ export function generateTags() {
 }
 
 var currentVideoIndex = undefined;
-export function selectNextVideo({ length }) {
+export function selectNextVideo(length) {
     if (!currentVideoIndex) {
         currentVideoIndex = getRandomIntInclusive(0, length - 1);
         return currentVideoIndex;
     } else if (currentVideoIndex === length - 1) {
         return 0;
     } else {
-        return currentVideoIndex++;
+        return ++currentVideoIndex;
     }
 }
 
