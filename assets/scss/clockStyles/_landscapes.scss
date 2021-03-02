@@ -12,7 +12,13 @@
     .big-clock {
         
         &.video-loaded {
-            color: black !important;
+            &.dark {
+                color: $color-white !important;
+            }
+
+            &.light {
+                color: black !important;
+            }
         }
 
         @include phones {

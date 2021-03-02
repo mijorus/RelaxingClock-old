@@ -9,8 +9,10 @@
 {{ $suncalc := resources.Get "vendors/suncalc/suncalc.js" }}
 {{ $noSleep := resources.Get "vendors/NoSleep/NoSleep.min.js" }}
 {{ $mobileDetect := resources.Get "vendors/mobile-detect/mobile-detect.min.js" }}
+{{ $getImageLightness := resources.Get "vendors/getImageLightness/getImageLightness.js" }}
+
 
 <!-- This is the concat of every vendor js file -->
-{{ $vendorsBundle := slice $jquery $loader $randomColor $anime $moment $momentDuration $momentTimezone $suncalc $noSleep $mobileDetect | resources.Concat "js/vendors.js" | minify | fingerprint }}
+{{ $vendorsBundle := slice $jquery $loader $randomColor $anime $moment $momentDuration $momentTimezone $suncalc $noSleep $mobileDetect $getImageLightness | resources.Concat "js/vendors.js" | minify | fingerprint }}
 
 {{ return $vendorsBundle }}
