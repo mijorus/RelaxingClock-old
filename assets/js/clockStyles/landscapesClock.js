@@ -104,7 +104,7 @@ const bgVideo = {
         if (this.findVideo('active').data('cover')) {
             imageIsBright(this.findVideo('active').data('cover'))
                 .then((res) => {
-                    $(bigClock).addClass('light dark')
+                    $(bigClock).removeClass('light dark')
                     res ? $(bigClock).addClass('light') : $(bigClock).addClass('dark');
                 })
         }

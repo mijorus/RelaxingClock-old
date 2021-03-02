@@ -13,11 +13,11 @@
         
         &.video-loaded {
             &.dark {
-                color: $color-white !important;
+                color: transparentize($color-white, 0.1) !important;
             }
 
             &.light {
-                color: black !important;
+                color: transparentize(#000, 0.1) !important;
             }
         }
 
