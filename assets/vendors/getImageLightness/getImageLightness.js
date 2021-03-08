@@ -42,7 +42,6 @@ function imageIsBright(imageSrc, threshold = 110) {
     return new Promise(function(resolve) {
         return getImageBrightness(imageSrc)
             .then((res) => {
-                console.log('video is brigth? ', (res > threshold));
                 return resolve(res > threshold);
             })
     })

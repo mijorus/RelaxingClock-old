@@ -21,11 +21,9 @@ export function beforeLoad() {
 
 export function unloadStyle() { 
     bgVideo.remove();
-    $(main).removeClass('landscape');
+    $(main).removeClass('landscape video-loaded');
     $('#clock-background').removeClass();
-    $(bigClock)
-        .off('queueForward')
-        .removeClass('video-loaded');
+    $(bigClock).off('queueForward');
 }
 
 export function startProgression() { 
@@ -100,12 +98,12 @@ const bgVideo = {
     },
 
     play: function() {
-        console.log('playing on', this.findVideo('active').attr('id'));
+        // console.log('playing on', this.findVideo('active').attr('id'));
         if (this.findVideo('active').data('cover')) {
             imageIsBright(this.findVideo('active').data('cover'))
                 .then((res) => {
-                    $(bigClock).removeClass('light dark')
-                    res ? $(bigClock).addClass('light') : $(bigClock).addClass('dark');
+                    $(main).removeClass('light dark');
+                    res ? $(main).addClass('light') : $(main).addClass('dark');
                 })
         }
 
@@ -139,7 +137,7 @@ const bgVideo = {
             .attr('src', pixabay.videos.getVideoUrl(hit))
             .on('canplaythrough', ({ target }) => {
                 $(target).off('canplaythrough');
-                $(bigClock).addClass('video-loaded');
+                $(main).addClass('video-loaded');
                 this.play();
             });
 
@@ -147,7 +145,7 @@ const bgVideo = {
     },
  
     preload: function(hit) {
-        console.log('preloading on', $(this.findVideo('hidden')).attr('id'));
+        // console.log('preloading on', $(this.findVideo('hidden')).attr('id'));
         this.findVideo('hidden')
             .data('cover', pixabay.videos.getPictureIdUrl(hit))
             .attr('src', pixabay.videos.getVideoUrl(hit));

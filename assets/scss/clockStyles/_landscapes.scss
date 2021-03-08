@@ -9,21 +9,25 @@
 }
 
 .landscape {
-    .big-clock {
-        
-        &.video-loaded {
-            &.dark {
+    &.video-loaded {
+        &.dark {
+            #big-clock{
                 color: transparentize($color-white, 0.1) !important;
             }
 
-            &.light {
-                color: transparentize(#000, 0.1) !important;
+            .selection-box {
+                color: transparentize($color-white, 0.1) !important;
             }
         }
 
-        @include phones {
-            font-size: 25vw;
-            font-weight: 500;
+        &.light {
+             #big-clock{
+                color: transparentize(#000, 0.1) !important;
+            }
+
+            .selection-box {
+                color: transparentize(#000, 0.1) !important;
+            }
         }
     }
 }

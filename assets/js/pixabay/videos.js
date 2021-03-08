@@ -24,9 +24,7 @@ export function selectNextVideo(length) {
 }
 
 export function getPictureIdUrl(hit, quality = '640x360') {
-    return hit.picture_id ? 
-        `https://i.vimeocdn.com/video/${hit.picture_id}_${quality}.jpg`
-        : undefined;
+    return `https://i.vimeocdn.com/video/${hit.picture_id}_${quality}.jpg`;
 }
 
 export function getVideoUrl(hit, quality = 'medium') {
