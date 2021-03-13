@@ -20,12 +20,6 @@ Sad :(
 
 But you can open an issue on Github! Also, if you are a bit geecky, the console logs are quite explicit and could help me and you to figure out what is going wrong. You can press F12 to launch the console in almost every major browser.  
 
-Alternatively, you can send me an email!  
-
-{{< show-email >}}  
-
-I will try to reply ASAP
-
 ## It says "Connect from your PC". Why?
 Currently, Spotify does not support music playback on smartphones and tablets.  
   
