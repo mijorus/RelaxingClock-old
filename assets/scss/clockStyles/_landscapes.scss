@@ -18,6 +18,10 @@
             .selection-box {
                 color: transparentize($color-white, 0.1) !important;
             }
+
+            .screen-saving .selection-box {
+                color: #ffffff00 !important;
+            }
         }
 
         &.light {
@@ -28,6 +32,10 @@
             .selection-box {
                 color: transparentize(#000, 0.1) !important;
             }
+
+             .screen-saving .selection-box {
+                 color: #ffffff00 !important;
+             }           
         }
     }
 }
