@@ -102,28 +102,3 @@ main {
         text-align: center;
     }
 }
-
-#show-email-box {
-    display: flex;
-    flex-flow: row;
-    justify-content: right;
-    align-items: center;
-
-    :last-child {
-        margin: 0;
-    }
-
-    .show-email-btn {
-        margin-right: 30px;
-        cursor: pointer;
-        width: 10%;
-        z-index: 10 !important;
-        color: $color-white;
-        font-size: $settings-icon-font-size;        
-
-        @include phones {
-            cursor: pointer;
-            font-size: $fs-icon-phone + 10px;
-        }
-    }
-}

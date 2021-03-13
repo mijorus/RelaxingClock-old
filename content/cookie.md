@@ -9,8 +9,4 @@ Some technical data is saved **ONLY** on your local machine, to enhance user exp
 
 We use Google Analytics for statistics and improving services. If you wish to disable Google Analytics' data collection, please install the official tool from Google available [HERE](https://tools.google.com/dlpage/gaoptout)
 
-The developer is always available to hear for your requests, we can get in contact by sending an email to the following address
-
-{{< show-email >}}  
-
 ENJOY RELAXING CLOCK!

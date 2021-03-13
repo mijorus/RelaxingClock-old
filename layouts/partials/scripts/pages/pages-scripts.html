@@ -1,6 +1,3 @@
-{{ $showEmail := resources.Get "js/pages/showEmail.js" }}
-
-{{ $pageScripts := slice $showEmail }}
 <!-- This is the concatenation of every custom js file -->
 {{ $scriptsConcat := $pageScripts | resources.Concat "js/pageScripts.js"}}
 
